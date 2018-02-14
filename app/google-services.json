@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "258491184913",
+    "firebase_url": "https://food-friend-7ea9a.firebaseio.com",
+    "project_id": "food-friend-7ea9a",
+    "storage_bucket": "food-friend-7ea9a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:258491184913:android:4d9d806fabc7f946",
+        "android_client_info": {
+          "package_name": "com.foodfriend.foodfriend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "258491184913-1q55bmipfj9fedu8r8r348fd65o96cak.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB63Gg23V3sCr9knz5FgZfKZmQ_6VgIiNA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
