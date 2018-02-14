@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "258491184913-6um1d7gm4m69q5fqop88m9ct4iqkomhd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.foodfriend.foodfriend",
+            "certificate_hash": "cb3213b0d65c0b254dec1a2ff4ac0e163ba12c66"
+          }
+        },
+        {
           "client_id": "258491184913-1q55bmipfj9fedu8r8r348fd65o96cak.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "258491184913-1q55bmipfj9fedu8r8r348fd65o96cak.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

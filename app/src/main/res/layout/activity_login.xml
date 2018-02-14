@@ -14,7 +14,6 @@
         android:orientation="vertical"
         android:padding="@dimen/activity_horizontal_margin">
 
-
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
@@ -24,7 +23,6 @@
             android:contentDescription=""
             tools:ignore="ContentDescription" />
 
-
         <EditText
             android:id="@+id/email"
             android:layout_width="match_parent"
@@ -32,10 +30,7 @@
             android:layout_marginBottom="10dp"
             android:hint="@string/hint_email"
             android:inputType="textEmailAddress"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorHint="@color/colorDarkest" />
-
-
+            android:textColor="@color/colorDarkest" />
 
         <EditText
             android:id="@+id/password"
@@ -44,18 +39,14 @@
             android:layout_marginBottom="10dp"
             android:hint="@string/hint_password"
             android:inputType="textPassword"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorHint="@color/colorDarkest" />
-
-
-        <!-- Login Button -->
+            android:textColor="@color/colorDarkest" />
 
         <Button
             android:id="@+id/btn_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:background="@color/colorAccent"
+            android:background="@color/colorPrimary"
             android:text="@string/btn_login"
             android:textColor="@android:color/black" />
 
@@ -68,8 +59,6 @@
             android:text="@string/btn_forgot_password"
             android:textAllCaps="false"
             android:textColor="@color/colorPrimaryDark" />
-
-        <!-- Link to Login Screen -->
 
         <Button
             android:id="@+id/btn_signup"
