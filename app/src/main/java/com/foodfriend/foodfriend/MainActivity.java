@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
                     // user auth state is changed - user is null
                     // launch login activity
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                    //finish();
+                    finish();
                 }
             }
         };
