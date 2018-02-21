@@ -29,7 +29,7 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        //Get Firebase auth instance
+
         auth = FirebaseAuth.getInstance();
 
         btnBack = (Button) findViewById(R.id.btn_back);
@@ -68,7 +68,7 @@ public class SignupActivity extends AppCompatActivity {
                         .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                Toast.makeText(SignupActivity.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignupActivity.this, "Account Created", Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.GONE);
                                 // If sign in fails, display a message to the user. If sign in succeeds
                                 // the auth state listener will be notified and logic to handle the
