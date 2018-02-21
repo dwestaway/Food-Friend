@@ -25,6 +25,15 @@
             tools:ignore="ContentDescription" />
 
         <EditText
+            android:id="@+id/firstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_name"
+            android:inputType="textPersonName"
+            android:maxLines="1"
+            android:textColor="@color/colorDarkest" />
+
+        <EditText
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,8 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusableInTouchMode="true"
-            android:hint="@string/hint_password"
-            android:imeActionId="@+id/login"
+            android:hint="@string/hint_password2"
             android:imeOptions="actionUnspecified"
             android:inputType="textPassword"
             android:maxLines="1"
@@ -64,6 +72,7 @@
             android:background="@color/colorPrimary"
             android:text="@string/btn_back"
             android:textColor="#000000" />
+
     </LinearLayout>
 
     <ProgressBar
