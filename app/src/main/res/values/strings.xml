@@ -41,4 +41,10 @@
     <string name="btn_sign_out">Sign Out</string>
     <string name="lbl_forgot_password">Forgot password?</string>
     <string name="forgot_password_msg">Please enter your email address and we will send you password reset instructions.</string>
+    <string name="title_activity_tabbed">TabbedActivity</string>
+    <string name="tab_text_1">Profile</string>
+    <string name="tab_text_2">Matches</string>
+    <string name="tab_text_3">Messenger</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>

@@ -85,6 +85,15 @@
         android:textColor="@android:color/black"
         android:textStyle="bold" />
 
+    <Button
+        android:id="@+id/testButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/change_password_button"
+        android:layout_alignEnd="@+id/confirmPass"
+        android:layout_alignRight="@+id/confirmPass"
+        android:layout_marginBottom="31dp"
+        android:text="Test" />
 
 
 </RelativeLayout>

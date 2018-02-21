@@ -3,9 +3,12 @@ package com.foodfriend.foodfriend;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -21,7 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnChangePassword, confirmPassword, signOut;
+    private Button btnChangePassword, confirmPassword, signOut, test;
     private TextView email;
 
     private EditText newPassword;
@@ -31,9 +34,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //get firebase auth instance
+
+
         auth = FirebaseAuth.getInstance();
         email = (TextView) findViewById(R.id.useremail);
 
@@ -49,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                     // user auth state is changed - user is null
                     // launch login activity
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                    finish();
+                    //finish();
                 }
             }
         };
@@ -58,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         btnChangePassword = (Button) findViewById(R.id.change_password_button);
         confirmPassword = (Button) findViewById(R.id.confirmPass);
         signOut = (Button) findViewById(R.id.sign_out);
+        test = (Button) findViewById(R.id.testButton);
         newPassword = (EditText) findViewById(R.id.newPassword);
 
         newPassword.setVisibility(View.GONE);
@@ -120,8 +126,17 @@ public class MainActivity extends AppCompatActivity {
                 signOut();
             }
         });
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, TabbedActivity.class));
+            }
+        });
+
 
     }
+
+
 
     @SuppressLint("SetTextI18n")
     private void setDataToView(FirebaseUser user) {
@@ -165,14 +180,14 @@ public class MainActivity extends AppCompatActivity {
                     // user auth state is changed - user is null
                     // launch login activity
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                    finish();
+                    //finish();
                 }
             }
         };
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         progressBar.setVisibility(View.GONE);
     }

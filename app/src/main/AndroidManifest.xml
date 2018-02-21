@@ -25,7 +25,11 @@
         <activity android:name=".MessagesActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".AccountActivity.ResetPasswordActivity" />
-        <activity android:name=".AccountActivity.SignupActivity"></activity>
+        <activity android:name=".AccountActivity.SignupActivity" />
+        <activity
+            android:name=".TabbedActivity"
+            android:label="Food Friend"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
