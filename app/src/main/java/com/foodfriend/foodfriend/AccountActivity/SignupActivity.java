@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.foodfriend.foodfriend.MainActivity;
 import com.foodfriend.foodfriend.R;
 import com.foodfriend.foodfriend.TabbedActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
