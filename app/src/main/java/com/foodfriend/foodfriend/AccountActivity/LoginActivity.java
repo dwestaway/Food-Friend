@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.foodfriend.foodfriend.MainActivity;
 import com.foodfriend.foodfriend.R;
+import com.foodfriend.foodfriend.Tab1Profile;
+import com.foodfriend.foodfriend.TabbedActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -34,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         if (auth.getCurrentUser() != null) {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            startActivity(new Intent(LoginActivity.this, TabbedActivity.class));
             finish();
         }
 
@@ -98,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
                                         Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                                     }
                                 } else {
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    Intent intent = new Intent(LoginActivity.this, TabbedActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }

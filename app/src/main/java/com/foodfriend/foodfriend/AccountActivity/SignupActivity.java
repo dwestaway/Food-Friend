@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.foodfriend.foodfriend.MainActivity;
 import com.foodfriend.foodfriend.R;
+import com.foodfriend.foodfriend.TabbedActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -77,7 +78,7 @@ public class SignupActivity extends AppCompatActivity {
                                     Toast.makeText(SignupActivity.this, "Authentication failed." + task.getException(),
                                             Toast.LENGTH_SHORT).show();
                                 } else {
-                                    startActivity(new Intent(SignupActivity.this, MainActivity.class));
+                                    startActivity(new Intent(SignupActivity.this, TabbedActivity.class));
                                     finish();
                                 }
                             }

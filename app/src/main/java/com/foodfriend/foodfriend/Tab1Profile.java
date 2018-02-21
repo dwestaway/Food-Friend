@@ -26,7 +26,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Tab1Profile extends Fragment {
 
-    private Button btnChangePassword, confirmPassword, signOut, test;
+    private Button btnChangePassword, confirmPassword, signOut;
     private TextView email;
 
     private EditText newPassword;
@@ -68,7 +68,6 @@ public class Tab1Profile extends Fragment {
         btnChangePassword = (Button) getView().findViewById(R.id.change_password_button);
         confirmPassword = (Button) getView().findViewById(R.id.confirmPass);
         signOut = (Button) getView().findViewById(R.id.sign_out);
-        test = (Button) getView().findViewById(R.id.testButton);
         newPassword = (EditText) getView().findViewById(R.id.newPassword);
 
         newPassword.setVisibility(View.GONE);
@@ -173,6 +172,7 @@ public class Tab1Profile extends Fragment {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
+                    Toast.makeText(getActivity(), "Signed Out", Toast.LENGTH_SHORT).show();
                     // user auth state is changed - user is null
                     // launch login activity
                     startActivity(new Intent(getActivity(), LoginActivity.class));
