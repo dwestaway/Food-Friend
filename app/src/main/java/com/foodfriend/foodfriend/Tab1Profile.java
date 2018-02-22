@@ -23,15 +23,20 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import org.w3c.dom.Text;
 
 public class Tab1Profile extends Fragment {
 
     private Button btnChangePassword, confirmPassword, signOut;
-    private TextView email;
+    private TextView email, name;
 
     private EditText newPassword;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
+    private DatabaseReference mDatabase;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,7 +50,10 @@ public class Tab1Profile extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 
         auth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         email = (TextView) getView().findViewById(R.id.useremail);
+        name = (TextView) getView().findViewById(R.id.firstName);
 
         //get current user
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -138,6 +146,7 @@ public class Tab1Profile extends Fragment {
     private void setDataToView(FirebaseUser user) {
 
         email.setText(user.getEmail());
+        //name.setText(user.getDisplayName());
 
 
     }

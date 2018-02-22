@@ -18,14 +18,26 @@
         android:textColor="@android:color/black"
         android:textSize="18sp" />
 
+    <TextView
+        android:id="@+id/firstname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/useremail"
+        android:layout_toEndOf="@+id/progressBar"
+        android:layout_toRightOf="@+id/progressBar"
+        android:gravity="center"
+        android:hint="First Name"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
     <EditText
         android:id="@+id/newPassword"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/confirmPass"
         android:layout_alignLeft="@+id/change_password_button"
         android:layout_alignStart="@+id/change_password_button"
-        android:layout_below="@+id/useremail"
-        android:layout_marginTop="69dp"
+        android:layout_marginBottom="42dp"
         android:focusableInTouchMode="true"
         android:hint="@string/new_pass"
         android:imeOptions="actionUnspecified"
@@ -39,9 +51,9 @@
         style="?android:textAppearanceSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/newPassword"
+        android:layout_above="@+id/change_password_button"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="61dp"
         android:background="@color/colorPrimaryDark"
         android:text="@string/btn_change"
         android:textColor="@android:color/white"

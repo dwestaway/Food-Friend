@@ -17,13 +17,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignupActivity extends AppCompatActivity {
 
     private EditText inputEmail, inputPassword, inputName;
     private Button btnSignIn, btnSignUp, btnResetPassword, btnBack;
     private ProgressBar progressBar;
+
     private FirebaseAuth auth;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,7 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         auth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         btnBack = (Button) findViewById(R.id.btn_back);
         btnSignUp = (Button) findViewById(R.id.sign_up_button);
@@ -45,7 +51,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String name = inputName.getText().toString().trim();
+                final String name = inputName.getText().toString().trim();
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
 
@@ -86,10 +92,16 @@ public class SignupActivity extends AppCompatActivity {
                                 // the auth state listener will be notified and logic to handle the
                                 // signed in user can be handled in the listener.
                                 if (!task.isSuccessful()) {
-                                    Toast.makeText(SignupActivity.this, "Authentication failed." + task.getException(),
+                                    Toast.makeText(SignupActivity.this, "Sign Up Failed" + task.getException(),
                                             Toast.LENGTH_SHORT).show();
                                 } else {
+                                    Toast.makeText(SignupActivity.this, "Account Created" + task.getException(),
+                                            Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(SignupActivity.this, TabbedActivity.class));
+
+                                    //set name to users id in database
+                                    mDatabase.child("users").child(task.getResult().getUser().getUid()).setValue(name);
+
                                     finish();
                                 }
                             }
@@ -105,6 +117,7 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
     }
+
 
     @Override
     protected void onResume() {
