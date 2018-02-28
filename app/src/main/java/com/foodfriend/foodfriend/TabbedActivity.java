@@ -19,6 +19,8 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class TabbedActivity extends AppCompatActivity {
 
 
@@ -28,9 +30,13 @@ public class TabbedActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        auth = FirebaseAuth.getInstance();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tabbed);
 
@@ -84,6 +90,23 @@ public class TabbedActivity extends AppCompatActivity {
     //}
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_tabbed,menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId() == R.id.sign_out){
+            auth.signOut();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
