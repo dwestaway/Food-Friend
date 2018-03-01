@@ -6,31 +6,31 @@
     tools:context="com.foodfriend.foodfriend.TabbedActivity">
 
     <TextView
-        android:id="@+id/useremail"
+        android:id="@+id/userName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/progressBar"
-        android:layout_marginTop="23dp"
+        android:layout_below="@+id/imageView"
+        android:layout_marginTop="54dp"
+        android:layout_toEndOf="@+id/progressBar"
+        android:layout_toRightOf="@+id/progressBar"
         android:gravity="center"
-        android:hint="@string/email"
+        android:hint="Name"
         android:textColor="@android:color/black"
         android:textSize="18sp" />
 
     <EditText
         android:id="@+id/newPassword"
-        android:layout_width="300dp"
+        android:layout_width="230dp"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/confirmPass"
-        android:layout_alignLeft="@+id/change_password_button"
-        android:layout_alignStart="@+id/change_password_button"
-        android:layout_marginBottom="42dp"
+        android:layout_alignLeft="@+id/foodChoice"
+        android:layout_alignStart="@+id/foodChoice"
+        android:layout_alignTop="@+id/confirmPass"
         android:focusableInTouchMode="true"
         android:hint="@string/new_pass"
         android:imeOptions="actionUnspecified"
         android:inputType="textPassword"
         android:maxLines="1"
+        android:textSize="16sp"
         tools:layout_editor_absoluteX="106dp"
         tools:layout_editor_absoluteY="168dp" />
 
@@ -40,8 +40,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/change_password_button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="61dp"
+        android:layout_alignEnd="@+id/foodChoice"
+        android:layout_alignRight="@+id/foodChoice"
+        android:layout_marginBottom="19dp"
         android:background="@color/colorPrimaryDark"
         android:text="@string/btn_change"
         android:textColor="@android:color/white"
@@ -62,26 +63,53 @@
         style="?android:textAppearanceSmall"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/sign_out"
-        android:layout_alignLeft="@+id/sign_out"
-        android:layout_alignStart="@+id/sign_out"
-        android:layout_marginBottom="17dp"
-        android:background="@color/colorPrimary"
-        android:text="@string/change_password"
-        android:textColor="@android:color/black"
-        android:textStyle="bold" />
-
-    <Button
-        android:id="@+id/sign_out"
-        style="?android:textAppearanceSmall"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="73dp"
-        android:background="@color/colorPrimary"
-        android:text="@string/btn_sign_out"
-        android:textColor="@android:color/black"
+        android:layout_marginBottom="54dp"
+        android:background="@null"
+        android:text="@string/change_password"
+        android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/progressBar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp"
+        app:srcCompat="@mipmap/ic_launcher_round" />
+
+    <TextView
+        android:id="@+id/userEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userName"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:hint="Email"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/foodChoice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Food Place of Interest" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="16sp"
+        android:layout_marginRight="16sp"
+        android:layout_below="@+id/foodChoice"
+        android:layout_marginTop="17dp"
+        android:layout_toEndOf="@+id/progressBar"
+        android:layout_toRightOf="@+id/progressBar" />
 
 </RelativeLayout>

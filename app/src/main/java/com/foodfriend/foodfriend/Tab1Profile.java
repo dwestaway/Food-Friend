@@ -12,9 +12,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,16 +32,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 public class Tab1Profile extends Fragment {
 
-    private Button btnChangePassword, confirmPassword, signOut;
-    private TextView email;
+    private Button btnChangePassword, confirmPassword;
+    private TextView email, name;
 
     private EditText newPassword;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
+
+    private Spinner spinner;
+    ArrayAdapter<CharSequence> adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,7 +61,8 @@ public class Tab1Profile extends Fragment {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users");
 
-        email = (TextView) getView().findViewById(R.id.useremail);
+        name = (TextView) getView().findViewById(R.id.userName);
+        email = (TextView) getView().findViewById(R.id.userEmail);
 
         //get current user
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -79,11 +84,28 @@ public class Tab1Profile extends Fragment {
 
         btnChangePassword = (Button) getView().findViewById(R.id.change_password_button);
         confirmPassword = (Button) getView().findViewById(R.id.confirmPass);
-        signOut = (Button) getView().findViewById(R.id.sign_out);
         newPassword = (EditText) getView().findViewById(R.id.newPassword);
 
         newPassword.setVisibility(View.GONE);
         confirmPassword.setVisibility(View.GONE);
+
+        //create drop down menu
+        spinner = (Spinner)getView().findViewById(R.id.spinner);
+        adapter = ArrayAdapter.createFromResource(getActivity(),R.array.Times,android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getActivity(),adapterView.getItemAtPosition(i)+" has been selected",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
 
         progressBar = (ProgressBar) getView().findViewById(R.id.progressBar);
@@ -139,11 +161,13 @@ public class Tab1Profile extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                String uid = user.getUid();
+                String uid = user.getUid(); //get user id
 
                 String firstName = (String) dataSnapshot.child(uid).getValue();
 
-                email.setText(firstName + " " + user.getEmail());
+                name.setText(firstName);
+
+                email.setText(user.getEmail());
             }
 
             @Override
@@ -152,12 +176,7 @@ public class Tab1Profile extends Fragment {
             }
         });
 
-        signOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signOut();
-            }
-        });
+
 
         super.onActivityCreated(savedInstanceState);
     }
