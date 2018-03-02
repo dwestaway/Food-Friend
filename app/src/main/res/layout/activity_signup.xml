@@ -70,7 +70,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="70dp"
             android:background="@null"
-            android:text="@string/btn_back"
+            android:text="@string/btn_link_to_login"
+            android:textAllCaps="false"
             android:textColor="@color/colorPrimaryDark" />
 
     </LinearLayout>

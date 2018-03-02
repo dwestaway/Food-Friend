@@ -5,8 +5,10 @@ package com.foodfriend.foodfriend;
  */
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -34,7 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Tab1Profile extends Fragment {
 
-    private Button btnChangePassword, confirmPassword;
+    private Button btnChangePassword, confirmPassword, search;
     private TextView email, name;
 
     private EditText newPassword;
@@ -47,6 +49,11 @@ public class Tab1Profile extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
+
+
+
         return inflater.inflate(R.layout.fragment_tab1profile, container, false);
 
 
@@ -58,11 +65,21 @@ public class Tab1Profile extends Fragment {
         auth = FirebaseAuth.getInstance();
         //mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 123);
+
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users");
 
         name = (TextView) getView().findViewById(R.id.userName);
         email = (TextView) getView().findViewById(R.id.userEmail);
+
+        btnChangePassword = (Button) getView().findViewById(R.id.change_password_button);
+        confirmPassword = (Button) getView().findViewById(R.id.confirmPass);
+        search = (Button) getView().findViewById(R.id.searchButton);
+
+        newPassword = (EditText) getView().findViewById(R.id.newPassword);
+
+
 
         //get current user
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -82,9 +99,7 @@ public class Tab1Profile extends Fragment {
         };
 
 
-        btnChangePassword = (Button) getView().findViewById(R.id.change_password_button);
-        confirmPassword = (Button) getView().findViewById(R.id.confirmPass);
-        newPassword = (EditText) getView().findViewById(R.id.newPassword);
+
 
         newPassword.setVisibility(View.GONE);
         confirmPassword.setVisibility(View.GONE);
@@ -98,7 +113,7 @@ public class Tab1Profile extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getActivity(),adapterView.getItemAtPosition(i)+" has been selected",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(),adapterView.getItemAtPosition(i)+" has been selected",Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -125,6 +140,25 @@ public class Tab1Profile extends Fragment {
             }
         });
 
+        //get GPS long and lat
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                GPSLocation gps = new GPSLocation(getContext()); //send context to GPSLocation
+
+                Location location = gps.getLocation();
+
+                if(location != null) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+
+                    Toast.makeText(getContext(),"Latitude: " + latitude + "\n Longitude: " + longitude, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        //replace password
         confirmPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -8,5 +8,4 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item android:id="@+id/sign_out" android:title="Sign Out"></item>
-    <item android:id="@+id/changepass" android:title="Change Password"></item>
 </menu>
