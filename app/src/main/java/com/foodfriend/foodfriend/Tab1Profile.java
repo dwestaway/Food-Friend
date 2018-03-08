@@ -34,6 +34,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class Tab1Profile extends Fragment {
 
     private Button btnChangePassword, confirmPassword, search;
@@ -151,13 +155,18 @@ public class Tab1Profile extends Fragment {
 
                 Location location = gps.getLocation();
 
-                double latitude = location.getLatitude();
-                double longitude = location.getLongitude();
+
 
                 if(location != null) {
 
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
 
-                    Toast.makeText(getContext(),"Latitude: " + latitude + "\n Longitude: " + longitude, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getContext(),"Latitude: " + latitude + "\n Longitude: " + longitude, Toast.LENGTH_LONG).show();
+
+                    //send users location to database
+                    mDatabase.child("users").child(user.getUid()).child("longitude").setValue(longitude);
+                    mDatabase.child("users").child(user.getUid()).child("latitude").setValue(latitude);
                 }
 
                 //get users chosen place of interest
@@ -165,13 +174,20 @@ public class Tab1Profile extends Fragment {
                 //get users chosen time to eat
                 String time = spinner.getSelectedItem().toString();
 
-                //set database values, users location and food place of interest
-                mDatabase.child("users").child(user.getUid()).child("longitude").setValue(longitude);
-                mDatabase.child("users").child(user.getUid()).child("latitude").setValue(latitude);
+                //set database values, food place of interest and time
                 mDatabase.child("users").child(user.getUid()).child("foodPOI").setValue(poi);
                 mDatabase.child("users").child(user.getUid()).child("time").setValue(time);
 
                 //startActivity(getActivity(), Tab2Matches.class);
+
+                //send current date to database
+                Date today = Calendar.getInstance().getTime();
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                String date = sdf.format(today);
+
+                Toast.makeText(getContext(),date, Toast.LENGTH_LONG).show();
+
             }
         });
 
