@@ -100,7 +100,9 @@ public class SignupActivity extends AppCompatActivity {
                                     startActivity(new Intent(SignupActivity.this, TabbedActivity.class));
 
                                     //set name to users id in database
-                                    mDatabase.child("users").child(task.getResult().getUser().getUid()).setValue(name);
+                                    //mDatabase.child("users").child(task.getResult().getUser().getUid()).setValue(name);
+
+                                    mDatabase.child("users").child(task.getResult().getUser().getUid()).child("name").setValue(name);
 
                                     finish();
                                 }

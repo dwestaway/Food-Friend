@@ -197,7 +197,7 @@ public class Tab1Profile extends Fragment {
 
                 String uid = user.getUid(); //get user id
 
-                String firstName = (String) dataSnapshot.child(uid).getValue();
+                String firstName = (String) dataSnapshot.child(uid).child("name").getValue();
 
                 name.setText(firstName);
 
@@ -206,7 +206,7 @@ public class Tab1Profile extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Toast.makeText(getActivity(), "Database Error", Toast.LENGTH_SHORT).show();
             }
         });
 
