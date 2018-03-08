@@ -39,9 +39,10 @@ public class Tab1Profile extends Fragment {
     private Button btnChangePassword, confirmPassword, search;
     private TextView email, name;
 
-    private EditText newPassword;
+    private EditText newPassword, foodPOI;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
+    private DatabaseReference mDatabase;
 
     private Spinner spinner;
     ArrayAdapter<CharSequence> adapter;
@@ -63,7 +64,7 @@ public class Tab1Profile extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 
         auth = FirebaseAuth.getInstance();
-        //mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 123);
 
@@ -77,6 +78,7 @@ public class Tab1Profile extends Fragment {
         confirmPassword = (Button) getView().findViewById(R.id.confirmPass);
         search = (Button) getView().findViewById(R.id.searchButton);
 
+        foodPOI = (EditText) getView().findViewById(R.id.foodChoice);
         newPassword = (EditText) getView().findViewById(R.id.newPassword);
 
 
@@ -149,12 +151,27 @@ public class Tab1Profile extends Fragment {
 
                 Location location = gps.getLocation();
 
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+
                 if(location != null) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
+
 
                     Toast.makeText(getContext(),"Latitude: " + latitude + "\n Longitude: " + longitude, Toast.LENGTH_LONG).show();
                 }
+
+                //get users chosen place of interest
+                String poi = foodPOI.getText().toString().trim();
+                //get users chosen time to eat
+                String time = spinner.getSelectedItem().toString();
+
+                //set database values, users location and food place of interest
+                mDatabase.child("users").child(user.getUid()).child("longitude").setValue(longitude);
+                mDatabase.child("users").child(user.getUid()).child("latitude").setValue(latitude);
+                mDatabase.child("users").child(user.getUid()).child("foodPOI").setValue(poi);
+                mDatabase.child("users").child(user.getUid()).child("time").setValue(time);
+
+                //startActivity(getActivity(), Tab2Matches.class);
             }
         });
 

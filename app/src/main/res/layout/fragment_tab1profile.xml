@@ -112,7 +112,7 @@
         android:layout_marginLeft="16dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Food Place of Interest" />
+        android:hint="Food Place of Interest"/>
 
     <Spinner
         android:id="@+id/spinner"
