@@ -36,13 +36,14 @@
 
     <Button
         android:id="@+id/searchButton"
-        style="?android:textAppearanceSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/spinner"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
         android:layout_centerHorizontal="true"
         android:background="@color/colorPrimaryDark"
-        android:text="Search"
+        android:text="Find a Food Friend"
         android:textColor="@android:color/white"
         android:textStyle="bold"
         tools:layout_editor_absoluteX="199dp"

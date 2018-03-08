@@ -67,6 +67,8 @@ public class Tab1Profile extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 
+        super.onActivityCreated(savedInstanceState);
+
         auth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -174,11 +176,9 @@ public class Tab1Profile extends Fragment {
                 //get users chosen time to eat
                 String time = spinner.getSelectedItem().toString();
 
-                //set database values, food place of interest and time
+                //set database values: food place of interest and time
                 mDatabase.child("users").child(user.getUid()).child("foodPOI").setValue(poi);
                 mDatabase.child("users").child(user.getUid()).child("time").setValue(time);
-
-                //startActivity(getActivity(), Tab2Matches.class);
 
                 //send current date to database
                 Date today = Calendar.getInstance().getTime();
@@ -186,7 +186,10 @@ public class Tab1Profile extends Fragment {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                 String date = sdf.format(today);
 
-                Toast.makeText(getContext(),date, Toast.LENGTH_LONG).show();
+                //send todays date to user data on server database
+                mDatabase.child("users").child(user.getUid()).child("date").setValue(date);
+
+                //startActivity(new Intent(getActivity(), Tab2Matches.class));
 
             }
         });
@@ -245,7 +248,7 @@ public class Tab1Profile extends Fragment {
 
 
 
-        super.onActivityCreated(savedInstanceState);
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -280,7 +283,7 @@ public class Tab1Profile extends Fragment {
         auth.signOut();
 
 
-// this listener will be called when there is change in firebase user session
+        // this listener will be called when there is change in firebase user session
         FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
