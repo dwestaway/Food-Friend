@@ -180,7 +180,7 @@ public class Tab1Profile extends Fragment {
                 mDatabase.child("users").child(user.getUid()).child("foodPOI").setValue(poi);
                 mDatabase.child("users").child(user.getUid()).child("time").setValue(time);
 
-                //send current date to database
+                //get current date and send to database
                 Date today = Calendar.getInstance().getTime();
 
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -240,11 +240,15 @@ public class Tab1Profile extends Fragment {
                 email.setText(user.getEmail());
             }
 
+
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getActivity(), "Database Error", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "Database Error", Toast.LENGTH_SHORT).show();
             }
         });
+
+
 
 
 

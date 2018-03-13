@@ -18,7 +18,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,27 +58,37 @@ public class Tab2Matches extends ListFragment {
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+        //get current user logged in user id
         final String currentUserID = user.getUid();
-
 
         //Load data from database
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                //get the current users location
+                double currentUserLong = (double) dataSnapshot.child(currentUserID).child("longitude").getValue();
+                double currentUserLat = (double) dataSnapshot.child(currentUserID).child("latitude").getValue();
+
+                //get todays date
+                Date today = Calendar.getInstance().getTime();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                String dateToday = sdf.format(today);
+
                 //for every child/userid in users
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
 
+                    //get userid from each userdata
                     String uid = ds.getKey();
 
-                    //Toast.makeText(getActivity(), currentUserID + "\n" + uid, Toast.LENGTH_LONG).show();
-
+                    //if user id is equal to current user id, do not add that user data (so user does not match with themselves)
                     if(uid.equals(currentUserID))
                     {
 
                     }
                     else
                     {
+
                         //get each users name and add to ArrayList
                         names.add((String) ds.child("name").getValue());
                         //get each users foodPOI and add to ArrayList
@@ -85,18 +98,15 @@ public class Tab2Matches extends ListFragment {
 
                         //add userids (keys)
                         userids.add(uid);
+
+                        double longitude = (double) ds.child("longitude").getValue();
+                        double latitude = (double) ds.child("latitude").getValue();
+
+                        String date = (String) ds.child("date").getValue();
+
                     }
-
-
-
-
-
-
-
-                    String longitude;
-                    String latitude;
-
                 }
+
 
 
 

@@ -37,9 +37,6 @@ public class TabbedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
 
-
-
-
         auth = FirebaseAuth.getInstance();
 
         super.onCreate(savedInstanceState);
