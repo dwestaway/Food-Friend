@@ -10,8 +10,16 @@ import android.widget.AdapterView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Dan on 21/02/2018.
@@ -20,50 +28,87 @@ import java.util.HashMap;
 public class Tab2Matches extends ListFragment {
 
 
-    String[] names = {"Dan", "Bob", "Steve", "Jacob"};
-    String[] poi = {"McDonalds", "Burger King", "Gregs, Rowes", "Yo Sushi"};
+    //String[] names = {"Dan", "Bob", "Steve"};
+    //String[] poi = {"McDonalds", "Burger King", "Gregs, Rowes"};
     //String[] times = {"Morning", "Mid-day", "Morning", "Evening"};
-    int[] images = {R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher};
+    int[] images = {R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher};
 
-    ArrayList<String> times;
+    ArrayList<String> names = new ArrayList<>();
+    ArrayList<String> poi = new ArrayList<>();
+    ArrayList<String> times = new ArrayList<>();
+    ArrayList<String> userids = new ArrayList<>();
 
     ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
     SimpleAdapter adapter;
+
+    private FirebaseAuth auth;
+    private DatabaseReference mDatabase;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
-        times = new ArrayList<>();
+        auth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        times.add("Morning");
-        times.add("Mid-day");
-        times.add("Evening");
-        times.add("Morning");
-
-        HashMap<String, String> map = new HashMap<String, String>();
-
-        for(int i = 0; i < names.length; i++)
-        {
-            map = new HashMap<String, String>();
-            map.put("Name", names[i] + "\n" + poi[i] + "\n" + times.get(i));
-            map.put("Image", Integer.toString(images[i]));
-
-            data.add(map);
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference().child("users");
 
 
 
-        }
 
-        //Keys in the map
-        String[] from = {"Name","Image"};
+        //Load data from database
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
-        int[] to = {R.id.textName,R.id.imageUser};
+                //for every child/userid in users
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
 
-        //Adapter
-        adapter = new SimpleAdapter(getActivity(), data, R.layout.list_layout, from, to);
-        setListAdapter(adapter);
+                    //get each users name and add to ArrayList
+                    names.add((String) ds.child("name").getValue());
+                    //get each users foodPOI and add to ArrayList
+                    poi.add((String) ds.child("foodPOI").getValue());
+                    //get each users time and add to ArrayList
+                    times.add((String) ds.child("time").getValue());
+
+                    //add userids (keys)
+                    userids.add(ds.getKey());
+
+                }
+
+
+
+                HashMap<String, String> map = new HashMap<String, String>();
+
+                //loop through names
+                for(int i = 0; i < names.size(); i++)
+                {
+                    map = new HashMap<String, String>();
+                    map.put("Name", names.get(i) + "\n" + poi.get(i) + "\n" + times.get(i)); //put each piece of data from the ArrayLists into one string and add it to the hashmap
+                    map.put("Image", Integer.toString(images[i]));
+
+                    data.add(map);
+
+                }
+
+                //Keys in the map
+                String[] from = {"Name","Image"};
+
+                int[] to = {R.id.textName,R.id.imageUser};
+
+                //Adapter
+                adapter = new SimpleAdapter(getActivity(), data, R.layout.list_layout, from, to);
+                setListAdapter(adapter);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(getActivity(), "Database Error", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
