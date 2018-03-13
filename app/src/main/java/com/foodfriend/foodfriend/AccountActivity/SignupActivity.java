@@ -24,7 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class SignupActivity extends AppCompatActivity {
 
     private EditText inputEmail, inputPassword, inputName;
-    private Button btnSignIn, btnSignUp, btnResetPassword, btnBack;
+    private Button btnSignUp, btnResetPassword, btnBack;
     private ProgressBar progressBar;
 
     private FirebaseAuth auth;

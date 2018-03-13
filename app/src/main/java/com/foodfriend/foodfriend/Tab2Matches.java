@@ -11,6 +11,7 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,9 +29,6 @@ import java.util.Map;
 public class Tab2Matches extends ListFragment {
 
 
-    //String[] names = {"Dan", "Bob", "Steve"};
-    //String[] poi = {"McDonalds", "Burger King", "Gregs, Rowes"};
-    //String[] times = {"Morning", "Mid-day", "Morning", "Evening"};
     int[] images = {R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher};
 
     ArrayList<String> names = new ArrayList<>();
@@ -55,7 +53,9 @@ public class Tab2Matches extends ListFragment {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference().child("users");
 
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+        final String currentUserID = user.getUid();
 
 
         //Load data from database
@@ -66,15 +66,35 @@ public class Tab2Matches extends ListFragment {
                 //for every child/userid in users
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
 
-                    //get each users name and add to ArrayList
-                    names.add((String) ds.child("name").getValue());
-                    //get each users foodPOI and add to ArrayList
-                    poi.add((String) ds.child("foodPOI").getValue());
-                    //get each users time and add to ArrayList
-                    times.add((String) ds.child("time").getValue());
+                    String uid = ds.getKey();
 
-                    //add userids (keys)
-                    userids.add(ds.getKey());
+                    //Toast.makeText(getActivity(), currentUserID + "\n" + uid, Toast.LENGTH_LONG).show();
+
+                    if(uid.equals(currentUserID))
+                    {
+
+                    }
+                    else
+                    {
+                        //get each users name and add to ArrayList
+                        names.add((String) ds.child("name").getValue());
+                        //get each users foodPOI and add to ArrayList
+                        poi.add((String) ds.child("foodPOI").getValue());
+                        //get each users time and add to ArrayList
+                        times.add((String) ds.child("time").getValue());
+
+                        //add userids (keys)
+                        userids.add(uid);
+                    }
+
+
+
+
+
+
+
+                    String longitude;
+                    String latitude;
 
                 }
 
