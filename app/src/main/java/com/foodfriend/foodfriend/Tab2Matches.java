@@ -19,13 +19,13 @@ import java.util.HashMap;
 
 public class Tab2Matches extends ListFragment {
 
-    //ListView list;
-    //Context context;
-    //Adapter adapter;
 
-    String[] names = {"Dan", "Bob", "Steve", "Grapes"};
-    String[] poi = {"McDonalds", "Burger King", "Gregs", "Yo Sushi"};
+    String[] names = {"Dan", "Bob", "Steve", "Jacob"};
+    String[] poi = {"McDonalds", "Burger King", "Gregs, Rowes", "Yo Sushi"};
+    //String[] times = {"Morning", "Mid-day", "Morning", "Evening"};
     int[] images = {R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher};
+
+    ArrayList<String> times;
 
     ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
     SimpleAdapter adapter;
@@ -35,15 +35,24 @@ public class Tab2Matches extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
+        times = new ArrayList<>();
+
+        times.add("Morning");
+        times.add("Mid-day");
+        times.add("Evening");
+        times.add("Morning");
+
         HashMap<String, String> map = new HashMap<String, String>();
 
         for(int i = 0; i < names.length; i++)
         {
             map = new HashMap<String, String>();
-            map.put("Name", names[i]);
+            map.put("Name", names[i] + "\n" + poi[i] + "\n" + times.get(i));
             map.put("Image", Integer.toString(images[i]));
 
             data.add(map);
+
+
 
         }
 

@@ -26,19 +26,8 @@
             android:layout_toRightOf="@+id/imageUser"
             android:paddingLeft="10dp"
             android:text="Dan"
-            android:textSize="16dp"
-            android:textColor="@android:color/black"/>
-
-        <TextView
-            android:id="@+id/textPlace"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textName"
-            android:layout_toEndOf="@+id/imageUser"
-            android:layout_toRightOf="@+id/imageUser"
-            android:paddingLeft="10dp"
-            android:textSize="14dp"
-            android:text="McDonalds" />
+            android:textColor="@android:color/black"
+            android:textSize="17dp" />
 
     </RelativeLayout>
 
