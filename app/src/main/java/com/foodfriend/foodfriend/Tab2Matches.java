@@ -1,5 +1,6 @@
 package com.foodfriend.foodfriend;
 
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -10,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.foodfriend.foodfriend.AccountActivity.SignupActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -146,12 +148,6 @@ public class Tab2Matches extends ListFragment {
 
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
 
@@ -159,7 +155,10 @@ public class Tab2Matches extends ListFragment {
             @Override
             public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
 
+
                 Toast.makeText(getActivity(), data.get(pos).get("Name"), Toast.LENGTH_SHORT).show();
+
+                startActivity(new Intent(getActivity(), ChatActivity.class));
             }
         });
     }
