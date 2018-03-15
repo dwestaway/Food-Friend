@@ -17,6 +17,8 @@
 
     <string name="password_updated">Password updated, sign in with new password!</string>
 
+    <string name="send">Send</string>
+
     <string name="email">Email</string>
     <string name="first_name">First Name</string>
     <string name="minimum_password">Password too short, enter minimum 6 characters!</string>
