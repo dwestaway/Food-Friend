@@ -68,6 +68,8 @@ public class ChatActivity extends AppCompatActivity {
             //send message to server
             ref.child("content").setValue(message);
         }
+
+        editMessage.getText().clear();
     }
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder {

@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,7 +79,7 @@ public class Tab1Profile extends Fragment {
         DatabaseReference ref = database.getReference("users");
 
         name = (TextView) getView().findViewById(R.id.userName);
-        email = (TextView) getView().findViewById(R.id.userEmail);
+        //email = (TextView) getView().findViewById(R.id.userEmail);
 
         btnChangePassword = (Button) getView().findViewById(R.id.change_password_button);
         confirmPassword = (Button) getView().findViewById(R.id.confirmPass);
@@ -91,7 +92,7 @@ public class Tab1Profile extends Fragment {
 
         //get current user
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        setDataToView(user);
+        //setDataToView(user);
 
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -106,9 +107,7 @@ public class Tab1Profile extends Fragment {
             }
         };
 
-
-
-
+        //hide change password box and button
         newPassword.setVisibility(View.GONE);
         confirmPassword.setVisibility(View.GONE);
 
@@ -117,18 +116,6 @@ public class Tab1Profile extends Fragment {
         adapter = ArrayAdapter.createFromResource(getActivity(),R.array.Times,android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                //Toast.makeText(getActivity(),adapterView.getItemAtPosition(i)+" has been selected",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 
 
         progressBar = (ProgressBar) getView().findViewById(R.id.progressBar);
@@ -148,14 +135,16 @@ public class Tab1Profile extends Fragment {
             }
         });
 
-        //get GPS long and lat
+
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                //get GPS long and lat
                 GPSLocation gps = new GPSLocation(getContext()); //send context to GPSLocation
 
                 Location location = gps.getLocation();
+
 
 
 
@@ -171,10 +160,17 @@ public class Tab1Profile extends Fragment {
                     mDatabase.child("users").child(user.getUid()).child("latitude").setValue(latitude);
                 }
 
+
+
                 //get users chosen place of interest
                 String poi = foodPOI.getText().toString().trim();
                 //get users chosen time to eat
                 String time = spinner.getSelectedItem().toString();
+
+                if (TextUtils.isEmpty(poi)) {
+                    Toast.makeText(getActivity(), "Enter food place of interest", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 //set database values: food place of interest and time
                 mDatabase.child("users").child(user.getUid()).child("foodPOI").setValue(poi);
@@ -190,7 +186,6 @@ public class Tab1Profile extends Fragment {
                 mDatabase.child("users").child(user.getUid()).child("date").setValue(date);
 
                 //startActivity(new Intent(getActivity(), Tab2Matches.class));
-
             }
         });
 
@@ -237,10 +232,8 @@ public class Tab1Profile extends Fragment {
 
                 name.setText(firstName);
 
-                email.setText(user.getEmail());
+                //email.setText(user.getEmail());
             }
-
-
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -248,20 +241,7 @@ public class Tab1Profile extends Fragment {
             }
         });
 
-
-
-
-
-
     }
-
-    @SuppressLint("SetTextI18n")
-    private void setDataToView(FirebaseUser user) {
-
-        //email.setText(user.getEmail());
-
-    }
-
 
     // this listener will be called when there is change in firebase user session
     FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
@@ -275,17 +255,13 @@ public class Tab1Profile extends Fragment {
                 startActivity(new Intent(getActivity(), LoginActivity.class));
                 //finish();
             } else {
-                setDataToView(user);
-
+                //setDataToView(user);
             }
         }
-
-
     };
 
     public void signOut() {
         auth.signOut();
-
 
         // this listener will be called when there is change in firebase user session
         FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
@@ -302,6 +278,7 @@ public class Tab1Profile extends Fragment {
             }
         };
     }
+
     @Override
     public void onResume() {
         super.onResume();

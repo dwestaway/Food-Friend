@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView"
-        android:layout_marginTop="54dp"
+        android:layout_marginTop="20dp"
         android:layout_toEndOf="@+id/progressBar"
         android:layout_toRightOf="@+id/progressBar"
         android:gravity="center"
@@ -42,7 +42,7 @@
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
         android:layout_centerHorizontal="true"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
         android:text="Find a Food Friend"
         android:textColor="@android:color/white"
         android:textStyle="bold"
@@ -57,7 +57,7 @@
         android:layout_alignBottom="@+id/newPassword"
         android:layout_alignEnd="@+id/spinner"
         android:layout_alignRight="@+id/spinner"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
         android:text="@string/btn_change"
         android:textColor="@android:color/white"
         android:textStyle="bold"
@@ -87,22 +87,12 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_below="@+id/progressBar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="45dp"
-        app:srcCompat="@mipmap/ic_launcher_round" />
-
-    <TextView
-        android:id="@+id/userEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/userName"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:hint="Email"
-        android:textSize="18sp" />
+        app:srcCompat="@mipmap/ic_launcher" />
 
     <EditText
         android:id="@+id/foodChoice"

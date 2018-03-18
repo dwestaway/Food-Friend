@@ -1,6 +1,8 @@
 package com.foodfriend.foodfriend;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -11,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.foodfriend.foodfriend.AccountActivity.LoginActivity;
 import com.foodfriend.foodfriend.AccountActivity.SignupActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -146,6 +149,27 @@ public class Tab2Matches extends ListFragment {
     }
 
 
+    // this listener will be called when there is change in firebase user session
+    FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
+        @SuppressLint("SetTextI18n")
+        @Override
+        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user == null) {
+                // user auth state is changed - user is null
+                // launch login activity
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+
+                auth.signOut();
+                //finish();
+            } else {
+                //setDataToView(user);
+
+            }
+        }
+
+    };
+
 
     @Override
     public void onStart() {
@@ -162,4 +186,13 @@ public class Tab2Matches extends ListFragment {
             }
         });
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (authListener != null) {
+            auth.removeAuthStateListener(authListener);
+        }
+    }
+
 }
