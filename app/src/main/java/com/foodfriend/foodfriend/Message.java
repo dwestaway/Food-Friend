@@ -8,14 +8,24 @@ public class Message {
 
     private String content;
     private String username;
+    private String time;
 
     public Message() {
 
     }
 
-    public Message(String content, String username) {
+    public Message(String content, String username, String time) {
         this.content = content;
         this.username = username;
+        this.time = time;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getUsername() {

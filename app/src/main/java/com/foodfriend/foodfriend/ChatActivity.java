@@ -24,6 +24,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class ChatActivity extends AppCompatActivity {
 
     private EditText editMessage;
@@ -78,6 +82,7 @@ public class ChatActivity extends AppCompatActivity {
             protected void populateViewHolder(MessageViewHolder viewHolder, Message model, int position) {
                 viewHolder.setContent(model.getContent());
                 viewHolder.setUsername(model.getUsername());
+                viewHolder.setTime(model.getTime());
             }
         };
         messageList.setAdapter(firebaseRec);
@@ -88,8 +93,6 @@ public class ChatActivity extends AppCompatActivity {
         currentUser = auth.getCurrentUser();
 
         databaseUsers = FirebaseDatabase.getInstance().getReference().child("users").child(currentUser.getUid()); //get the userid of the current user
-
-        //Log.v(databaseUsers, "test");
 
         //get text from edit text
         final String message = editMessage.getText().toString().trim();
@@ -112,6 +115,12 @@ public class ChatActivity extends AppCompatActivity {
 
                         }
                     });
+
+                    //get current time
+                    DateFormat df = new SimpleDateFormat("h:mm a");
+                    String currentTime = df.format(Calendar.getInstance().getTime());
+
+                    ref.child("time").setValue(currentTime);
                 }
 
                 @Override
@@ -144,6 +153,10 @@ public class ChatActivity extends AppCompatActivity {
         public void setUsername(String username) {
             TextView nameMessage = view.findViewById(R.id.nameText); //get reference to users name text
             nameMessage.setText(username);
+        }
+        public void setTime(String time) {
+            TextView timeMessage = view.findViewById(R.id.timeText);
+            timeMessage.setText(time);
         }
     }
 }
