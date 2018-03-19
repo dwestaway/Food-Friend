@@ -80,6 +80,8 @@ public class ChatActivity extends AppCompatActivity {
         FirebaseRecyclerAdapter <Message,MessageViewHolder> firebaseRec = new FirebaseRecyclerAdapter<Message, MessageViewHolder>(Message.class,R.layout.message,MessageViewHolder.class, mDatabase) {
             @Override
             protected void populateViewHolder(MessageViewHolder viewHolder, Message model, int position) {
+
+                //populate the textviews with database data
                 viewHolder.setContent(model.getContent());
                 viewHolder.setUsername(model.getUsername());
                 viewHolder.setTime(model.getTime());

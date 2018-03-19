@@ -46,8 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = (Button) findViewById(R.id.btn_login);
         btnReset = (Button) findViewById(R.id.btn_reset_password);
 
-        //Get Firebase auth instance
-        //auth = FirebaseAuth.getInstance();
+
 
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override

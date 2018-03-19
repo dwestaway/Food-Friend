@@ -39,6 +39,8 @@ public class Tab2Matches extends ListFragment {
 
     int[] images = {R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher};
 
+    ArrayList<Integer> pics = new ArrayList<>();
+
     ArrayList<String> names = new ArrayList<>();
     ArrayList<String> poi = new ArrayList<>();
     ArrayList<String> times = new ArrayList<>();
@@ -54,6 +56,10 @@ public class Tab2Matches extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        pics.add(R.mipmap.ic_launcher);
+        pics.add(R.mipmap.ic_launcher);
+        pics.add(R.mipmap.ic_launcher);
+        pics.add(R.mipmap.ic_launcher);
 
         auth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -72,8 +78,8 @@ public class Tab2Matches extends ListFragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 //get the current users location
-                double currentUserLong = (double) dataSnapshot.child(currentUserID).child("longitude").getValue();
-                double currentUserLat = (double) dataSnapshot.child(currentUserID).child("latitude").getValue();
+                //double currentUserLong = (double) dataSnapshot.child(currentUserID).child("longitude").getValue();
+                //double currentUserLat = (double) dataSnapshot.child(currentUserID).child("latitude").getValue();
 
                 //get todays date
                 Date today = Calendar.getInstance().getTime();
@@ -112,19 +118,33 @@ public class Tab2Matches extends ListFragment {
                     }
                 }
 
-
-
-
+                //Create hashmap for image and text to go in list
                 HashMap<String, String> map = new HashMap<String, String>();
+
+                boolean dataLoaded = false;
 
                 //loop through names
                 for(int i = 0; i < names.size(); i++)
                 {
                     map = new HashMap<String, String>();
                     map.put("Name", names.get(i) + "\n" + poi.get(i) + "\n" + times.get(i)); //put each piece of data from the ArrayLists into one string and add it to the hashmap
-                    map.put("Image", Integer.toString(images[i]));
+                    //map.put("Image", Integer.toString(images[i]));
 
-                    data.add(map);
+
+                    //prevents app crashing because data is not yet updated from server
+                    try {
+                        map.put("Image", Integer.toString(pics.get(i)));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    //prevents list being displayed multiple times because of previous fix
+                    if (data.size() < names.size())
+                    {
+                        data.add(map);
+                    }
+
+
 
                 }
 
