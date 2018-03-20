@@ -56,12 +56,7 @@ public class Tab1Profile extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-
-
-
         return inflater.inflate(R.layout.fragment_tab1profile, container, false);
-
 
     }
 
@@ -146,8 +141,6 @@ public class Tab1Profile extends Fragment {
                 Location location = gps.getLocation();
 
 
-
-
                 if(location != null) {
 
                     double latitude = location.getLatitude();
@@ -186,6 +179,8 @@ public class Tab1Profile extends Fragment {
                 mDatabase.child("users").child(user.getUid()).child("date").setValue(date);
 
                 //startActivity(new Intent(getActivity(), Tab2Matches.class));
+
+                TabbedActivity.mViewPager.setCurrentItem(1);
             }
         });
 
@@ -214,6 +209,7 @@ public class Tab1Profile extends Fragment {
                                     }
                                 });
                     }
+                    //check if password field is empty
                 } else if (newPassword.getText().toString().trim().equals("")) {
                     newPassword.setError("Enter password");
                     progressBar.setVisibility(View.GONE);
@@ -253,7 +249,7 @@ public class Tab1Profile extends Fragment {
                 // user auth state is changed - user is null
                 // launch login activity
                 startActivity(new Intent(getActivity(), LoginActivity.class));
-                //finish();
+                getActivity().finish();
             } else {
                 //setDataToView(user);
             }
@@ -268,12 +264,14 @@ public class Tab1Profile extends Fragment {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                //if user is null, go back to login activity
                 if (user == null) {
                     Toast.makeText(getActivity(), "Signed Out", Toast.LENGTH_SHORT).show();
-                    // user auth state is changed - user is null
-                    // launch login activity
+
                     startActivity(new Intent(getActivity(), LoginActivity.class));
-                    //finish();
+
+                    getActivity().finish();
                 }
             }
         };

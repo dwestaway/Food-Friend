@@ -28,7 +28,7 @@ public class TabbedActivity extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
 
-    private ViewPager mViewPager;
+    public static ViewPager mViewPager;
     private FirebaseAuth auth;
 
     @Override
@@ -102,6 +102,7 @@ public class TabbedActivity extends AppCompatActivity {
 
         if(item.getItemId() == R.id.sign_out){
             auth.signOut();
+            finish();
         }
 
         return super.onOptionsItemSelected(item);

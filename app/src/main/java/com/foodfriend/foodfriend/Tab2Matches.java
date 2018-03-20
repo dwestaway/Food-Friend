@@ -77,14 +77,15 @@ public class Tab2Matches extends ListFragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                data.clear();
+                names.clear();
+                poi.clear();
+                times.clear();
+
                 //get the current users location
                 //double currentUserLong = (double) dataSnapshot.child(currentUserID).child("longitude").getValue();
                 //double currentUserLat = (double) dataSnapshot.child(currentUserID).child("latitude").getValue();
 
-                //get todays date
-                Date today = Calendar.getInstance().getTime();
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                String dateToday = sdf.format(today);
 
                 //for every child/userid in users
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
@@ -110,8 +111,8 @@ public class Tab2Matches extends ListFragment {
                         //add userids (keys)
                         userids.add(uid);
 
-                        double longitude = (double) ds.child("longitude").getValue();
-                        double latitude = (double) ds.child("latitude").getValue();
+                        //double longitude = (double) ds.child("longitude").getValue();
+                        //double latitude = (double) ds.child("latitude").getValue();
 
                         String date = (String) ds.child("date").getValue();
 
@@ -121,7 +122,6 @@ public class Tab2Matches extends ListFragment {
                 //Create hashmap for image and text to go in list
                 HashMap<String, String> map = new HashMap<String, String>();
 
-                boolean dataLoaded = false;
 
                 //loop through names
                 for(int i = 0; i < names.size(); i++)
@@ -157,11 +157,13 @@ public class Tab2Matches extends ListFragment {
                 adapter = new SimpleAdapter(getActivity(), data, R.layout.list_layout, from, to);
                 setListAdapter(adapter);
 
+
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getActivity(), "Database Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Signed Out", Toast.LENGTH_SHORT).show();
             }
         });
 
