@@ -1,6 +1,5 @@
 package com.foodfriend.foodfriend;
 
-import android.*;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -37,14 +36,16 @@ public class GPSLocation implements LocationListener{
 
         boolean GPSEnabled = locationM.isProviderEnabled(LocationManager.GPS_PROVIDER); //check if GPS is enabled
 
-        if(GPSEnabled == true) {
+        if(GPSEnabled == true)
+        {
             locationM.requestLocationUpdates(LocationManager.GPS_PROVIDER,6000,10,this);
 
             Location location = locationM.getLastKnownLocation(LocationManager.GPS_PROVIDER); //get location
 
             return location;
         }
-        else {
+        else
+            {
             Toast.makeText(context,"Please enable the GPS", Toast.LENGTH_SHORT).show();
         }
         return null;
