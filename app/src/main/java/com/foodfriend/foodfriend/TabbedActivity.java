@@ -2,6 +2,7 @@ package com.foodfriend.foodfriend;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -23,7 +24,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -35,17 +43,30 @@ public class TabbedActivity extends AppCompatActivity {
 
     public static ViewPager mViewPager;
     private FirebaseAuth auth;
+    private FirebaseDatabase database;
+    private DatabaseReference ref;
 
     private final static int GalleryPick = 1;
+    private StorageReference storageReference;
+
+    private String currentUserID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
-        auth = FirebaseAuth.getInstance();
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tabbed);
+
+        //get auth instance and current users id
+        auth = FirebaseAuth.getInstance();
+        currentUserID = auth.getCurrentUser().getUid();
+
+        //get database reference
+        database = FirebaseDatabase.getInstance();
+        ref = database.getReference().child("users").child(currentUserID);
+
+        //Create a storage reference for profile images
+        storageReference = FirebaseStorage.getInstance().getReference().child("ProfileImages");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -56,6 +77,7 @@ public class TabbedActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+        //Create the tab layout (fragment tabs)
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -141,8 +163,44 @@ public class TabbedActivity extends AppCompatActivity {
         {
             Uri imageUri = data.getData();
 
-            //Launch crop activity
-            CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).start(this);
+            //Launch crop activity, set aspect ratio to 1:1 so image is square
+            CropImage.activity(imageUri).setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(1,1).start(this);
+        }
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
+        {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            if (resultCode == RESULT_OK)
+            {
+                Uri resultUri = result.getUri();
+
+                //Save image with current users id as the name, then check if image is successfully uploaded
+                StorageReference path = storageReference.child(currentUserID + ".jpg");
+                path.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task)
+                    {
+                        if(task.isSuccessful())
+                        {
+                            Toast.makeText(TabbedActivity.this, "Saving profile image...", Toast.LENGTH_SHORT).show();
+
+                            //get the image url and save it in the users data in database
+                            String downloadUrl = task.getResult().getDownloadUrl().toString();
+                            ref.child("profileImage").setValue(downloadUrl);
+
+                        }
+                        else
+                        {
+                            Toast.makeText(TabbedActivity.this, "Error occured uploading profile image.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+            else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE)
+            {
+                Exception error = result.getError();
+            }
         }
     }
 

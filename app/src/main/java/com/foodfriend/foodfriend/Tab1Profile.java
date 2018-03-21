@@ -184,16 +184,25 @@ public class Tab1Profile extends Fragment {
             }
         });
 
-        //replace password
+        //replace password onClick
         confirmPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 progressBar.setVisibility(View.VISIBLE);
+
+                //If user is not null and password is not null
                 if (user != null && !newPassword.getText().toString().trim().equals("")) {
+
                     if (newPassword.getText().toString().trim().length() < 6) { //Check password length is more than 6 characters
+
                         newPassword.setError("Password too short, enter minimum 6 characters");
                         progressBar.setVisibility(View.GONE);
-                    } else {
+
+                    }
+                    //else update password
+                    else
+                    {
                         user.updatePassword(newPassword.getText().toString().trim())
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
@@ -209,8 +218,10 @@ public class Tab1Profile extends Fragment {
                                     }
                                 });
                     }
-                    //check if password field is empty
-                } else if (newPassword.getText().toString().trim().equals("")) {
+                }
+                //check if password field is empty and tell user to enter password
+                else if (newPassword.getText().toString().trim().equals(""))
+                {
                     newPassword.setError("Enter password");
                     progressBar.setVisibility(View.GONE);
                 }
