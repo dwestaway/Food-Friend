@@ -247,7 +247,7 @@ public class Tab1Profile extends Fragment {
                 name.setText(firstName);
 
                 //Check if user has uploaded image
-                if(imageUrl != "")
+                if(!TextUtils.isEmpty(imageUrl))
                 {
                     //Load image into imageView
                     Picasso.with(getActivity()).load(imageUrl).into(profileImg);
