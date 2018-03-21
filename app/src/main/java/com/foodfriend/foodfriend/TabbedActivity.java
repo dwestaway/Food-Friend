@@ -1,5 +1,6 @@
 package com.foodfriend.foodfriend;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -30,6 +32,8 @@ public class TabbedActivity extends AppCompatActivity {
 
     public static ViewPager mViewPager;
     private FirebaseAuth auth;
+
+    private final static int GalleryPick = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,12 +101,29 @@ public class TabbedActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    //Drop down options menu
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(item.getItemId() == R.id.sign_out){
+        //If signout button is clicked
+        if(item.getItemId() == R.id.sign_out)
+        {
             auth.signOut();
             finish();
+        }
+        //If change profile image button is clicked
+        if(item.getItemId() == R.id.changeImage)
+        {
+            //get intent for the gallery
+            Intent galleryIntent = new Intent();
+
+            galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+            galleryIntent.setType("image/*"); //set gallery to only be images
+
+            startActivityForResult(galleryIntent, GalleryPick);
+
+            Toast.makeText(getApplicationContext(), "Image is being updated...", Toast.LENGTH_SHORT).show();
+
         }
 
         return super.onOptionsItemSelected(item);

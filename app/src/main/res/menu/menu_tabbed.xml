@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.foodfriend.foodfriend.TabbedActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/changeImage"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="Change Profile Image"
         app:showAsAction="never" />
     <item android:id="@+id/sign_out" android:title="Sign Out"></item>
 </menu>
