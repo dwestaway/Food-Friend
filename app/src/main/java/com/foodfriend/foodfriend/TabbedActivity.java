@@ -1,6 +1,7 @@
 package com.foodfriend.foodfriend;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -23,6 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 public class TabbedActivity extends AppCompatActivity {
 
@@ -120,19 +123,30 @@ public class TabbedActivity extends AppCompatActivity {
             galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
             galleryIntent.setType("image/*"); //set gallery to only be images
 
-            startActivityForResult(galleryIntent, GalleryPick);
+            startActivityForResult(galleryIntent, GalleryPick); //Open gallery
 
-            Toast.makeText(getApplicationContext(), "Image is being updated...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Choose your image", Toast.LENGTH_SHORT).show();
 
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == GalleryPick && resultCode == RESULT_OK && data != null)
+        {
+            Uri imageUri = data.getData();
+
+            //Launch crop activity
+            CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).start(this);
+        }
+    }
+
+    //Code for tabs using Pager Adapter, allows user to click between tabs
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {

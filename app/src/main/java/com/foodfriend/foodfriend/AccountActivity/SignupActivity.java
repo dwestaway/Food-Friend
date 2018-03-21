@@ -107,6 +107,7 @@ public class SignupActivity extends AppCompatActivity {
                                     mDatabase.child("users").child(task.getResult().getUser().getUid()).child("time").setValue("");
                                     mDatabase.child("users").child(task.getResult().getUser().getUid()).child("foodPOI").setValue("");
                                     mDatabase.child("users").child(task.getResult().getUser().getUid()).child("date").setValue("");
+                                    mDatabase.child("users").child(task.getResult().getUser().getUid()).child("profileImage").setValue("");
 
                                     //put userid in list of all userid's
                                     //mDatabase.child("userids").child(name).setValue(task.getResult().getUser().getUid());
