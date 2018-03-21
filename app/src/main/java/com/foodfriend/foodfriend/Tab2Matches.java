@@ -77,6 +77,7 @@ public class Tab2Matches extends ListFragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                //initially clear the lists to avoid data being displayed multiple times
                 data.clear();
                 names.clear();
                 poi.clear();
@@ -114,6 +115,7 @@ public class Tab2Matches extends ListFragment {
                         //double longitude = (double) ds.child("longitude").getValue();
                         //double latitude = (double) ds.child("latitude").getValue();
 
+                        //get the date of from the users match data
                         String date = (String) ds.child("date").getValue();
 
                     }
