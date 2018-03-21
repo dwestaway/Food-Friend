@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -34,6 +35,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -42,7 +44,8 @@ import java.util.Date;
 public class Tab1Profile extends Fragment {
 
     private Button btnChangePassword, confirmPassword, search;
-    private TextView email, name;
+    private TextView name;
+    private ImageView profileImg;
 
     private EditText newPassword, foodPOI;
     private ProgressBar progressBar;
@@ -76,12 +79,12 @@ public class Tab1Profile extends Fragment {
         name = (TextView) getView().findViewById(R.id.userName);
         //email = (TextView) getView().findViewById(R.id.userEmail);
 
-        btnChangePassword = (Button) getView().findViewById(R.id.change_password_button);
-        confirmPassword = (Button) getView().findViewById(R.id.confirmPass);
-        search = (Button) getView().findViewById(R.id.searchButton);
-
         foodPOI = (EditText) getView().findViewById(R.id.foodChoice);
         newPassword = (EditText) getView().findViewById(R.id.newPassword);
+        search = (Button) getView().findViewById(R.id.searchButton);
+        btnChangePassword = (Button) getView().findViewById(R.id.change_password_button);
+        confirmPassword = (Button) getView().findViewById(R.id.confirmPass);
+        profileImg = (ImageView) getView().findViewById(R.id.profileImage);
 
 
 
@@ -233,18 +236,28 @@ public class Tab1Profile extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                String uid = user.getUid(); //get user id
-
+                //get user id
+                String uid = user.getUid();
+                //get users name
                 String firstName = (String) dataSnapshot.child(uid).child("name").getValue();
+                //get user profile image
+                String imageUrl = (String) dataSnapshot.child(uid).child("profileImage").getValue();
+
 
                 name.setText(firstName);
 
-                //email.setText(user.getEmail());
+                //Check if user has uploaded image
+                if(imageUrl != "")
+                {
+                    //Load image into imageView
+                    Picasso.with(getActivity()).load(imageUrl).into(profileImg);
+                }
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                //Toast.makeText(getActivity(), "Database Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Database Error", Toast.LENGTH_SHORT).show();
             }
         });
 
