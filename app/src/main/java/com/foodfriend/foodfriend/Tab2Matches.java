@@ -14,7 +14,6 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.foodfriend.foodfriend.AccountActivity.LoginActivity;
-import com.foodfriend.foodfriend.AccountActivity.SignupActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -46,6 +45,9 @@ public class Tab2Matches extends ListFragment {
     ArrayList<String> times = new ArrayList<>();
     ArrayList<String> userids = new ArrayList<>();
 
+    ArrayList<String> imageUrls = new ArrayList<>();
+
+    //ArrayList of hashmaps that holds on user information String and image String
     ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
     SimpleAdapter adapter;
 
@@ -82,6 +84,7 @@ public class Tab2Matches extends ListFragment {
                 names.clear();
                 poi.clear();
                 times.clear();
+                imageUrls.clear();
 
                 //get the current users location
                 //double currentUserLong = (double) dataSnapshot.child(currentUserID).child("longitude").getValue();
@@ -108,6 +111,8 @@ public class Tab2Matches extends ListFragment {
                         poi.add((String) ds.child("foodPOI").getValue());
                         //get each users time and add to ArrayList
                         times.add((String) ds.child("time").getValue());
+                        //get user image urls and add to ArrayList
+                        imageUrls.add((String) ds.child("profileImage").getValue());
 
                         //add userids (keys)
                         userids.add(uid);
@@ -134,13 +139,15 @@ public class Tab2Matches extends ListFragment {
 
 
                     //prevents app crashing because data is not yet updated from server
-                    try {
+                    try
+                    {
                         map.put("Image", Integer.toString(pics.get(i)));
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                    //prevents list being displayed multiple times because of previous fix
+                    //prevents list being displayed multiple times because of previous above
                     if (data.size() < names.size())
                     {
                         data.add(map);
@@ -199,12 +206,15 @@ public class Tab2Matches extends ListFragment {
     public void onStart() {
         super.onStart();
 
+
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
 
 
-                Toast.makeText(getActivity(), data.get(pos).get("Name"), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), data.get(pos).get("Name"), Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(getActivity(), imageUrls.get(pos), Toast.LENGTH_SHORT).show();
 
                 startActivity(new Intent(getActivity(), ChatActivity.class));
             }
