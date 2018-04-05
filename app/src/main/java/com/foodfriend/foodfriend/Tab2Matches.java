@@ -95,7 +95,7 @@ public class Tab2Matches extends Fragment {
                     //get userid from each userdata
                     String uid = ds.getKey();
 
-                    
+
                     //if user id is equal to current user id, do not add that user data (so user does not match with themselves)
                     if(uid.equals(currentUserID))
                     {
