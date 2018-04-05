@@ -3,14 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:padding="10dp">
+
+
+
 
         <ImageView
             android:id="@+id/imageUser"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             app:srcCompat="@mipmap/ic_launcher" />
 
+    <LinearLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/textName"
@@ -24,5 +32,18 @@
             android:textColor="@android:color/black"
             android:textSize="17dp" />
 
+        <TextView
+            android:id="@+id/textPOI"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/imageUser"
+            android:layout_toRightOf="@+id/imageUser"
+            android:layout_below="@id/textName"
+            android:paddingLeft="10dp"
+            android:text="McDonalds"
+            android:textColor="@android:color/black"
+            android:textSize="17dp" />
+
+    </LinearLayout>
 
 </LinearLayout>

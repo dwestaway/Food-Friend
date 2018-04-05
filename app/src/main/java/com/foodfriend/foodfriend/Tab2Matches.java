@@ -154,8 +154,8 @@ public class Tab2Matches extends Fragment {
 
                         arrayList.add(new Match(
                                 (String) ds.child("profileImage").getValue(),
-                                (String) ds.child("name").getValue()
-                                //(String) ds.child("foodPOI").getValue()
+                                (String) ds.child("name").getValue(),
+                                (String) ds.child("foodPOI").getValue()
                         ));
 
 

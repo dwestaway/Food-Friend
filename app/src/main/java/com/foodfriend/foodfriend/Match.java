@@ -7,12 +7,12 @@ package com.foodfriend.foodfriend;
 public class Match {
     private String image;
     private String name;
+    private String poi;
 
-
-    public Match(String image, String name) {
+    public Match(String image, String name, String poi) {
         this.image = image;
         this.name = name;
-
+        this.poi = poi;
     }
 
     public String getImage() {
@@ -31,5 +31,11 @@ public class Match {
         this.name = name;
     }
 
+    public String getPoi() {
+        return poi;
+    }
 
+    public void setPoi(String poi) {
+        this.poi = poi;
+    }
 }
