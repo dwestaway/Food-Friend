@@ -47,7 +47,7 @@
     <string name="title_activity_tabbed">TabbedActivity</string>
     <string name="tab_text_1">Profile</string>
     <string name="tab_text_2">Matches</string>
-    <string name="tab_text_3">Messenger</string>
+    <string name="tab_text_3">Messages</string>
     <string name="action_settings">Account Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
 

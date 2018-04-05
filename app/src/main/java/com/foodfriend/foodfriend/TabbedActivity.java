@@ -186,7 +186,7 @@ public class TabbedActivity extends AppCompatActivity {
                         }
                         else
                         {
-                            Toast.makeText(TabbedActivity.this, "Error occured uploading profile image.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TabbedActivity.this, "Error occurred uploading profile image.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
