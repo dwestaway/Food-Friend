@@ -44,24 +44,10 @@ import static android.content.ContentValues.TAG;
 public class Tab2Matches extends Fragment {
 
 
-    int[] images = {R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher};
-
-    ArrayList<Integer> pics = new ArrayList<>();
-
-    ArrayList<String> names = new ArrayList<>();
-    ArrayList<String> poi = new ArrayList<>();
-    ArrayList<String> times = new ArrayList<>();
-    ArrayList<String> userids = new ArrayList<>();
-
-    ArrayList<String> imageUrls = new ArrayList<>();
-
     ArrayList<Match> arrayList;
 
     ListView lv;
 
-    //ArrayList of hashmaps that holds on user information String and image String
-    ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
-    //SimpleAdapter adapter;
 
     private FirebaseAuth auth;
     private DatabaseReference mDatabase;
@@ -76,12 +62,6 @@ public class Tab2Matches extends Fragment {
         arrayList = new ArrayList<Match>();
 
         lv = view.findViewById(R.id.listMatches);
-
-
-        //pics.add(R.mipmap.ic_launcher);
-        //pics.add(R.mipmap.ic_launcher);
-        //pics.add(R.mipmap.ic_launcher);
-        //pics.add(R.mipmap.ic_launcher);
 
         auth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -99,12 +79,7 @@ public class Tab2Matches extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                //initially clear the lists to avoid data being displayed multiple times
-                //data.clear();
-                //names.clear();
-                //poi.clear();
-                //times.clear();
-                //imageUrls.clear();
+
 
                 //initially clear the lists to avoid data being displayed multiple times and it updates live
                 arrayList.clear();
@@ -120,29 +95,17 @@ public class Tab2Matches extends Fragment {
                     //get userid from each userdata
                     String uid = ds.getKey();
 
-
-
+                    
                     //if user id is equal to current user id, do not add that user data (so user does not match with themselves)
                     if(uid.equals(currentUserID))
                     {
-
+                        //nothing here
                     }
                     else
                     {
 
-                        /*
-
-                        //get each users name and add to ArrayList
-                        names.add((String) ds.child("name").getValue());
-                        //get each users foodPOI and add to ArrayList
-                        poi.add((String) ds.child("foodPOI").getValue());
-                        //get each users time and add to ArrayList
-                        times.add((String) ds.child("time").getValue());
-                        //get user image urls and add to ArrayList
-                        imageUrls.add((String) ds.child("profileImage").getValue());
-
                         //add userids (keys)
-                        userids.add(uid);
+                        //userids.add(uid);
 
                         //double longitude = (double) ds.child("longitude").getValue();
                         //double latitude = (double) ds.child("latitude").getValue();
@@ -151,10 +114,7 @@ public class Tab2Matches extends Fragment {
                         String date = (String) ds.child("date").getValue();
 
 
-                        */
-
-                        //Log.v(TAG, (String) ds.child("profileImage").getValue());
-
+                        //Create a new Match with all the required users data
                         arrayList.add(new Match(
                                 (String) ds.child("profileImage").getValue(),
                                 (String) ds.child("name").getValue(),
@@ -167,65 +127,9 @@ public class Tab2Matches extends Fragment {
                 }
 
 
-
-
-
-                /*
-                //Create hashmap for image and text to go in list
-                HashMap<String, String> map = new HashMap<String, String>();
-
-
-                //loop through names
-                for(int i = 0; i < names.size(); i++)
-                {
-                    map = new HashMap<String, String>();
-                    map.put("Name", names.get(i) + "\n" + poi.get(i) + "\n" + times.get(i)); //put each piece of data from the ArrayLists into one string and add it to the hashmap
-                    //map.put("Image", Integer.toString(images[i]));
-
-
-                    //prevents app crashing because data is not yet updated from server
-                    try
-                    {
-                        map.put("Image", Integer.toString(pics.get(i)));
-                    }
-                    catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    //prevents list being displayed multiple times because of above
-                    if (data.size() < names.size())
-                    {
-                        data.add(map);
-                    }
-
-
-
-                }
-
-                //Keys in the map
-                String[] from = {"Name","Image"};
-
-                //Picasso.with(getActivity()).load(imageUrls.get(0)).into(R.id.imageUser);
-
-                int[] to = {R.id.textName,R.id.imageUser};
-
-                //Adapter
-                adapter = new SimpleAdapter(getActivity(), data, R.layout.list_layout, from, to);
-                setListAdapter(adapter); */
-
-                //Picasso.with(getActivity()).load(imageUrl).into(profileImg);
-
-
-                Log.v(TAG, arrayList.get(0).getName());
-                Log.v(TAG, arrayList.get(1).getName());
-                Log.v(TAG, arrayList.get(2).getName());
-                Log.v(TAG, arrayList.get(3).getName());
-
-
+                //Create adapter that will be used to apply all the data to the list, this uses Match objects which hold the user data
                 CustomListAdapter adapter = new CustomListAdapter(getActivity().getApplicationContext(), R.layout.list_layout, arrayList);
-
-                Log.v(TAG,  Integer.toString(adapter.getCount()));
-                
+                //set the adapter to the list
                 lv.setAdapter(adapter);
 
             }
