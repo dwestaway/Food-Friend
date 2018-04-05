@@ -106,6 +106,9 @@ public class Tab2Matches extends Fragment {
                 //times.clear();
                 //imageUrls.clear();
 
+                //initially clear the lists to avoid data being displayed multiple times and it updates live
+                arrayList.clear();
+
                 //get the current users location
                 //double currentUserLong = (double) dataSnapshot.child(currentUserID).child("longitude").getValue();
                 //double currentUserLat = (double) dataSnapshot.child(currentUserID).child("latitude").getValue();
@@ -155,7 +158,8 @@ public class Tab2Matches extends Fragment {
                         arrayList.add(new Match(
                                 (String) ds.child("profileImage").getValue(),
                                 (String) ds.child("name").getValue(),
-                                (String) ds.child("foodPOI").getValue()
+                                (String) ds.child("foodPOI").getValue(),
+                                (String) ds.child("time").getValue()
                         ));
 
 

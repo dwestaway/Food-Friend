@@ -59,6 +59,10 @@ public class CustomListAdapter extends ArrayAdapter<Match> {
         TextView poi = (TextView) convertView.findViewById(R.id.textPOI);
         poi.setText(match.getPoi());
 
+        //set list item place of interest text from Match
+        TextView time = (TextView) convertView.findViewById(R.id.textTime);
+        time.setText(match.getTime());
+
 
         return convertView;
     }

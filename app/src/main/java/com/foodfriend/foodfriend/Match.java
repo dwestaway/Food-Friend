@@ -8,11 +8,13 @@ public class Match {
     private String image;
     private String name;
     private String poi;
+    private String time;
 
-    public Match(String image, String name, String poi) {
+    public Match(String image, String name, String poi, String time) {
         this.image = image;
         this.name = name;
         this.poi = poi;
+        this.time = time;
     }
 
     public String getImage() {
@@ -37,5 +39,13 @@ public class Match {
 
     public void setPoi(String poi) {
         this.poi = poi;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

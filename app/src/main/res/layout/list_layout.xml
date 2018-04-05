@@ -44,6 +44,18 @@
             android:textColor="@android:color/black"
             android:textSize="17dp" />
 
+        <TextView
+            android:id="@+id/textTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/imageUser"
+            android:layout_toRightOf="@+id/imageUser"
+            android:layout_below="@id/textName"
+            android:paddingLeft="10dp"
+            android:text="Evening"
+            android:textColor="@android:color/black"
+            android:textSize="17dp" />
+
     </LinearLayout>
 
 </LinearLayout>
