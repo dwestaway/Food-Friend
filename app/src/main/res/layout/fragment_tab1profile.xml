@@ -8,7 +8,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="230dp"
-        android:background="@color/colorPrimary">
+        android:background="@drawable/gradientbackground"
+        android:id="@+id/relativeLayout2">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileImage"
@@ -57,8 +58,9 @@
         android:layout_below="@+id/spinner"
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
+        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/buttonrounded"
         android:text="Find a Food Friend"
         android:textColor="@android:color/white"
         android:textStyle="bold"
@@ -102,17 +104,17 @@
         android:textStyle="bold" />
 
 
-
     <EditText
         android:id="@+id/foodChoice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_alignLeft="@+id/spinner"
+        android:layout_alignStart="@+id/spinner"
+        android:layout_below="@+id/relativeLayout2"
+        android:layout_marginTop="18dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="Food Place of Interest"/>
+        android:hint="Food Place of Interest"
+        android:inputType="textPersonName" />
 
     <Spinner
         android:id="@+id/spinner"
