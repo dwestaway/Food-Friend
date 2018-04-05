@@ -4,19 +4,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.foodfriend.foodfriend.TabbedActivity">
-
-    <TextView
-        android:id="@+id/userName"
+    
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/profileImage"
-        android:layout_marginTop="20dp"
-        android:layout_toEndOf="@+id/progressBar"
-        android:layout_toRightOf="@+id/progressBar"
-        android:gravity="center"
-        android:hint="Name"
-        android:textColor="@android:color/black"
-        android:textSize="20sp" />
+        android:layout_height="230dp"
+        android:background="@color/colorPrimary">
+
+        <ImageView
+            android:id="@+id/profileImage"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            app:srcCompat="@drawable/profileimage" />
+
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profileImage"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:hint="Name"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+
+    </RelativeLayout>
+
+
 
     <EditText
         android:id="@+id/newPassword"
@@ -85,14 +101,7 @@
         android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold" />
 
-    <ImageView
-        android:id="@+id/profileImage"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_below="@+id/progressBar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="45dp"
-        app:srcCompat="@drawable/profileimage" />
+
 
     <EditText
         android:id="@+id/foodChoice"
