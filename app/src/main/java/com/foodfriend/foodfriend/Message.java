@@ -8,7 +8,7 @@ public class Message {
 
     private String content;
     private String username;
-    private String time;
+    private String time; //also used to hold imageUrl
 
     public Message() {
 

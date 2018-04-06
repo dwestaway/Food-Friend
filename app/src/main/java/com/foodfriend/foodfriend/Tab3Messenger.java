@@ -27,9 +27,9 @@ import java.util.ArrayList;
  * Created by Dan on 21/02/2018.
  */
 
-public class Tab3Messenger extends Fragment{
+public class Tab3Messenger extends Fragment {
 
-    ArrayList<Match> arrayList;
+    ArrayList<Message> arrayList;
 
     ListView lv;
 
@@ -46,7 +46,7 @@ public class Tab3Messenger extends Fragment{
 
         View view = inflater.inflate(R.layout.fragment_tab3messenger, container, false);
 
-        arrayList = new ArrayList<Match>();
+        arrayList = new ArrayList<Message>();
 
         lv = view.findViewById(R.id.listMessages);
 
@@ -138,6 +138,7 @@ public class Tab3Messenger extends Fragment{
                     });
 
 
+
                 }
 
                 //usersRef.getDatabase().child(uidSentTo).child("profileImage").getKey();
@@ -151,10 +152,16 @@ public class Tab3Messenger extends Fragment{
                 Toast.makeText(getActivity(), "Name " + nameSentTo + " Message "+ lastMessage + " Image Url " + imageUrl, Toast.LENGTH_LONG).show();
 
 
+                //Create a new Match with all the required users data
+                arrayList.add(new Message(
+                        lastMessage,
+                        nameSentTo,
+                        imageUrl
+                ));
 
 
                 //Create adapter that will be used to apply all the data to the list, this uses Match objects which hold the user data
-                CustomListAdapter adapter = new CustomListAdapter(getActivity().getApplicationContext(), R.layout.list_layout, arrayList);
+                MessageListAdapter adapter = new MessageListAdapter(getActivity().getApplicationContext(), R.layout.list_layout, arrayList);
                 //set the adapter to the list
                 lv.setAdapter(adapter);
 
