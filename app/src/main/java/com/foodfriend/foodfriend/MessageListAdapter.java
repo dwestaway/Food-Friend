@@ -47,8 +47,8 @@ public class MessageListAdapter extends ArrayAdapter<Message> {
 
         //set list item image by getting image url from Match object, using Picasso
         ImageView imageView = (ImageView) convertView.findViewById(R.id.imageUser);
-        //Picasso.with(context).load(message.getTime()).into(imageView);
-        Picasso.with(context).load("https://firebasestorage.googleapis.com/v0/b/food-friend-7ea9a.appspot.com/o/ProfileImages%2Fcc5VpIaO5QRsuSvZSCARzqPLZzp2.jpg?alt=media&token=c5f8c43e-c2e9-485b-b0bb-6a091e63a56b").into(imageView);
+        Picasso.with(context).load(message.getTime()).into(imageView);
+        //Picasso.with(context).load("https://firebasestorage.googleapis.com/v0/b/food-friend-7ea9a.appspot.com/o/ProfileImages%2Fcc5VpIaO5QRsuSvZSCARzqPLZzp2.jpg?alt=media&token=c5f8c43e-c2e9-485b-b0bb-6a091e63a56b").into(imageView);
 
         //set list item name text from Message
         TextView name = (TextView) convertView.findViewById(R.id.textName);

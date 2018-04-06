@@ -34,7 +34,8 @@ public class Tab3Messenger extends Fragment {
     ListView lv;
 
     String uidSentTo = "";
-    String imageUrl = "";
+    //set as default profile avatar (this will be set if user has not uploaded a profile picture or it fails to load
+    String imageUrl = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
 
 
 
@@ -120,6 +121,7 @@ public class Tab3Messenger extends Fragment {
 
                         */
 
+
                     usersRef.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -141,15 +143,8 @@ public class Tab3Messenger extends Fragment {
 
                 }
 
-                //usersRef.getDatabase().child(uidSentTo).child("profileImage").getKey();
 
-                ////////////////////
-                //READ ME
-                ////////////////////
-                //nameSentTo, lastMessage and imageUrl are the Strings that need to be put in an object (Message or a new one)
-                //...and sent to a CustomListAdapter that adapts the last message info (from each user they have recieved message) to the list
-                //////////////////////
-                Toast.makeText(getActivity(), "Name " + nameSentTo + " Message "+ lastMessage + " Image Url " + imageUrl, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(), "Name " + nameSentTo + " Message "+ lastMessage + " Image Url " + imageUrl, Toast.LENGTH_LONG).show();
 
 
                 //Create a new Match with all the required users data

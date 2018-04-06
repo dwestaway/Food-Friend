@@ -8,7 +8,7 @@ public class Message {
 
     private String content;
     private String username;
-    private String time; //also used to hold imageUrl
+    private String time; //also used to hold imageUrl, this prevents having to create a second Message object
 
     public Message() {
 
