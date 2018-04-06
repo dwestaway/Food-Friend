@@ -123,6 +123,10 @@ public class ChatActivity extends AppCompatActivity {
                     String currentTime = df.format(Calendar.getInstance().getTime());
 
                     ref.child("time").setValue(currentTime);
+
+                    //set to bobs uid
+                    ref.child("sentTo").setValue("66uhmIhPCVZYhIKuXZ1a8DLAlr13");
+                    ref.child("sentToName").setValue("bob");
                 }
 
                 @Override
@@ -160,6 +164,7 @@ public class ChatActivity extends AppCompatActivity {
             TextView timeMessage = view.findViewById(R.id.timeText);
             timeMessage.setText(time);
         }
+
     }
 }
 

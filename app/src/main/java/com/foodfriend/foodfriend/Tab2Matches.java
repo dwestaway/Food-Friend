@@ -52,8 +52,6 @@ public class Tab2Matches extends Fragment {
     private FirebaseAuth auth;
     private DatabaseReference mDatabase;
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -180,20 +178,18 @@ public class Tab2Matches extends Fragment {
     public void onStart() {
         super.onStart();
 
-        /*
-        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
-
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 //Toast.makeText(getActivity(), data.get(pos).get("Name"), Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(getActivity(), imageUrls.get(pos), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), arrayList.get(i).getName(), Toast.LENGTH_SHORT).show();
 
                 startActivity(new Intent(getActivity(), ChatActivity.class));
             }
         });
-        */
+
     }
 
     @Override
