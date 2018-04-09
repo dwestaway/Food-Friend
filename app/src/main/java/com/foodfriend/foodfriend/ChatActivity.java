@@ -135,7 +135,7 @@ public class ChatActivity extends AppCompatActivity {
                     });
 
                     //get current time
-                    DateFormat df = new SimpleDateFormat("h:mm a");
+                    DateFormat df = new SimpleDateFormat("hh:mm a dd.MM.yyyy ");
                     String currentTime = df.format(Calendar.getInstance().getTime());
 
                     //send the time of message to server
@@ -147,6 +147,7 @@ public class ChatActivity extends AppCompatActivity {
                     //sent to recipients uid
                     ref.child("sentTo").setValue(sentTo);
                     ref.child("sentToName").setValue(sentToName);
+
                 }
 
                 @Override
