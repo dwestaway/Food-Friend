@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.foodfriend.foodfriend.AccountActivity.LoginActivity;
@@ -40,10 +41,25 @@ public class ChatActivity extends AppCompatActivity {
 
     private RecyclerView messageList;
 
+    public String sentTo;
+    public String sentToName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        //Recieve recipient of message
+        Bundle extras = getIntent().getExtras();
+
+        if(extras != null)
+        {
+            sentTo = extras.getString("sentTo");
+
+            sentToName = extras.getString("sentToName");
+
+            Toast.makeText(getApplicationContext(), sentToName + " " + sentTo, Toast.LENGTH_SHORT).show();
+        }
 
         editMessage = findViewById(R.id.sendMessage);
 
@@ -122,11 +138,15 @@ public class ChatActivity extends AppCompatActivity {
                     DateFormat df = new SimpleDateFormat("h:mm a");
                     String currentTime = df.format(Calendar.getInstance().getTime());
 
+                    //send the time of message to server
                     ref.child("time").setValue(currentTime);
 
-                    //set to bobs uid
-                    ref.child("sentTo").setValue("66uhmIhPCVZYhIKuXZ1a8DLAlr13");
-                    ref.child("sentToName").setValue("bob");
+                    //save the uid of the current user who sent the message
+                    ref.child("sentFrom").setValue(currentUser.getUid());
+
+                    //sent to recipients uid
+                    ref.child("sentTo").setValue(sentTo);
+                    ref.child("sentToName").setValue(sentToName);
                 }
 
                 @Override

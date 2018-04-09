@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -67,17 +68,22 @@ public class Tab1Profile extends Fragment {
 
         super.onActivityCreated(savedInstanceState);
 
+        //Prevent activity from starting with the keyboard open
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        //Get the Firebase authenticatpr
         auth = FirebaseAuth.getInstance();
+        //Get the Firebase database
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        //Request permissions for GPS/location
         ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 123);
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users");
 
+        //Get reference to all components in the activitys layout
         name = (TextView) getView().findViewById(R.id.userName);
-        //email = (TextView) getView().findViewById(R.id.userEmail);
-
         foodPOI = (EditText) getView().findViewById(R.id.foodChoice);
         newPassword = (EditText) getView().findViewById(R.id.newPassword);
         search = (Button) getView().findViewById(R.id.searchButton);

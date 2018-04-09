@@ -45,6 +45,7 @@ public class Tab2Matches extends Fragment {
 
 
     ArrayList<Match> arrayList;
+    ArrayList<String> userids;
 
     ListView lv;
 
@@ -58,6 +59,7 @@ public class Tab2Matches extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tab2matches, container, false);
 
         arrayList = new ArrayList<Match>();
+        userids = new ArrayList<>();
 
         lv = view.findViewById(R.id.listMatches);
 
@@ -81,6 +83,7 @@ public class Tab2Matches extends Fragment {
 
                 //initially clear the lists to avoid data being displayed multiple times and it updates live
                 arrayList.clear();
+                userids.clear();
 
                 //get the current users location
                 //double currentUserLong = (double) dataSnapshot.child(currentUserID).child("longitude").getValue();
@@ -103,7 +106,7 @@ public class Tab2Matches extends Fragment {
                     {
 
                         //add userids (keys)
-                        //userids.add(uid);
+                        userids.add(uid);
 
                         //double longitude = (double) ds.child("longitude").getValue();
                         //double latitude = (double) ds.child("latitude").getValue();
@@ -178,15 +181,24 @@ public class Tab2Matches extends Fragment {
     public void onStart() {
         super.onStart();
 
+        //list item click listener
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                //Toast.makeText(getActivity(), data.get(pos).get("Name"), Toast.LENGTH_SHORT).show();
 
                 //Toast.makeText(getActivity(), arrayList.get(i).getName(), Toast.LENGTH_SHORT).show();
 
-                startActivity(new Intent(getActivity(), ChatActivity.class));
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+
+                //send the user who is being clicked to the chat activity, this is to start a chat with the match you click on
+                intent.putExtra("sentToName", arrayList.get(i).getName());
+                intent.putExtra("sentTo", userids.get(i));
+
+
+                startActivity(intent);
+
+                //startActivity(new Intent(getActivity(), ChatActivity.class));
             }
         });
 
