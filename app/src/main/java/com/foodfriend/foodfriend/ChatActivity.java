@@ -99,7 +99,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 //populate the textviews with database data
                 viewHolder.setContent(model.getContent());
-                viewHolder.setUsername(model.getUsername());
+                viewHolder.setUsername(model.getSentToName());
                 viewHolder.setTime(model.getTime());
             }
         };
@@ -127,7 +127,7 @@ public class ChatActivity extends AppCompatActivity {
                     //send message to server
                     ref.child("content").setValue(message);
                     //set message name, get it from account name in users data
-                    ref.child("username").setValue(dataSnapshot.child("name").getValue()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    ref.child("sentFromName").setValue(dataSnapshot.child("name").getValue()).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
 
@@ -176,9 +176,9 @@ public class ChatActivity extends AppCompatActivity {
             TextView chatMessage = view.findViewById(R.id.messageText); //get reference to users message from message.xml
             chatMessage.setText(content);
         }
-        public void setUsername(String username) {
+        public void setUsername(String sentFromName) {
             TextView nameMessage = view.findViewById(R.id.nameText); //get reference to users name text
-            nameMessage.setText(username);
+            nameMessage.setText(sentFromName);
         }
         public void setTime(String time) {
             TextView timeMessage = view.findViewById(R.id.timeText);

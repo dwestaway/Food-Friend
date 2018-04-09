@@ -22,6 +22,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Created by Dan on 21/02/2018.
@@ -30,17 +32,24 @@ import java.util.ArrayList;
 public class Tab3Messenger extends Fragment {
 
     ArrayList<Message> arrayList;
+    ArrayList<String> uniqueUserMessages;
 
     ListView lv;
 
     String uidSentTo = "";
+    String uidSentFrom = "";
     //set as default profile avatar (this will be set if user has not uploaded a profile picture or it fails to load
     String imageUrl = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
 
+    String recipient = "";
 
 
     private FirebaseAuth auth;
     private DatabaseReference mDatabase;
+
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+    final DatabaseReference usersRef = database.getReference().child("users");
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,18 +57,20 @@ public class Tab3Messenger extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tab3messenger, container, false);
 
         arrayList = new ArrayList<Message>();
+        uniqueUserMessages = new ArrayList<>();
+
 
         lv = view.findViewById(R.id.listMessages);
 
         auth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+
 
         //reference to database messages
         DatabaseReference ref = database.getReference().child("messages");
         //reference to database users
-        final DatabaseReference usersRef = database.getReference().child("users");
+
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -71,14 +82,17 @@ public class Tab3Messenger extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                uidSentTo = "";
 
                 //initially clear the lists to avoid data being displayed multiple times and it updates live
                 arrayList.clear();
+                uniqueUserMessages.clear();
 
-                String nameSentTo = "";
-                String lastMessage = "";
-                //String imageUrl = "";
+                String nameSentTo;
+                String nameSentFrom;
+                String lastMessage;
+                //String imageUrl;
+
+
 
 
                 //for every message in messages
@@ -105,21 +119,14 @@ public class Tab3Messenger extends Fragment {
                         //read in uid from message data and compare to current user id
 
                         uidSentTo = (String) ds.child("sentTo").getValue();
+                        uidSentFrom = (String) ds.child("sentFrom").getValue();
 
                         lastMessage = (String) ds.child("content").getValue();
 
                         nameSentTo = (String) ds.child("sentToName").getValue();
+                        nameSentFrom = (String) ds.child("sentFromName").getValue();
 
-                        /*
-                        //Create a new Match with all the required users data
-                        arrayList.add(new Match(
-                                (String) ds.child("profileImage").getValue(),
-                                (String) ds.child("name").getValue(),
-                                (String) ds.child("foodPOI").getValue(),
-                                (String) ds.child("time").getValue()
-                        ));
 
-                        */
 
 
                     usersRef.addValueEventListener(new ValueEventListener() {
@@ -130,7 +137,6 @@ public class Tab3Messenger extends Fragment {
 
                             imageUrl = (String) dataSnapshot.child(uidSentTo).child("profileImage").getValue();
 
-
                         }
 
                         @Override
@@ -139,20 +145,95 @@ public class Tab3Messenger extends Fragment {
                         }
                     });
 
+                        //remove repeated chats from arrayList
+
+                        /*
+                        //Check if sender or reciever is the current user, if no then do not display other peoples messages
+                        if(uidSentTo.equals(currentUserID) || !uidSentFrom.equals(currentUserID))
+                        {
+
+                            uniqueUserMessages.add(uidSentFrom);
+
+                            getRecipientName(uidSentFrom);
 
 
+
+                            //Create a new Match with all the required users data
+                            arrayList.add(new Message(
+                                    lastMessage,
+                                    recipient,
+                                    imageUrl
+                            ));
+
+                        }
+                        else if (!uidSentTo.equals(currentUserID) || uidSentFrom.equals(currentUserID))
+                        {
+                            getRecipientName(uidSentTo);
+
+                            uniqueUserMessages.add(uidSentTo);
+
+                            Toast.makeText(getActivity(), recipient, Toast.LENGTH_LONG).show();
+
+                            //Create a new Match with all the required users data
+                            arrayList.add(new Message(
+                                    lastMessage,
+                                    recipient,
+                                    imageUrl
+                            ));
+                        }
+                        */
+
+
+
+
+                    /*
+
+                    for(Message m : arrayList)
+                    {
+                        //Toast.makeText(getActivity(), m.getSentFromName() + " " + nameSentTo, Toast.LENGTH_LONG).show();
+
+                        if(!m.getSentFromName().equals(nameSentTo))
+                        {
+
+                        }
+                    }
+                    */
+                    //Create a new Match with all the required users data
+                    arrayList.add(new Message(
+                            lastMessage,
+                            nameSentTo,
+                            imageUrl
+                    ));
+
+                    //int test = arrayList.size();
+
+
+
+                }
+
+                Toast.makeText(getActivity(), Integer.toString(arrayList.size()) , Toast.LENGTH_LONG).show();
+
+                //Collections.reverse(arrayList);
+
+                for(int i = 0; i < arrayList.size(); i++)
+                {
+
+                    String recipient = arrayList.get(i).getSentToName();
+
+                    for(int j = 0; j < arrayList.size(); j++)
+                    {
+                        if(recipient.equals(arrayList.get(j).getSentToName()))
+                        {
+                            arrayList.remove(i);
+                        }
+                    }
                 }
 
 
                 //Toast.makeText(getActivity(), "Name " + nameSentTo + " Message "+ lastMessage + " Image Url " + imageUrl, Toast.LENGTH_LONG).show();
 
 
-                //Create a new Match with all the required users data
-                arrayList.add(new Message(
-                        lastMessage,
-                        nameSentTo,
-                        imageUrl
-                ));
+
 
 
                 //Create adapter that will be used to apply all the data to the list, this uses Match objects which hold the user data
@@ -181,7 +262,22 @@ public class Tab3Messenger extends Fragment {
     }
 
 
+    void getRecipientName(final String userID)
+    {
 
+        usersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                recipient = (String) dataSnapshot.child(userID).child("name").getValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
 
 
     // this listener will be called when there is change in firebase user session
