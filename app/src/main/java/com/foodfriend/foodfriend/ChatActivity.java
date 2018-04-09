@@ -93,7 +93,7 @@ public class ChatActivity extends AppCompatActivity {
         auth.addAuthStateListener(authStateListener);
 
         //use firebase's RecyclerAdapter, parameters: Message class, message layout, message view holder and database reference
-        FirebaseRecyclerAdapter <Message,MessageViewHolder> firebaseRec = new FirebaseRecyclerAdapter<Message, MessageViewHolder>(Message.class,R.layout.message,MessageViewHolder.class, mDatabase) {
+        FirebaseRecyclerAdapter <Message,MessageViewHolder> firebaseRec = new FirebaseRecyclerAdapter<Message, MessageViewHolder>(Message.class, R.layout.message, MessageViewHolder.class, mDatabase) {
             @Override
             protected void populateViewHolder(MessageViewHolder viewHolder, Message model, int position) {
 

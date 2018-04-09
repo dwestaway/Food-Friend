@@ -7,6 +7,7 @@
     <color name="colorLight">#E0F7FA</color>
     <color name="white">#FFFFFF</color>
     <color name="colorDarkest">#006064</color>
+    <color name="chatGrey">#E4E4E4</color>
 
     <color name="bg_login">#26ae90</color>
     <color name="bg_register">#2e3237</color>
