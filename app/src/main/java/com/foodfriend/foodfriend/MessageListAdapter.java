@@ -3,6 +3,7 @@ package com.foodfriend.foodfriend;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,17 @@ public class MessageListAdapter extends ArrayAdapter<Message> {
 
         //set list item image by getting image url from Match object, using Picasso
         ImageView imageView = (ImageView) convertView.findViewById(R.id.imageUser);
-        Picasso.with(context).load(message.getTime()).into(imageView);
+
+        if(!TextUtils.isEmpty(message.getTime()))
+        {
+            Picasso.with(context).load(message.getTime()).into(imageView);
+        }
+        if(TextUtils.isEmpty(message.getTime()))
+        {
+            //use default image if user has no image
+            Picasso.with(context).load(R.drawable.profileimage).into(imageView);
+        }
+
 
         //set list item name text from Message
         TextView name = (TextView) convertView.findViewById(R.id.textName);

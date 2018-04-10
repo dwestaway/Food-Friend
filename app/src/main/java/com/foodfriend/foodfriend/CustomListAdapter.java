@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +50,18 @@ public class CustomListAdapter extends ArrayAdapter<Match> {
 
         //set list item image by getting image url from Match object, using Picasso
         ImageView imageView = (ImageView) convertView.findViewById(R.id.imageUser);
-        Picasso.with(context).load(match.getImage()).into(imageView);
+
+        if(!TextUtils.isEmpty(match.getImage()))
+        {
+            Picasso.with(context).load(match.getImage()).into(imageView);
+        }
+        else if (TextUtils.isEmpty(match.getImage()))
+        {
+            //Use placeholder image if user has no profile image
+            Picasso.with(context).load(R.drawable.profileimage).into(imageView);
+        }
+
+
 
         //set list item name text from Match
         TextView name = (TextView) convertView.findViewById(R.id.textName);
