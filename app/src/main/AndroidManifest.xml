@@ -32,7 +32,7 @@
         <activity
             android:name=".TabbedActivity"
             android:label="Food Friend"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity android:name=".ChatActivity"></activity>
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"></activity>
     </application>

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -35,7 +36,10 @@ import static android.content.ContentValues.TAG;
 public class Tab3Messenger extends Fragment {
 
     ArrayList<Message> arrayList;
+    ArrayList<Message> uniqueMessages;
     ArrayList<String> messageUIDs;
+
+    ArrayList<String> uniqueUIDs;
 
     ListView lv;
 
@@ -60,7 +64,10 @@ public class Tab3Messenger extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tab3messenger, container, false);
 
         arrayList = new ArrayList<Message>();
+        uniqueMessages = new ArrayList<>();
+
         messageUIDs = new ArrayList<>();
+        uniqueUIDs = new ArrayList<>();
 
         lv = view.findViewById(R.id.listMessages);
 
@@ -220,7 +227,7 @@ public class Tab3Messenger extends Fragment {
 
                 }
 
-
+                //Loop through the arrayList of messages
                 for(int i = 0; i < arrayList.size(); i++)
                 {
                     //get the user for the users image, using list of all user ids from chat messages to find the user image
@@ -235,6 +242,8 @@ public class Tab3Messenger extends Fragment {
 
                 //Collections.reverse(arrayList);
 
+                /*
+                //Myself not being displayed for some reason
                 //Remove duplicates from the message list, this is so each list item is a unique user instead of repeated messages from the same user
                 for(int i = 0; i < arrayList.size(); i++)
                 {
@@ -247,11 +256,59 @@ public class Tab3Messenger extends Fragment {
                             arrayList.remove(i);
                         }
                     }
+                }*/
+
+                //put each unique user ID from messageUIDs into uniqueUIDs
+                for(int i = 0; i < messageUIDs.size(); i++)
+                {
+                    Log.v(TAG, messageUIDs.get(i));
+
+                    boolean unique = true;
+
+                    for(int j = 0; j < uniqueUIDs.size(); j++)
+                    {
+                        if(messageUIDs.get(i).equals(uniqueUIDs.get(j)))
+                        {
+                            unique = false;
+                        }
+                    }
+                    if(unique == true)
+                    {
+                        uniqueUIDs.add(messageUIDs.get(i));
+
+                    }
                 }
 
 
+                //get unique messages from arrayList and put them in uniqueMessages, this is to prevent duplicates of the same person in the message list
+                //loop through the arrayList backwards to the most recent messages are kept and shown as the recent message in the message list
+                for(int i = arrayList.size() - 1; i > 0; i--)
+                {
+                    Log.v(TAG, arrayList.get(i).getSentToName());
+
+                    boolean unique = true;
+
+                    for(int j = 0; j < uniqueMessages.size(); j++)
+                    {
+                        if(arrayList.get(i).getSentToName().equals(uniqueMessages.get(j).getSentToName()))
+                        {
+                            unique = false;
+                        }
+                    }
+                    if(unique == true)
+                    {
+                        uniqueMessages.add(arrayList.get(i));
+
+                    }
+                }
+
+                for(int i = 0; i < uniqueMessages.size(); i++)
+                {
+                    Log.v(TAG, "Unique name: " + uniqueMessages.get(i).getSentToName());
+                }
+
                 //Create adapter that will be used to apply all the data to the list, this uses Match objects which hold the user data
-                MessageListAdapter adapter = new MessageListAdapter(getActivity().getApplicationContext(), R.layout.list_layout, arrayList);
+                MessageListAdapter adapter = new MessageListAdapter(getActivity().getApplicationContext(), R.layout.list_layout, uniqueMessages);
                 //set the adapter to the list
                 lv.setAdapter(adapter);
 
