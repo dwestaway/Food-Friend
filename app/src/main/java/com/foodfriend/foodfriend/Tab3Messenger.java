@@ -75,13 +75,10 @@ public class Tab3Messenger extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
 
-
         //reference to database messages
         DatabaseReference ref = database.getReference();
 
-
-
-
+        //get instance of the current user
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         //get current user logged in user id
@@ -102,20 +99,11 @@ public class Tab3Messenger extends Fragment {
                 String lastMessage = "";
 
 
-
-
                 //for every chatroom in messages
                 for(DataSnapshot ds : dataSnapshot.child("messages").getChildren()){
 
                     //get userid from each userdata
                     //String uid = ds.getKey();
-
-
-                    //if user id is equal to current user id, do not add that user data (so user does not match with themselves)
-
-
-                    //add userids (keys)
-                    //userids.add(uid);
 
                     //double longitude = (double) ds.child("longitude").getValue();
                     //double latitude = (double) ds.child("latitude").getValue();
@@ -126,7 +114,7 @@ public class Tab3Messenger extends Fragment {
                     //This is the name of the chat between 2 people, it is named using both users ID
                     String chatRoom = ds.getKey();
 
-
+                    //Split the chat room name into the 2 seperate userid's
                     String[] chatRoomIDs = splitByNumber(chatRoom, 29);
 
                     //if the current user ID is one of the id's in the chat room name
@@ -283,7 +271,7 @@ public class Tab3Messenger extends Fragment {
     public void onStart() {
         super.onStart();
 
-        /*
+
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -291,12 +279,18 @@ public class Tab3Messenger extends Fragment {
 
                 //Toast.makeText(getActivity(), data.get(pos).get("Name"), Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(getActivity(), arrayList.get(i).getName(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), arrayList.get(i).getName(), Toast.LENGTH_SHORT).show();
 
-                startActivity(new Intent(getActivity(), ChatActivity.class));
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+
+                intent.putExtra("sentTo", messageUIDs.get(i));
+
+                //startActivity(new Intent(getActivity(), ChatActivity.class));
+
+                startActivity(intent);
             }
         });
-        */
+
 
     }
 

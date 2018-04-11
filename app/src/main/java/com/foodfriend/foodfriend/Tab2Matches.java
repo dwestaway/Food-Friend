@@ -143,9 +143,6 @@ public class Tab2Matches extends Fragment {
 
         });
 
-
-
-
         //return super.onCreateView(inflater, container, savedInstanceState);
 
         return view;

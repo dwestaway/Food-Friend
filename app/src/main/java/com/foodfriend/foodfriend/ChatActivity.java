@@ -59,9 +59,9 @@ public class ChatActivity extends AppCompatActivity {
         {
             sentTo = extras.getString("sentTo");
 
-            sentToName = extras.getString("sentToName");
+            //sentToName = extras.getString("sentToName");
 
-            //Toast.makeText(getApplicationContext(), sentToName + " " + sentTo, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), sentTo, Toast.LENGTH_SHORT).show();
         }
 
         editMessage = findViewById(R.id.sendMessage);
