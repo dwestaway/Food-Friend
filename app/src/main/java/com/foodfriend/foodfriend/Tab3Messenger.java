@@ -98,15 +98,15 @@ public class Tab3Messenger extends Fragment {
                 arrayList.clear();
                 messageUIDs.clear();
 
-                String nameSentTo;
+                String nameSentTo = "";
                 String nameSentFrom;
-                String lastMessage;
+                String lastMessage = "";
                 String imageSentTo;
 
 
 
 
-                //for every message in messages
+                //for every chatroom in messages
                 for(DataSnapshot ds : dataSnapshot.child("messages").getChildren()){
 
                     //get userid from each userdata
@@ -125,96 +125,42 @@ public class Tab3Messenger extends Fragment {
                     //get the date of from the users match data
                     String date = (String) ds.child("date").getValue();
 
+                    //This is the name of the chat between 2 people, it is named using both users ID
+                    String chatRoom = ds.getKey();
+
+
+                    String[] chatRoomIDs = splitByNumber(chatRoom, 29);
+
+
+                    if(currentUserID.equals(chatRoomIDs[0]))
+                    {
+                        recipient = chatRoomIDs[1];
+                    }
+                    else if(currentUserID.equals(chatRoomIDs[1]))
+                    {
+                        recipient = chatRoomIDs[0];
+                    }
+
+                    Log.v(TAG, recipient);
+
+
+                    for(DataSnapshot messages : ds.getChildren())
+                    {
+                        lastMessage = (String) messages.child("content").getValue();
+                    }
 
                     //use message class
                     //read in uid from message data and compare to current user id
 
-                    uidSentTo = (String) ds.child("sentTo").getValue();
-                    uidSentFrom = (String) ds.child("sentFrom").getValue();
+                    //uidSentTo = (String) ds.child("sentTo").getValue();
+                    //uidSentFrom = (String) ds.child("sentFrom").getValue();
 
-                    lastMessage = (String) ds.child("content").getValue();
+                    //lastMessage = (String) ds.child("content").getValue();
 
-                    nameSentTo = (String) ds.child("sentToName").getValue();
-                    nameSentFrom = (String) ds.child("sentFromName").getValue();
-
-                    //imageSentTo = (String) ds.child("sentToImage").getValue();
+                    //nameSentTo = (String) ds.child("sentToName").getValue();
+                    //nameSentFrom = (String) ds.child("sentFromName").getValue();
 
 
-
-                    /*
-
-                    usersRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-
-                            //String imageUrl = "";
-
-                            imageUrl = (String) dataSnapshot.child(uidSentTo).child("profileImage").getValue();
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-
-                    */
-
-
-                        //remove repeated chats from arrayList
-
-                        /*
-                        //Check if sender or reciever is the current user, if no then do not display other peoples messages
-                        if(uidSentTo.equals(currentUserID) || !uidSentFrom.equals(currentUserID))
-                        {
-
-                            uniqueUserMessages.add(uidSentFrom);
-
-                            getRecipientName(uidSentFrom);
-
-
-
-                            //Create a new Match with all the required users data
-                            arrayList.add(new Message(
-                                    lastMessage,
-                                    recipient,
-                                    imageUrl
-                            ));
-
-                        }
-                        else if (!uidSentTo.equals(currentUserID) || uidSentFrom.equals(currentUserID))
-                        {
-                            getRecipientName(uidSentTo);
-
-                            uniqueUserMessages.add(uidSentTo);
-
-                            Toast.makeText(getActivity(), recipient, Toast.LENGTH_LONG).show();
-
-                            //Create a new Match with all the required users data
-                            arrayList.add(new Message(
-                                    lastMessage,
-                                    recipient,
-                                    imageUrl
-                            ));
-                        }
-                        */
-
-
-
-
-                    /*
-
-                    for(Message m : arrayList)
-                    {
-                        //Toast.makeText(getActivity(), m.getSentFromName() + " " + nameSentTo, Toast.LENGTH_LONG).show();
-
-                        if(!m.getSentFromName().equals(nameSentTo))
-                        {
-
-                        }
-                    }
-                    */
                     //Create a new Match with all the required users data
                     arrayList.add(new Message(
                             lastMessage,
@@ -223,45 +169,33 @@ public class Tab3Messenger extends Fragment {
                     ));
 
                     //add each user ID for each message to an arrayList
-                    messageUIDs.add(uidSentTo);
+                    messageUIDs.add(recipient);
+
 
                 }
 
-                //Loop through the arrayList of messages
+
+                //Loop through the arrayList of messages, get the users image using the userID
                 for(int i = 0; i < arrayList.size(); i++)
                 {
                     //get the user for the users image, using list of all user ids from chat messages to find the user image
                     String url = (String) dataSnapshot.child("users").child(messageUIDs.get(i)).child("profileImage").getValue();
+                    //get the users name and set it to each message in arrayList
+                    String sentToName = (String) dataSnapshot.child("users").child(messageUIDs.get(i)).child("name").getValue();
 
                     //update each arrayList message to new image url
                     arrayList.get(i).setTime(url);
+                    arrayList.get(i).setUsername(sentToName);
                 }
 
 
-                Toast.makeText(getActivity(), Integer.toString(arrayList.size()) , Toast.LENGTH_LONG).show();
 
-                //Collections.reverse(arrayList);
 
                 /*
-                //Myself not being displayed for some reason
-                //Remove duplicates from the message list, this is so each list item is a unique user instead of repeated messages from the same user
-                for(int i = 0; i < arrayList.size(); i++)
-                {
-                    String recipient = arrayList.get(i).getSentToName();
-
-                    for(int j = 0; j < arrayList.size(); j++)
-                    {
-                        if(recipient.equals(arrayList.get(j).getSentToName()))
-                        {
-                            arrayList.remove(i);
-                        }
-                    }
-                }*/
-
                 //put each unique user ID from messageUIDs into uniqueUIDs
                 for(int i = 0; i < messageUIDs.size(); i++)
                 {
-                    Log.v(TAG, messageUIDs.get(i));
+                    //Log.v(TAG, messageUIDs.get(i));
 
                     boolean unique = true;
 
@@ -279,36 +213,13 @@ public class Tab3Messenger extends Fragment {
                     }
                 }
 
+                */
 
-                //get unique messages from arrayList and put them in uniqueMessages, this is to prevent duplicates of the same person in the message list
-                //loop through the arrayList backwards to the most recent messages are kept and shown as the recent message in the message list
-                for(int i = arrayList.size() - 1; i > 0; i--)
-                {
-                    Log.v(TAG, arrayList.get(i).getSentToName());
 
-                    boolean unique = true;
 
-                    for(int j = 0; j < uniqueMessages.size(); j++)
-                    {
-                        if(arrayList.get(i).getSentToName().equals(uniqueMessages.get(j).getSentToName()))
-                        {
-                            unique = false;
-                        }
-                    }
-                    if(unique == true)
-                    {
-                        uniqueMessages.add(arrayList.get(i));
-
-                    }
-                }
-
-                for(int i = 0; i < uniqueMessages.size(); i++)
-                {
-                    Log.v(TAG, "Unique name: " + uniqueMessages.get(i).getSentToName());
-                }
 
                 //Create adapter that will be used to apply all the data to the list, this uses Match objects which hold the user data
-                MessageListAdapter adapter = new MessageListAdapter(getActivity().getApplicationContext(), R.layout.list_layout, uniqueMessages);
+                MessageListAdapter adapter = new MessageListAdapter(getActivity().getApplicationContext(), R.layout.list_layout, arrayList);
                 //set the adapter to the list
                 lv.setAdapter(adapter);
 
@@ -329,7 +240,14 @@ public class Tab3Messenger extends Fragment {
     }
 
 
-
+    private String[] splitByNumber(String s, int chunkSize){
+        int chunkCount = (s.length() / chunkSize) + (s.length() % chunkSize == 0 ? 0 : 1);
+        String[] returnVal = new String[chunkCount];
+        for(int i=0;i<chunkCount;i++){
+            returnVal[i] = s.substring(i*chunkSize, Math.min((i+1)*chunkSize-1, s.length()));
+        }
+        return returnVal;
+    }
 
 
     // this listener will be called when there is change in firebase user session

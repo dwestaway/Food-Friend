@@ -62,7 +62,7 @@ public class MessageListAdapter extends ArrayAdapter<Message> {
 
         //set list item name text from Message
         TextView name = (TextView) convertView.findViewById(R.id.textName);
-        name.setText(message.getSentToName());
+        name.setText(message.getUsername());
 
         //set list item place of interest text from Message
         TextView content = (TextView) convertView.findViewById(R.id.textPOI);

@@ -7,16 +7,16 @@ package com.foodfriend.foodfriend;
 public class Message {
 
     private String content;
-    private String sentToName;
+    private String username;
     private String time; //also used to hold imageUrl, this prevents having to create a second Message object
 
     public Message() {
 
     }
 
-    public Message(String content, String sentToName, String time) {
+    public Message(String content, String username, String time) {
         this.content = content;
-        this.sentToName = sentToName;
+        this.username = username;
         this.time = time;
     }
 
@@ -28,12 +28,12 @@ public class Message {
         this.time = time;
     }
 
-    public String getSentToName() {
-        return sentToName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setSentToName(String username) {
-        this.sentToName = username;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getContent() {

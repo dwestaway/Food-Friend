@@ -1,6 +1,7 @@
 package com.foodfriend.foodfriend;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,6 +42,8 @@ public class ChatActivity extends AppCompatActivity {
 
     private RecyclerView messageList;
 
+    private static final String TAG = "ChatActivity";
+
     public String sentTo;
     public String sentToName;
 
@@ -58,13 +61,35 @@ public class ChatActivity extends AppCompatActivity {
 
             sentToName = extras.getString("sentToName");
 
-            Toast.makeText(getApplicationContext(), sentToName + " " + sentTo, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), sentToName + " " + sentTo, Toast.LENGTH_SHORT).show();
         }
 
         editMessage = findViewById(R.id.sendMessage);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("messages"); //get instance of the messages in the database
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String currentUserID = user.getUid();
+
+
+        String chatName = "";
+
+        //Compare the strings alphabetically, this is to make sure they are in the same order, else it will depend on which user starts the chat
+        if(currentUserID.compareTo(sentTo) > 0)
+        {
+            chatName = currentUserID + " " + sentTo;
+        }
+        else if(sentTo.compareTo(currentUserID) > 0)
+        {
+            chatName = sentTo + " " + currentUserID;
+        }
+
+        //get instance of the messages/chat rooms in the database
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("messages").child(chatName);
         auth = FirebaseAuth.getInstance();
+
+
+
+
+
 
         messageList = (RecyclerView) findViewById(R.id.messageRecieved);
 
@@ -97,9 +122,17 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             protected void populateViewHolder(MessageViewHolder viewHolder, Message model, int position) {
 
+                Log.v(TAG, "Message name " + model.getUsername());
+
+
+
+                //Log.v(TAG, "test1" + mDatabase.child(currentUserID + sentTo).getKey());
+
+
+
                 //populate the textviews with database data
                 viewHolder.setContent(model.getContent());
-                viewHolder.setUsername(model.getSentToName());
+                viewHolder.setUsername(model.getUsername());
                 viewHolder.setTime(model.getTime());
             }
         };
@@ -115,8 +148,9 @@ public class ChatActivity extends AppCompatActivity {
         //get text from edit text
         final String message = editMessage.getText().toString().trim();
 
-        //if exit text is not empty
+        //if message text is not empty
         if(!TextUtils.isEmpty(message)) {
+
 
             final DatabaseReference ref = mDatabase.push();
 
@@ -124,15 +158,11 @@ public class ChatActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
+
                     //send message to server
                     ref.child("content").setValue(message);
                     //set message name, get it from account name in users data
-                    ref.child("sentFromName").setValue(dataSnapshot.child("name").getValue()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-
-                        }
-                    });
+                    ref.child("username").setValue(dataSnapshot.child("name").getValue());
 
                     //get current time
                     DateFormat df = new SimpleDateFormat("hh:mm a dd.MM.yyyy ");
@@ -142,11 +172,11 @@ public class ChatActivity extends AppCompatActivity {
                     ref.child("time").setValue(currentTime);
 
                     //save the uid of the current user who sent the message
-                    ref.child("sentFrom").setValue(currentUser.getUid());
+                    //ref.child("sentFrom").setValue(currentUser.getUid());
 
                     //sent to recipients uid
-                    ref.child("sentTo").setValue(sentTo);
-                    ref.child("sentToName").setValue(sentToName);
+                    //ref.child("sentTo").setValue(sentTo);
+                    //ref.child("sentToName").setValue(sentToName);
 
                 }
 
@@ -177,9 +207,9 @@ public class ChatActivity extends AppCompatActivity {
             TextView chatMessage = view.findViewById(R.id.messageText); //get reference to users message from message.xml
             chatMessage.setText(content);
         }
-        public void setUsername(String sentFromName) {
+        public void setUsername(String username) {
             TextView nameMessage = view.findViewById(R.id.nameText); //get reference to users name text
-            nameMessage.setText(sentFromName);
+            nameMessage.setText(username);
         }
         public void setTime(String time) {
             TextView timeMessage = view.findViewById(R.id.timeText);
