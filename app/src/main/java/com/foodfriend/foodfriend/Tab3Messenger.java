@@ -99,9 +99,7 @@ public class Tab3Messenger extends Fragment {
                 messageUIDs.clear();
 
                 String nameSentTo = "";
-                String nameSentFrom;
                 String lastMessage = "";
-                String imageSentTo;
 
 
 
@@ -131,45 +129,54 @@ public class Tab3Messenger extends Fragment {
 
                     String[] chatRoomIDs = splitByNumber(chatRoom, 29);
 
-
+                    //if the current user ID is one of the id's in the chat room name
                     if(currentUserID.equals(chatRoomIDs[0]))
                     {
                         recipient = chatRoomIDs[1];
+
+                        //loop through messages and find the content (message), this replace the previous messages the last one is shown
+                        for(DataSnapshot messages : ds.getChildren())
+                        {
+                            lastMessage = (String) messages.child("content").getValue();
+                        }
+
+                        //Create a new Match with all the required users data
+                        arrayList.add(new Message(
+                                lastMessage,
+                                nameSentTo,
+                                imageUrl
+                        ));
+
+                        //add each user ID for each message to an arrayList
+                        messageUIDs.add(recipient);
+
                     }
                     else if(currentUserID.equals(chatRoomIDs[1]))
                     {
                         recipient = chatRoomIDs[0];
+
+                        //loop through messages and find the content (message), this replace the previous messages the last one is shown
+                        for(DataSnapshot messages : ds.getChildren())
+                        {
+                            lastMessage = (String) messages.child("content").getValue();
+                        }
+
+                        //Create a new Match with all the required users data
+                        arrayList.add(new Message(
+                                lastMessage,
+                                nameSentTo,
+                                imageUrl
+                        ));
+
+                        //add each user ID for each message to an arrayList
+                        messageUIDs.add(recipient);
+
                     }
+                    //else: do not add message to the arrayList
 
                     Log.v(TAG, recipient);
 
 
-                    for(DataSnapshot messages : ds.getChildren())
-                    {
-                        lastMessage = (String) messages.child("content").getValue();
-                    }
-
-                    //use message class
-                    //read in uid from message data and compare to current user id
-
-                    //uidSentTo = (String) ds.child("sentTo").getValue();
-                    //uidSentFrom = (String) ds.child("sentFrom").getValue();
-
-                    //lastMessage = (String) ds.child("content").getValue();
-
-                    //nameSentTo = (String) ds.child("sentToName").getValue();
-                    //nameSentFrom = (String) ds.child("sentFromName").getValue();
-
-
-                    //Create a new Match with all the required users data
-                    arrayList.add(new Message(
-                            lastMessage,
-                            nameSentTo,
-                            imageUrl
-                    ));
-
-                    //add each user ID for each message to an arrayList
-                    messageUIDs.add(recipient);
 
 
                 }
