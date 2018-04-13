@@ -113,7 +113,7 @@
         android:layout_below="@+id/relativeLayout2"
         android:layout_marginTop="18dp"
         android:ems="10"
-        android:hint="Food Place of Interest"
+        android:hint="@string/enter_food_poi"
         android:inputType="textPersonName" />
 
     <Spinner

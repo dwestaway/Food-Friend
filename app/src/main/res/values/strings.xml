@@ -19,6 +19,7 @@
 
     <string name="send">Send</string>
     <string name="enter_message">Enter a Message</string>
+    <string name="enter_food_poi">Enter Food Place of Interest</string>
 
     <string name="email">Email</string>
     <string name="first_name">First Name</string>

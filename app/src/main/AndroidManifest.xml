@@ -21,7 +21,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".AccountActivity.LoginActivity">
+        <activity
+            android:name=".AccountActivity.LoginActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,17 +33,25 @@
         </activity>
 
         <activity
-            android:name=".AccountActivity.ResetPasswordActivity" />
+            android:name=".AccountActivity.ResetPasswordActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
         <activity
-            android:name=".AccountActivity.SignupActivity" />
+            android:name=".AccountActivity.SignupActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".TabbedActivity"
             android:label="Food Friend"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".ChatActivity"></activity>
+            android:name=".ChatActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"></activity>
