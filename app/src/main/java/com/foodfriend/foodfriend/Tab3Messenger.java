@@ -162,11 +162,6 @@ public class Tab3Messenger extends Fragment {
                     }
                     //else: do not add message to the arrayList
 
-                    Log.v(TAG, recipient);
-
-
-
-
                 }
 
 
@@ -184,35 +179,6 @@ public class Tab3Messenger extends Fragment {
                 }
 
 
-
-
-                /*
-                //put each unique user ID from messageUIDs into uniqueUIDs
-                for(int i = 0; i < messageUIDs.size(); i++)
-                {
-                    //Log.v(TAG, messageUIDs.get(i));
-
-                    boolean unique = true;
-
-                    for(int j = 0; j < uniqueUIDs.size(); j++)
-                    {
-                        if(messageUIDs.get(i).equals(uniqueUIDs.get(j)))
-                        {
-                            unique = false;
-                        }
-                    }
-                    if(unique == true)
-                    {
-                        uniqueUIDs.add(messageUIDs.get(i));
-
-                    }
-                }
-
-                */
-
-
-
-
                 //Create adapter that will be used to apply all the data to the list, this uses Match objects which hold the user data
                 MessageListAdapter adapter = new MessageListAdapter(getActivity().getApplicationContext(), R.layout.list_layout, arrayList);
                 //set the adapter to the list
@@ -227,9 +193,6 @@ public class Tab3Messenger extends Fragment {
 
 
         });
-
-
-        //return super.onCreateView(inflater, container, savedInstanceState);
 
         return view;
     }
@@ -249,23 +212,15 @@ public class Tab3Messenger extends Fragment {
     public void onStart() {
         super.onStart();
 
-        //auth.addAuthStateListener(authListener);
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                //Toast.makeText(getActivity(), data.get(pos).get("Name"), Toast.LENGTH_SHORT).show();
-
-                //Toast.makeText(getActivity(), arrayList.get(i).getName(), Toast.LENGTH_SHORT).show();
-
                 Intent intent = new Intent(getActivity(), ChatActivity.class);
 
                 intent.putExtra("sentToName", arrayList.get(i).getUsername());
                 intent.putExtra("sentTo", messageUIDs.get(i));
-
-
-                //startActivity(new Intent(getActivity(), ChatActivity.class));
 
                 startActivity(intent);
             }

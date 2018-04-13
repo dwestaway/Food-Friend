@@ -204,12 +204,6 @@ public class ChatActivity extends AppCompatActivity {
                     //send the time of message to server
                     ref.child("time").setValue(currentTime);
 
-                    //save the uid of the current user who sent the message
-                    //ref.child("sentFrom").setValue(currentUser.getUid());
-
-                    //sent to recipients uid
-                    //ref.child("sentTo").setValue(sentTo);
-                    //ref.child("sentToName").setValue(sentToName);
 
                 }
 

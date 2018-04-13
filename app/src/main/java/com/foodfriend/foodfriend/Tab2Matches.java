@@ -127,7 +127,6 @@ public class Tab2Matches extends Fragment {
                     }
                 }
 
-
                 //Create adapter that will be used to apply all the data to the list, this uses Match objects which hold the user data
                 CustomListAdapter adapter = new CustomListAdapter(getActivity().getApplicationContext(), R.layout.list_layout, arrayList);
                 //set the adapter to the list
@@ -140,17 +139,10 @@ public class Tab2Matches extends Fragment {
                 //Toast.makeText(getActivity(), "Signed Out", Toast.LENGTH_SHORT).show();
             }
 
-
         });
-
-        //return super.onCreateView(inflater, container, savedInstanceState);
 
         return view;
     }
-
-
-
-
 
     @Override
     public void onStart() {
@@ -163,9 +155,6 @@ public class Tab2Matches extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-
-                //Toast.makeText(getActivity(), arrayList.get(i).getName(), Toast.LENGTH_SHORT).show();
-
                 Intent intent = new Intent(getActivity(), ChatActivity.class);
 
                 //send the user who is being clicked to the chat activity, this is to start a chat with the match you click on
@@ -173,15 +162,11 @@ public class Tab2Matches extends Fragment {
                 intent.putExtra("sentTo", userids.get(i));
                 //intent.putExtra("image", arrayList.get(i).getImage());
 
-
                 startActivity(intent);
 
-                //startActivity(new Intent(getActivity(), ChatActivity.class));
             }
         });
 
     }
-
-
 
 }

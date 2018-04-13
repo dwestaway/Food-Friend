@@ -51,9 +51,13 @@ public class Tab1Profile extends Fragment {
     private ProgressBar progressBar;
     private FirebaseAuth auth;
     private DatabaseReference mDatabase;
+    private FirebaseUser user;
 
     private Spinner spinner;
     ArrayAdapter<CharSequence> adapter;
+
+    private GPSLocation gps;
+    private Location location;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -92,10 +96,11 @@ public class Tab1Profile extends Fragment {
         profileImg = (ImageView) getView().findViewById(R.id.profileImage);
 
 
-
         //get current user
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        //setDataToView(user);
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+        sendLocation();
+
 
 
 
@@ -132,24 +137,8 @@ public class Tab1Profile extends Fragment {
             @Override
             public void onClick(View view) {
 
-                //get GPS long and lat
-                GPSLocation gps = new GPSLocation(getContext()); //send context to GPSLocation
 
-                Location location = gps.getLocation();
-
-
-                if(location != null) {
-
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-
-                    //Toast.makeText(getContext(),"Latitude: " + latitude + "\n Longitude: " + longitude, Toast.LENGTH_LONG).show();
-
-                    //send users location to database
-                    mDatabase.child("users").child(user.getUid()).child("longitude").setValue(longitude);
-                    mDatabase.child("users").child(user.getUid()).child("latitude").setValue(latitude);
-                }
-
+                sendLocation();
 
 
                 //get users chosen place of interest
@@ -261,6 +250,27 @@ public class Tab1Profile extends Fragment {
             }
         });
 
+    }
+
+    //send users current location to the server
+    public void sendLocation()
+    {
+        //get GPS location
+        gps = new GPSLocation(getContext());
+
+        location = gps.getLocation();
+
+
+        if(location != null) {
+
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+
+
+            //send users location to database
+            mDatabase.child("users").child(user.getUid()).child("longitude").setValue(longitude);
+            mDatabase.child("users").child(user.getUid()).child("latitude").setValue(latitude);
+        }
     }
 
 
