@@ -46,7 +46,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/buttonrounded"
             android:text="@string/title_activity_login"
             android:textColor="@android:color/black" />
 

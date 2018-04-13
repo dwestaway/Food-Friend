@@ -137,7 +137,7 @@ public class Tab2Matches extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getActivity(), "Signed Out", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "Signed Out", Toast.LENGTH_SHORT).show();
             }
 
 
@@ -152,31 +152,11 @@ public class Tab2Matches extends Fragment {
 
 
 
-    // this listener will be called when there is change in firebase user session
-    FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
-        @SuppressLint("SetTextI18n")
-        @Override
-        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
-            if (user == null) {
-                // user auth state is changed - user is null
-                // launch login activity
-                startActivity(new Intent(getActivity(), LoginActivity.class));
-
-                auth.signOut();
-                //finish();
-            } else {
-                //setDataToView(user);
-
-            }
-        }
-
-    };
-
-
     @Override
     public void onStart() {
         super.onStart();
+
+        //auth.addAuthStateListener(authListener);
 
         //list item click listener
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -201,12 +181,6 @@ public class Tab2Matches extends Fragment {
 
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (authListener != null) {
-            auth.removeAuthStateListener(authListener);
-        }
-    }
+
 
 }

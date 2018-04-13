@@ -234,7 +234,7 @@ public class Tab3Messenger extends Fragment {
         return view;
     }
 
-
+    //Split string method, uses String and character number to split at
     private String[] splitByNumber(String s, int chunkSize){
         int chunkCount = (s.length() / chunkSize) + (s.length() % chunkSize == 0 ? 0 : 1);
         String[] returnVal = new String[chunkCount];
@@ -245,33 +245,11 @@ public class Tab3Messenger extends Fragment {
     }
 
 
-    // this listener will be called when there is change in firebase user session
-    FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
-        @SuppressLint("SetTextI18n")
-        @Override
-        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
-            if (user == null) {
-                // user auth state is changed - user is null
-                // launch login activity
-                startActivity(new Intent(getActivity(), LoginActivity.class));
-
-                auth.signOut();
-                //finish();
-            } else {
-                //setDataToView(user);
-
-            }
-        }
-
-    };
-
-
     @Override
     public void onStart() {
         super.onStart();
 
-
+        //auth.addAuthStateListener(authListener);
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -291,14 +269,6 @@ public class Tab3Messenger extends Fragment {
             }
         });
 
-
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (authListener != null) {
-            auth.removeAuthStateListener(authListener);
-        }
-    }
 }

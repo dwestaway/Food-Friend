@@ -97,18 +97,7 @@ public class Tab1Profile extends Fragment {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         //setDataToView(user);
 
-        authListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user == null) {
-                    // user auth state is changed - user is null
-                    // launch login activity
-                    startActivity(new Intent(getActivity(), LoginActivity.class));
-                    //finish();
-                }
-            }
-        };
+
 
         //hide change password box and button
         newPassword.setVisibility(View.GONE);
@@ -217,7 +206,7 @@ public class Tab1Profile extends Fragment {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             Toast.makeText(getActivity(), "Password updated, sign in with new password!", Toast.LENGTH_SHORT).show();
-                                            signOut();
+                                            auth.signOut();
                                             progressBar.setVisibility(View.GONE);
                                         } else {
                                             Toast.makeText(getActivity(), "Failed to update password!", Toast.LENGTH_SHORT).show();
@@ -248,9 +237,8 @@ public class Tab1Profile extends Fragment {
                 //get user profile image
                 String imageUrl = (String) dataSnapshot.child(uid).child("profileImage").getValue();
 
-
+                //set user name text
                 name.setText(firstName);
-
 
 
                 //Check if user has uploaded image
@@ -275,43 +263,6 @@ public class Tab1Profile extends Fragment {
 
     }
 
-    // this listener will be called when there is change in firebase user session
-    FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
-        @SuppressLint("SetTextI18n")
-        @Override
-        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
-            if (user == null) {
-                // user auth state is changed - user is null
-                // launch login activity
-                startActivity(new Intent(getActivity(), LoginActivity.class));
-                getActivity().finish();
-            } else {
-                //setDataToView(user);
-            }
-        }
-    };
-
-    public void signOut() {
-        auth.signOut();
-
-        // this listener will be called when there is change in firebase user session
-        FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-
-                //if user is null, go back to login activity
-                if (user == null) {
-                    Toast.makeText(getActivity(), "Signed Out", Toast.LENGTH_SHORT).show();
-
-                    startActivity(new Intent(getActivity(), LoginActivity.class));
-
-                    getActivity().finish();
-                }
-            }
-        };
-    }
 
     @Override
     public void onResume() {
@@ -319,17 +270,5 @@ public class Tab1Profile extends Fragment {
         progressBar.setVisibility(View.GONE);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        auth.addAuthStateListener(authListener);
-    }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (authListener != null) {
-            auth.removeAuthStateListener(authListener);
-        }
-    }
 }

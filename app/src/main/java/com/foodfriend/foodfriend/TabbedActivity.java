@@ -1,5 +1,6 @@
 package com.foodfriend.foodfriend;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -18,9 +19,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.foodfriend.foodfriend.AccountActivity.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -128,7 +131,9 @@ public class TabbedActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.sign_out)
         {
             auth.signOut();
-            finish();
+            //finish();
+
+            Toast.makeText(getApplicationContext(), "User signed out", Toast.LENGTH_SHORT).show();
         }
         //If change profile image button is clicked
         if(item.getItemId() == R.id.changeImage)
@@ -229,5 +234,40 @@ public class TabbedActivity extends AppCompatActivity {
             return 3;
         }
 
+    }
+    // this listener will be called when there is change in firebase user session
+    FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
+        @SuppressLint("SetTextI18n")
+        @Override
+        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            //if user is signed out
+            if (user == null) {
+
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                startActivity(intent);
+
+                //auth.signOut();
+                //finish();
+            }
+
+        }
+
+    };
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        auth.addAuthStateListener(authListener);
+    }
+
+    public void onStop() {
+        super.onStop();
+        if (authListener != null) {
+            auth.removeAuthStateListener(authListener);
+        }
     }
 }
