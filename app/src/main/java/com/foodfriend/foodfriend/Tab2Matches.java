@@ -171,6 +171,7 @@ public class Tab2Matches extends Fragment {
                 //send the user who is being clicked to the chat activity, this is to start a chat with the match you click on
                 intent.putExtra("sentToName", arrayList.get(i).getName());
                 intent.putExtra("sentTo", userids.get(i));
+                //intent.putExtra("image", arrayList.get(i).getImage());
 
 
                 startActivity(intent);

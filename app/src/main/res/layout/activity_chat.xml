@@ -12,35 +12,32 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/linearLayout"
+        android:layout_above="@+id/sendMessage"
         android:id="@+id/messageRecieved">
 
 
     </android.support.v7.widget.RecyclerView>
-    
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/linearLayout">
-        
+
+
         <EditText
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/sendButton"
+            android:layout_alignParentBottom="true"
             android:id="@+id/sendMessage"
+            android:textColor="@color/black"
             android:maxLines="1"
-            android:hint="Enter Your Message"/>
-        <Button
+            android:textSize="22dp"
+            android:hint="@string/enter_message"/>
+        <ImageView
+            android:id="@+id/sendButton"
+            android:src="@drawable/ic_send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/buttonrounded"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             android:text="@string/send"
             android:onClick="buttonClicked"/>
-        
-    </LinearLayout>
-
-
 
 </RelativeLayout>

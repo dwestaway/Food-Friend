@@ -2,6 +2,9 @@ package com.foodfriend.foodfriend;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.nfc.Tag;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +15,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +32,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -49,6 +55,8 @@ public class ChatActivity extends AppCompatActivity {
     //private static final String TAG = "ChatActivity";
 
     public String sentTo;
+    public String sentToName;
+    public String imageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +74,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
 
-
-
-
+        //getSupportActionBar().setIcon(R.drawable.profileimage);
 
         //Recieve recipient of message
         Bundle extras = getIntent().getExtras();
@@ -77,6 +83,11 @@ public class ChatActivity extends AppCompatActivity {
         {
             sentTo = extras.getString("sentTo");
 
+            sentToName = extras.getString("sentToName");
+
+            //imageUrl = extras.getString("image");
+
+            setTitle(sentToName);
         }
 
         editMessage = findViewById(R.id.sendMessage);
@@ -100,8 +111,6 @@ public class ChatActivity extends AppCompatActivity {
         //get instance of the messages/chat rooms in the database
         mDatabase = FirebaseDatabase.getInstance().getReference().child("messages").child(chatName);
         auth = FirebaseAuth.getInstance();
-
-
 
 
 
@@ -158,7 +167,12 @@ public class ChatActivity extends AppCompatActivity {
         messageList.setAdapter(firebaseRec);
     }
 
+    //Send button press
     public void buttonClicked(View view) {
+
+        //Close virtual keyboard
+        InputMethodManager inputManager = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
         currentUser = auth.getCurrentUser();
 

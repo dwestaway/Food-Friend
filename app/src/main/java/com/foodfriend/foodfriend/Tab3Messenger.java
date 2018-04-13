@@ -261,7 +261,9 @@ public class Tab3Messenger extends Fragment {
 
                 Intent intent = new Intent(getActivity(), ChatActivity.class);
 
+                intent.putExtra("sentToName", arrayList.get(i).getUsername());
                 intent.putExtra("sentTo", messageUIDs.get(i));
+
 
                 //startActivity(new Intent(getActivity(), ChatActivity.class));
 
