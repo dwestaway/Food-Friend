@@ -198,7 +198,7 @@ public class ChatActivity extends AppCompatActivity {
                     ref.child("username").setValue(dataSnapshot.child("name").getValue());
 
                     //get current time
-                    DateFormat df = new SimpleDateFormat("hh:mm a dd.MM.yyyy ");
+                    DateFormat df = new SimpleDateFormat("kk:mm dd.MM.yyyy ");
                     String currentTime = df.format(Calendar.getInstance().getTime());
 
                     //send the time of message to server
