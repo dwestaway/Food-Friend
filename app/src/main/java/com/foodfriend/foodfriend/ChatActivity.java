@@ -1,5 +1,6 @@
 package com.foodfriend.foodfriend;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.nfc.Tag;
 import android.support.annotation.NonNull;
@@ -9,10 +10,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.foodfriend.foodfriend.AccountActivity.LoginActivity;
@@ -34,6 +37,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private EditText editMessage;
 
+    //Firebase
     private DatabaseReference mDatabase;
     private DatabaseReference databaseUsers;
     private FirebaseAuth auth;
@@ -42,15 +46,29 @@ public class ChatActivity extends AppCompatActivity {
 
     private RecyclerView messageList;
 
-    private static final String TAG = "ChatActivity";
+    //private static final String TAG = "ChatActivity";
 
     public String sentTo;
-    public String sentToName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        //Toolbar toolbar = findViewById(R.id.toolbar);
+
+        //setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+
+
+
+
+
+
 
         //Recieve recipient of message
         Bundle extras = getIntent().getExtras();
@@ -108,6 +126,17 @@ public class ChatActivity extends AppCompatActivity {
         };
     }
 
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int id = item.getItemId();
+
+        if(id == android.R.id.home) {
+            this.finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -118,13 +147,6 @@ public class ChatActivity extends AppCompatActivity {
         FirebaseRecyclerAdapter <Message,MessageViewHolder> firebaseRec = new FirebaseRecyclerAdapter<Message, MessageViewHolder>(Message.class, R.layout.message, MessageViewHolder.class, mDatabase) {
             @Override
             protected void populateViewHolder(MessageViewHolder viewHolder, Message model, int position) {
-
-                Log.v(TAG, "Message name " + model.getUsername());
-
-
-
-                //Log.v(TAG, "test1" + mDatabase.child(currentUserID + sentTo).getKey());
-
 
 
                 //populate the textviews with database data

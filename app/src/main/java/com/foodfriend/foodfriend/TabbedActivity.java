@@ -80,41 +80,10 @@ public class TabbedActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG) //floating button in bottom right
-                        .setAction("Action", null).show();
-            }
-        });
 
     }
 
-
-    //@Override
-    //public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-    //    getMenuInflater().inflate(R.menu.menu_tabbed, menu);
-    //    return true;
-    //}
-
-    //@Override
-    //public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-    //    int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-    //    if (id == R.id.action_settings) {
-    //        return true;
-    //    }
-
-    //    return super.onOptionsItemSelected(item);
-    //}
-
-
+    //Inflate the options menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -123,7 +92,7 @@ public class TabbedActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    //Drop down options menu
+    //Drop down options menu items
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -160,6 +129,7 @@ public class TabbedActivity extends AppCompatActivity {
 
         if(requestCode == GalleryPick && resultCode == RESULT_OK && data != null)
         {
+
             Uri imageUri = data.getData();
 
             //Launch crop activity, set aspect ratio to 1:1 so image is square

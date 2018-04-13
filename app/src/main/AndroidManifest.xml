@@ -20,6 +20,7 @@
         android:roundIcon="@mipmap/logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".AccountActivity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,14 +28,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AccountActivity.ResetPasswordActivity" />
-        <activity android:name=".AccountActivity.SignupActivity" />
+
+        <activity
+            android:name=".AccountActivity.ResetPasswordActivity" />
+        <activity
+            android:name=".AccountActivity.SignupActivity" />
+
         <activity
             android:name=".TabbedActivity"
             android:label="Food Friend"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".ChatActivity"></activity>
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".ChatActivity"></activity>
+
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"></activity>
     </application>
 
 </manifest>
