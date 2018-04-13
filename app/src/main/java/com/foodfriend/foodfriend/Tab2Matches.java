@@ -3,6 +3,7 @@ package com.foodfriend.foodfriend;
 import android.annotation.SuppressLint;
 //import android.app.Fragment;
 import android.content.Intent;
+import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
@@ -85,9 +86,14 @@ public class Tab2Matches extends Fragment {
                 arrayList.clear();
                 userids.clear();
 
+                double currentUserLong = 0;
+                double currentUserLat = 0;
+
                 //get the current users location
-                //double currentUserLong = (double) dataSnapshot.child(currentUserID).child("longitude").getValue();
-                //double currentUserLat = (double) dataSnapshot.child(currentUserID).child("latitude").getValue();
+                currentUserLong = (double) dataSnapshot.child(currentUserID).child("longitude").getValue();
+                currentUserLat = (double) dataSnapshot.child(currentUserID).child("latitude").getValue();
+
+
 
 
                 //for every child/userid in users
@@ -104,24 +110,49 @@ public class Tab2Matches extends Fragment {
                     }
                     else
                     {
-
                         //add userids (keys)
                         userids.add(uid);
 
-                        //double longitude = (double) ds.child("longitude").getValue();
-                        //double latitude = (double) ds.child("latitude").getValue();
+                        //If long and lat are not null
+                        if(currentUserLong != 0 && currentUserLat != 0) {
+                            //get users long and lat
+                            double longitude = Double.parseDouble(String.valueOf(ds.child("longitude").getValue()));
+                            double latitude = Double.parseDouble(String.valueOf(ds.child("latitude").getValue()));
 
-                        //get the date of from the users match data
-                        String date = (String) ds.child("date").getValue();
+                            Log.v(TAG, "Current user location " + longitude + " " + latitude);
 
 
-                        //Create a new Match with all the required users data
-                        arrayList.add(new Match(
-                                (String) ds.child("profileImage").getValue(),
-                                (String) ds.child("name").getValue(),
-                                (String) ds.child("foodPOI").getValue(),
-                                (String) ds.child("time").getValue()
-                        ));
+                            //double latitude = (double) ds.child("latitude").getValue();
+
+                            Location startPoint = new Location("locationA");
+                            startPoint.setLatitude(currentUserLat);
+                            startPoint.setLongitude(currentUserLong);
+
+                            Location endPoint = new Location("locationB");
+                            endPoint.setLatitude(latitude);
+                            endPoint.setLongitude(longitude);
+
+                            double distance = startPoint.distanceTo(endPoint);
+
+                            Log.v(TAG, "Distance " + distance);
+
+                            //if the user is less than 16000 meters (10 miles) from the current user
+                            if(distance < 16000)
+                            {
+                                //get the date of from the users match data
+                                String date = (String) ds.child("date").getValue();
+
+
+                                //Create a new Match with all the required users data
+                                arrayList.add(new Match(
+                                        (String) ds.child("profileImage").getValue(),
+                                        (String) ds.child("name").getValue(),
+                                        (String) ds.child("foodPOI").getValue(),
+                                        (String) ds.child("time").getValue()
+                                ));
+                            }
+                        }
+
 
 
                     }
