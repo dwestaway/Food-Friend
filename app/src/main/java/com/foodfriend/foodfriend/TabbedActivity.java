@@ -25,6 +25,8 @@ import android.widget.Toast;
 import com.foodfriend.foodfriend.AccountActivity.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -135,7 +137,10 @@ public class TabbedActivity extends AppCompatActivity {
 
             final EditText password1 = view.findViewById(R.id.password);
             final EditText password2 = view.findViewById(R.id.repeatPassword);
+            final EditText currentPassword = view.findViewById(R.id.oldPassword);
             Button confirmButton = view.findViewById(R.id.confirmButton);
+
+
 
             confirmButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -150,19 +155,33 @@ public class TabbedActivity extends AppCompatActivity {
                             //if password is at least 6 characters
                             if(password1.getText().toString().trim().length() > 5)
                             {
-                                //Update password
-                                user.updatePassword(password2.getText().toString().trim())
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) {
-                                                    Toast.makeText(TabbedActivity.this, "Password updated, please sign in with new password", Toast.LENGTH_SHORT).show();
-                                                    auth.signOut();
-                                                } else {
-                                                    Toast.makeText(TabbedActivity.this, "Failed to update password!", Toast.LENGTH_SHORT).show();
-                                                }
-                                            }
-                                        });
+                                String email = user.getEmail();
+                                String oldPassword = currentPassword.getText().toString().trim();
+                                //get users current credentials
+                                AuthCredential credential = EmailAuthProvider.getCredential(email, oldPassword);
+                                //reauthenticate user with current credentials
+                                user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful())
+                                        {
+                                            //Update password
+                                            user.updatePassword(password2.getText().toString().trim())
+                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful()) {
+                                                                Toast.makeText(TabbedActivity.this, "Password updated, please sign in with new password", Toast.LENGTH_SHORT).show();
+                                                                auth.signOut();
+                                                            } else {
+                                                                Toast.makeText(TabbedActivity.this, "Failed to update password!", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    });
+                                        }
+                                    }
+                                });
+
 
                             }
                             else
