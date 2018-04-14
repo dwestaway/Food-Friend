@@ -124,10 +124,12 @@ public class Tab2Matches extends Fragment {
 
                             //double latitude = (double) ds.child("latitude").getValue();
 
+                            //Location of current user
                             Location startPoint = new Location("locationA");
                             startPoint.setLatitude(currentUserLat);
                             startPoint.setLongitude(currentUserLong);
 
+                            //Location of potential match
                             Location endPoint = new Location("locationB");
                             endPoint.setLatitude(latitude);
                             endPoint.setLongitude(longitude);

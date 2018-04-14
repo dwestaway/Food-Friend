@@ -16,7 +16,7 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="25dp"
             app:srcCompat="@drawable/profileimage" />
 
         <TextView
@@ -63,9 +63,7 @@
         android:background="@drawable/buttonrounded"
         android:text="Find a Food Friend"
         android:textColor="@android:color/white"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="199dp"
-        tools:layout_editor_absoluteY="211dp" />
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/confirmPass"
@@ -78,9 +76,7 @@
         android:background="@color/colorPrimary"
         android:text="@string/btn_change"
         android:textColor="@android:color/white"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="199dp"
-        tools:layout_editor_absoluteY="211dp" />
+        android:textStyle="bold" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -104,17 +100,18 @@
         android:textStyle="bold" />
 
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/foodChoice"
+        android:textStyle="normal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/spinner"
-        android:layout_alignStart="@+id/spinner"
         android:layout_below="@+id/relativeLayout2"
-        android:layout_marginTop="18dp"
-        android:ems="10"
-        android:hint="@string/enter_food_poi"
-        android:inputType="textPersonName" />
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/black"
+        android:ems="8"
+        android:hint="@string/enter_food_poi" />
 
     <Spinner
         android:id="@+id/spinner"

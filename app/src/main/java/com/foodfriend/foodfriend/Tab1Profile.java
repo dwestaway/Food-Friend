@@ -5,6 +5,7 @@ package com.foodfriend.foodfriend;
  */
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -59,6 +61,9 @@ public class Tab1Profile extends Fragment {
     private GPSLocation gps;
     private Location location;
 
+    private AutoCompleteTextView autoComplete;
+    private ArrayAdapter<String> foodAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -88,7 +93,7 @@ public class Tab1Profile extends Fragment {
 
         //Get reference to all components in the activitys layout
         name = (TextView) getView().findViewById(R.id.userName);
-        foodPOI = (EditText) getView().findViewById(R.id.foodChoice);
+        //foodPOI = (EditText) getView().findViewById(R.id.foodChoice);
         newPassword = (EditText) getView().findViewById(R.id.newPassword);
         search = (Button) getView().findViewById(R.id.searchButton);
         btnChangePassword = (Button) getView().findViewById(R.id.change_password_button);
@@ -96,14 +101,25 @@ public class Tab1Profile extends Fragment {
         profileImg = (ImageView) getView().findViewById(R.id.profileImage);
 
 
+
+
         //get current user
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         sendLocation();
 
+        //Get array of common food places of interest
+        String[] foodPOIarray = getResources().getStringArray(R.array.foodPOI);
 
+        //Create adapter to use a list as autocomplete for the text box
+        foodAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_singlechoice, foodPOIarray);
 
+        autoComplete = getView().findViewById(R.id.foodChoice);
 
+        autoComplete.setAdapter(foodAdapter);
+        autoComplete.setThreshold(1);
+
+        
         //hide change password box and button
         newPassword.setVisibility(View.GONE);
         confirmPassword.setVisibility(View.GONE);
@@ -142,7 +158,7 @@ public class Tab1Profile extends Fragment {
 
 
                 //get users chosen place of interest
-                String poi = foodPOI.getText().toString().trim();
+                String poi = autoComplete.getText().toString().trim();
                 //get users chosen time to eat
                 String time = spinner.getSelectedItem().toString();
 
@@ -164,7 +180,7 @@ public class Tab1Profile extends Fragment {
                 //send todays date to user data on server database
                 mDatabase.child("users").child(user.getUid()).child("date").setValue(date);
 
-                //startActivity(new Intent(getActivity(), Tab2Matches.class));
+                Toast.makeText(getActivity(), "Finding matches", Toast.LENGTH_SHORT).show();
 
                 TabbedActivity.mViewPager.setCurrentItem(1);
             }

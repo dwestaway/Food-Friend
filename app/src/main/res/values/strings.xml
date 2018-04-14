@@ -59,4 +59,14 @@
         <item>Evening</item>
         <item>Night</item>
     </string-array>
+
+    <string-array name="foodPOI">
+        <item>Mcdonalds</item>
+        <item>KFC</item>
+        <item>Burger King</item>
+        <item>Subway</item>
+
+    </string-array>
+
+
 </resources>
