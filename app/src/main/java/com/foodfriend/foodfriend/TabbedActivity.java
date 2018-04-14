@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.foodfriend.foodfriend.AccountActivity.LoginActivity;
@@ -39,7 +42,10 @@ public class TabbedActivity extends AppCompatActivity {
 
 
     public static ViewPager mViewPager;
+
+    //Firebase
     private FirebaseAuth auth;
+    private FirebaseUser user;
     private FirebaseDatabase database;
     private DatabaseReference ref;
 
@@ -57,6 +63,8 @@ public class TabbedActivity extends AppCompatActivity {
         //get auth instance and current users id
         auth = FirebaseAuth.getInstance();
         currentUserID = auth.getCurrentUser().getUid();
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         //get database reference
         database = FirebaseDatabase.getInstance();
@@ -78,6 +86,7 @@ public class TabbedActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        //Create tabs
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
 
@@ -117,6 +126,67 @@ public class TabbedActivity extends AppCompatActivity {
 
             Toast.makeText(getApplicationContext(), "Choose your image", Toast.LENGTH_SHORT).show();
 
+        }
+        //If change password button is clicked
+        if(item.getItemId() == R.id.changePassword)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(TabbedActivity.this);
+            View view = getLayoutInflater().inflate(R.layout.dialog_change_password, null);
+
+            final EditText password1 = view.findViewById(R.id.password);
+            final EditText password2 = view.findViewById(R.id.repeatPassword);
+            Button confirmButton = view.findViewById(R.id.confirmButton);
+
+            confirmButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    //if password fields are not empty
+                    if(!password1.getText().toString().isEmpty() && !password2.getText().toString().isEmpty())
+                    {
+                        //if passwords are the same
+                        if(password1.getText().toString().trim().equals(password2.getText().toString().trim()))
+                        {
+                            //if password is at least 6 characters
+                            if(password1.getText().toString().trim().length() > 5)
+                            {
+                                //Update password
+                                user.updatePassword(password2.getText().toString().trim())
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Toast.makeText(TabbedActivity.this, "Password updated, please sign in with new password", Toast.LENGTH_SHORT).show();
+                                                    auth.signOut();
+                                                } else {
+                                                    Toast.makeText(TabbedActivity.this, "Failed to update password!", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+
+                            }
+                            else
+                            {
+                                Toast.makeText(TabbedActivity.this, "Password must be at least 6 characters.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else
+                        {
+                            Toast.makeText(TabbedActivity.this, "Passwords are not the same.", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                    else
+                    {
+                        Toast.makeText(TabbedActivity.this, "Password fields mut not be empty", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+            //Create dialog
+            builder.setView(view);
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
 
         return super.onOptionsItemSelected(item);

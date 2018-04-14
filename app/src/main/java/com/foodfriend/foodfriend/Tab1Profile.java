@@ -97,11 +97,7 @@ public class Tab1Profile extends Fragment {
 
         //Get reference to all components in the activitys layout
         name = (TextView) getView().findViewById(R.id.userName);
-        //foodPOI = (EditText) getView().findViewById(R.id.foodChoice);
-        newPassword = (EditText) getView().findViewById(R.id.newPassword);
         search = (Button) getView().findViewById(R.id.searchButton);
-        btnChangePassword = (Button) getView().findViewById(R.id.change_password_button);
-        confirmPassword = (Button) getView().findViewById(R.id.confirmPass);
         profileImg = (ImageView) getView().findViewById(R.id.profileImage);
 
 
@@ -132,10 +128,6 @@ public class Tab1Profile extends Fragment {
         });
 
 
-        //hide change password box and button
-        newPassword.setVisibility(View.GONE);
-        confirmPassword.setVisibility(View.GONE);
-
         //create drop down menu
         spinner = (Spinner)getView().findViewById(R.id.spinner);
         adapter = ArrayAdapter.createFromResource(getActivity(),R.array.Times,android.R.layout.simple_spinner_item);
@@ -143,24 +135,7 @@ public class Tab1Profile extends Fragment {
         spinner.setAdapter(adapter);
 
 
-        progressBar = (ProgressBar) getView().findViewById(R.id.progressBar);
-
-        if (progressBar != null) {
-            progressBar.setVisibility(View.GONE);
-        }
-
-
-        btnChangePassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                newPassword.setVisibility(View.VISIBLE);
-                confirmPassword.setVisibility(View.VISIBLE);
-
-            }
-        });
-
-
+        //Search button click
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -200,49 +175,6 @@ public class Tab1Profile extends Fragment {
             }
         });
 
-        //replace password onClick
-        confirmPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                progressBar.setVisibility(View.VISIBLE);
-
-                //If user is not null and password is not null
-                if (user != null && !newPassword.getText().toString().trim().equals("")) {
-
-                    if (newPassword.getText().toString().trim().length() < 6) { //Check password length is more than 6 characters
-
-                        newPassword.setError("Password too short, enter minimum 6 characters");
-                        progressBar.setVisibility(View.GONE);
-
-                    }
-                    //else update password
-                    else
-                    {
-                        user.updatePassword(newPassword.getText().toString().trim())
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Toast.makeText(getActivity(), "Password updated, sign in with new password!", Toast.LENGTH_SHORT).show();
-                                            auth.signOut();
-                                            progressBar.setVisibility(View.GONE);
-                                        } else {
-                                            Toast.makeText(getActivity(), "Failed to update password!", Toast.LENGTH_SHORT).show();
-                                            progressBar.setVisibility(View.GONE);
-                                        }
-                                    }
-                                });
-                    }
-                }
-                //check if password field is empty and tell user to enter password
-                else if (newPassword.getText().toString().trim().equals(""))
-                {
-                    newPassword.setError("Enter password");
-                    progressBar.setVisibility(View.GONE);
-                }
-            }
-        });
 
         //Load data from database
         ref.addValueEventListener(new ValueEventListener() {
@@ -311,12 +243,6 @@ public class Tab1Profile extends Fragment {
         }
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        progressBar.setVisibility(View.GONE);
-    }
 
 
 }

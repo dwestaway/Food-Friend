@@ -30,28 +30,11 @@
             android:gravity="center"
             android:hint="Name"
             android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:textSize="22sp" />
 
 
     </RelativeLayout>
 
-
-
-    <EditText
-        android:id="@+id/newPassword"
-        android:layout_width="230dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/change_password_button"
-        android:layout_alignLeft="@+id/spinner"
-        android:layout_alignStart="@+id/spinner"
-        android:focusableInTouchMode="true"
-        android:hint="@string/new_pass"
-        android:imeOptions="actionUnspecified"
-        android:inputType="textPassword"
-        android:maxLines="1"
-        android:textSize="16sp"
-        tools:layout_editor_absoluteX="106dp"
-        tools:layout_editor_absoluteY="168dp" />
 
     <Button
         android:id="@+id/searchButton"
@@ -67,39 +50,6 @@
         android:textColor="@android:color/white"
         android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/confirmPass"
-        style="?android:textAppearanceSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/newPassword"
-        android:layout_alignEnd="@+id/spinner"
-        android:layout_alignRight="@+id/spinner"
-        android:background="@color/colorPrimary"
-        android:text="@string/btn_change"
-        android:textColor="@android:color/white"
-        android:textStyle="bold" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="0dp" />
-
-    <Button
-        android:id="@+id/change_password_button"
-        style="?android:textAppearanceSmall"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="54dp"
-        android:background="@null"
-        android:text="@string/change_password"
-        android:textColor="@color/colorPrimaryDark"
-        android:textStyle="bold" />
 
 
     <AutoCompleteTextView
@@ -109,6 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/relativeLayout2"
+        android:inputType="textCapSentences"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="20dp"
