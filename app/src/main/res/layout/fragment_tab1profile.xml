@@ -58,7 +58,7 @@
         android:layout_below="@+id/spinner"
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/buttonrounded"
         android:text="Find a Food Friend"
@@ -108,19 +108,21 @@
         android:layout_below="@+id/relativeLayout2"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="20dp"
         android:textColor="@color/black"
         android:ems="8"
         android:hint="@string/enter_food_poi" />
 
     <Spinner
         android:id="@+id/spinner"
+        android:spinnerMode="dialog"
+        android:background="@drawable/gradientbackground"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_marginLeft="16sp"
-        android:layout_marginRight="16sp"
+        android:layout_marginLeft="15sp"
+        android:layout_marginRight="15sp"
         android:layout_below="@+id/foodChoice"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="20dp"
         android:layout_toEndOf="@+id/progressBar"
         android:layout_toRightOf="@+id/progressBar" />
 

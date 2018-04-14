@@ -115,11 +115,10 @@ public class Tab1Profile extends Fragment {
         foodAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_singlechoice, foodPOIarray);
 
         autoComplete = getView().findViewById(R.id.foodChoice);
-
         autoComplete.setAdapter(foodAdapter);
         autoComplete.setThreshold(1);
 
-        
+
         //hide change password box and button
         newPassword.setVisibility(View.GONE);
         confirmPassword.setVisibility(View.GONE);

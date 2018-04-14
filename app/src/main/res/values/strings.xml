@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">Food Friend</string>
     <string name="title_activity_login">Sign in</string>
-
-    <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Current Password</string>
     <string name="action_sign_in">Sign in or register</string>
@@ -11,9 +9,7 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+    <string name="permission_rationale">Contacts permissions are needed for providing email completions.</string>
 
     <string name="password_updated">Password updated, sign in with new password!</string>
 
@@ -51,7 +47,6 @@
     <string name="tab_text_2">Matches</string>
     <string name="tab_text_3">Messages</string>
     <string name="action_settings">Account Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
 
     <string-array name="Times">
         <item>Morning</item>
@@ -61,11 +56,19 @@
     </string-array>
 
     <string-array name="foodPOI">
-        <item>Mcdonalds</item>
+        <item>McDonalds</item>
         <item>KFC</item>
         <item>Burger King</item>
         <item>Subway</item>
-
+        <item>Prezzo</item>
+        <item>Wetherspoon</item>
+        <item>Pizza Hut</item>
+        <item>Dominos</item>
+        <item>YO! Sushi</item>
+        <item>Wagamama</item>
+        <item>Frankie &amp; Bennys</item>
+        <item>Las Iguanas</item>
+        <item>Nandos</item>
     </string-array>
 
 
