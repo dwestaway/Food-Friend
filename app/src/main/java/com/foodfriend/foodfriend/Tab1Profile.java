@@ -4,6 +4,8 @@ package com.foodfriend.foodfriend;
  * Created by Dan on 21/02/2018.
  */
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.location.Location;
@@ -17,6 +19,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -101,8 +105,6 @@ public class Tab1Profile extends Fragment {
         profileImg = (ImageView) getView().findViewById(R.id.profileImage);
 
 
-
-
         //get current user
         user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -117,6 +119,17 @@ public class Tab1Profile extends Fragment {
         autoComplete = getView().findViewById(R.id.foodChoice);
         autoComplete.setAdapter(foodAdapter);
         autoComplete.setThreshold(1);
+
+        //When user clicks outside of the keyboard/auto complete text view
+        autoComplete.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean focused) {
+                if(!focused)
+                {
+                    hideKeyboard(view);
+                }
+            }
+        });
 
 
         //hide change password box and button
@@ -152,9 +165,8 @@ public class Tab1Profile extends Fragment {
             @Override
             public void onClick(View view) {
 
-
+                //send users location to database
                 sendLocation();
-
 
                 //get users chosen place of interest
                 String poi = autoComplete.getText().toString().trim();
@@ -165,6 +177,10 @@ public class Tab1Profile extends Fragment {
                     Toast.makeText(getActivity(), "Enter food place of interest", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if (time.equals("Choose a Time")) {
+                    Toast.makeText(getActivity(), "Enter a time", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 //set database values: food place of interest and time
                 mDatabase.child("users").child(user.getUid()).child("foodPOI").setValue(poi);
@@ -172,14 +188,13 @@ public class Tab1Profile extends Fragment {
 
                 //get current date and send to database
                 Date today = Calendar.getInstance().getTime();
-
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                 String date = sdf.format(today);
 
                 //send todays date to user data on server database
                 mDatabase.child("users").child(user.getUid()).child("date").setValue(date);
 
-                Toast.makeText(getActivity(), "Finding matches", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Finding Matches", Toast.LENGTH_SHORT).show();
 
                 TabbedActivity.mViewPager.setCurrentItem(1);
             }
@@ -265,6 +280,14 @@ public class Tab1Profile extends Fragment {
             }
         });
 
+    }
+
+    //Hide the soft keyboard method
+    public void hideKeyboard(View view)
+    {
+        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     //send users current location to the server

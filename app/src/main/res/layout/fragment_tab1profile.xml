@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
     tools:context="com.foodfriend.foodfriend.TabbedActivity">
     
     <RelativeLayout
@@ -102,6 +104,7 @@
 
     <AutoCompleteTextView
         android:id="@+id/foodChoice"
+        android:singleLine="true"
         android:textStyle="normal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -125,5 +128,6 @@
         android:layout_marginTop="20dp"
         android:layout_toEndOf="@+id/progressBar"
         android:layout_toRightOf="@+id/progressBar" />
+
 
 </RelativeLayout>
