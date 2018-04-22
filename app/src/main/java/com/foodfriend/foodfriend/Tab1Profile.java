@@ -91,6 +91,11 @@ public class Tab1Profile extends Fragment {
         //Prevent activity from starting with the keyboard open
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
+        //If user is null, go back to login screen
+        if (auth.getCurrentUser() == null) {
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+        }
+
         //Get the Firebase authenticatpr
         auth = FirebaseAuth.getInstance();
         //Get the Firebase database
@@ -119,6 +124,7 @@ public class Tab1Profile extends Fragment {
 
         //Create adapter to use a list as autocomplete for the text box
         foodAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_singlechoice, foodPOIarray);
+
 
         autoComplete = getView().findViewById(R.id.foodChoice);
         autoComplete.setAdapter(foodAdapter);
@@ -263,10 +269,6 @@ public class Tab1Profile extends Fragment {
                     if(i == place.TYPE_FOOD || i == place.TYPE_RESTAURANT || i == place.TYPE_MEAL_TAKEAWAY || i == place.TYPE_MEAL_DELIVERY || i == place.TYPE_SHOPPING_MALL)
                     {
                         autoComplete.setText(placeName);
-                    }
-                    else
-                    {
-                        Toast.makeText(getActivity(), "You can not eat at " + placeName + ". Please choose another place", Toast.LENGTH_SHORT).show();
                     }
                 }
 

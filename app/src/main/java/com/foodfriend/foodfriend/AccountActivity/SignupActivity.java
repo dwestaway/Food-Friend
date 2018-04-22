@@ -103,6 +103,7 @@ public class SignupActivity extends AppCompatActivity {
                                     //set name to users id in database
                                     mDatabase.child("users").child(task.getResult().getUser().getUid()).child("name").setValue(name);
 
+                                    //set users values in database
                                     mDatabase.child("users").child(task.getResult().getUser().getUid()).child("longitude").setValue("");
                                     mDatabase.child("users").child(task.getResult().getUser().getUid()).child("latitude").setValue("");
                                     mDatabase.child("users").child(task.getResult().getUser().getUid()).child("time").setValue("");
