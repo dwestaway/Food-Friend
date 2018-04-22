@@ -124,7 +124,7 @@ public class Tab1Profile extends Fragment {
         autoComplete.setAdapter(foodAdapter);
         autoComplete.setThreshold(1);
 
-        //When user clicks outside of the keyboard/auto complete text view
+        //When user clicks outside of the keyboard/auto complete text view, hide the keyboard
         autoComplete.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean focused) {
@@ -246,6 +246,7 @@ public class Tab1Profile extends Fragment {
         });
 
     }
+    //result of user using place picker activity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -259,7 +260,7 @@ public class Tab1Profile extends Fragment {
 
                 for(int i : place.getPlaceTypes())
                 {
-                    if(i == place.TYPE_FOOD || i == place.TYPE_RESTAURANT)
+                    if(i == place.TYPE_FOOD || i == place.TYPE_RESTAURANT || i == place.TYPE_MEAL_TAKEAWAY || i == place.TYPE_MEAL_DELIVERY || i == place.TYPE_SHOPPING_MALL)
                     {
                         autoComplete.setText(placeName);
                     }

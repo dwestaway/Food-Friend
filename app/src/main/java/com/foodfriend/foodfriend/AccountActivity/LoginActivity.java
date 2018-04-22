@@ -1,11 +1,13 @@
 package com.foodfriend.foodfriend.AccountActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -23,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText inputEmail, inputPassword;
     private FirebaseAuth auth;
     private ProgressBar progressBar;
-    private Button btnSignup, btnLogin, btnReset;
+    private Button buttonSignup, buttonLogin, buttonReset;
 
 
     @Override
@@ -38,31 +40,29 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         }
 
-        setContentView(R.layout.activity_login);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        btnSignup = (Button) findViewById(R.id.btn_signup);
-        btnLogin = (Button) findViewById(R.id.btn_login);
-        btnReset = (Button) findViewById(R.id.btn_reset_password);
+        buttonSignup = (Button) findViewById(R.id.buttonSignUp);
+        buttonLogin = (Button) findViewById(R.id.buttonLogin);
+        buttonReset = (Button) findViewById(R.id.buttonResetPass);
 
 
-
-        btnSignup.setOnClickListener(new View.OnClickListener() {
+        buttonSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, SignupActivity.class));
             }
         });
 
-        btnReset.setOnClickListener(new View.OnClickListener() {
+        buttonReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
             }
         });
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String email = inputEmail.getText().toString();

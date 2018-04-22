@@ -42,7 +42,7 @@
             android:textColor="@color/colorDarkest" />
 
         <Button
-            android:id="@+id/btn_login"
+            android:id="@+id/buttonLogin"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
@@ -51,7 +51,7 @@
             android:textColor="@android:color/black" />
 
         <Button
-            android:id="@+id/btn_reset_password"
+            android:id="@+id/buttonResetPass"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
@@ -61,7 +61,7 @@
             android:textColor="@color/colorPrimaryDark" />
 
         <Button
-            android:id="@+id/btn_signup"
+            android:id="@+id/buttonSignUp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"

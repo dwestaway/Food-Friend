@@ -54,7 +54,7 @@
             android:textColor="@color/colorDarkest" />
 
         <Button
-            android:id="@+id/sign_up_button"
+            android:id="@+id/signupButton"
             style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/btn_back"
+            android:id="@+id/buttonBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="70dp"

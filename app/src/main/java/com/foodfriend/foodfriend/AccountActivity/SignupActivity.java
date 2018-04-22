@@ -1,11 +1,13 @@
 package com.foodfriend.foodfriend.AccountActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -24,7 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class SignupActivity extends AppCompatActivity {
 
     private EditText inputEmail, inputPassword, inputName;
-    private Button btnSignUp, btnResetPassword, btnBack;
+    private Button buttonSignUp, buttonBack;
     private ProgressBar progressBar;
 
     private FirebaseAuth auth;
@@ -38,16 +40,15 @@ public class SignupActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        btnBack = (Button) findViewById(R.id.btn_back);
-        btnSignUp = (Button) findViewById(R.id.sign_up_button);
+        buttonBack = (Button) findViewById(R.id.buttonBack);
+        buttonSignUp = (Button) findViewById(R.id.signupButton);
         inputName = (EditText) findViewById(R.id.firstName);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
 
-
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
+        buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -120,7 +121,7 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-        btnBack.setOnClickListener(new View.OnClickListener() {
+        buttonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
