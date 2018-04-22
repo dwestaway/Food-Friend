@@ -66,11 +66,7 @@ public class TabbedActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         currentUserID = auth.getCurrentUser().getUid();
 
-        //If user is null, go back to login screen
-        if (auth.getCurrentUser() == null) {
-            startActivity(new Intent(TabbedActivity.this, LoginActivity.class));
-            finish();
-        }
+
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 

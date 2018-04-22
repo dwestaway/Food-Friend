@@ -91,15 +91,16 @@ public class Tab1Profile extends Fragment {
         //Prevent activity from starting with the keyboard open
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
+        //Get the Firebase authenticatpr
+        auth = FirebaseAuth.getInstance();
+        //Get the Firebase database
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         //If user is null, go back to login screen
         if (auth.getCurrentUser() == null) {
             startActivity(new Intent(getActivity(), LoginActivity.class));
         }
 
-        //Get the Firebase authenticatpr
-        auth = FirebaseAuth.getInstance();
-        //Get the Firebase database
-        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         //Request permissions for GPS/location
         ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 123);
@@ -119,28 +120,7 @@ public class Tab1Profile extends Fragment {
 
         sendLocation();
 
-        //Get array of common food places of interest
-        String[] foodPOIarray = getResources().getStringArray(R.array.foodPOI);
-
-        //Create adapter to use a list as autocomplete for the text box
-        foodAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_singlechoice, foodPOIarray);
-
-
-        autoComplete = getView().findViewById(R.id.foodChoice);
-        autoComplete.setAdapter(foodAdapter);
-        autoComplete.setThreshold(1);
-
-        //When user clicks outside of the keyboard/auto complete text view, hide the keyboard
-        autoComplete.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean focused) {
-                if(!focused)
-                {
-                    hideKeyboard(view);
-                }
-            }
-        });
-
+        setupAutoComplete();
 
         //create drop down menu
         spinner = (Spinner)getView().findViewById(R.id.spinner);
@@ -176,10 +156,7 @@ public class Tab1Profile extends Fragment {
                 mDatabase.child("users").child(user.getUid()).child("foodPOI").setValue(poi);
                 mDatabase.child("users").child(user.getUid()).child("time").setValue(time);
 
-                //get current date and send to database
-                Date today = Calendar.getInstance().getTime();
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                String date = sdf.format(today);
+                String date = getDate();
 
                 //send todays date to user data on server database
                 mDatabase.child("users").child(user.getUid()).child("date").setValue(date);
@@ -190,6 +167,7 @@ public class Tab1Profile extends Fragment {
             }
         });
 
+        //Map button click
         placePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -252,6 +230,33 @@ public class Tab1Profile extends Fragment {
         });
 
     }
+
+    //set up auto complete EditText box using an adapter and array of strings
+    private void setupAutoComplete()
+    {
+        //Get array of common food places of interest
+        String[] foodPOIarray = getResources().getStringArray(R.array.foodPOI);
+
+        //Create adapter to use a list as autocomplete for the text box
+        foodAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_singlechoice, foodPOIarray);
+
+
+        autoComplete = getView().findViewById(R.id.foodChoice);
+        autoComplete.setAdapter(foodAdapter);
+        autoComplete.setThreshold(1);
+
+        //When user clicks outside of the keyboard/auto complete text view, hide the keyboard
+        autoComplete.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean focused) {
+                if(!focused)
+                {
+                    hideKeyboard(view);
+                }
+            }
+        });
+    }
+
     //result of user using place picker activity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -264,8 +269,10 @@ public class Tab1Profile extends Fragment {
 
                 String placeName = String.format("%s", place.getName());
 
+                //get place type chosen
                 for(int i : place.getPlaceTypes())
                 {
+                    //if place type is one of the following
                     if(i == place.TYPE_FOOD || i == place.TYPE_RESTAURANT || i == place.TYPE_MEAL_TAKEAWAY || i == place.TYPE_MEAL_DELIVERY || i == place.TYPE_SHOPPING_MALL)
                     {
                         autoComplete.setText(placeName);
@@ -275,7 +282,6 @@ public class Tab1Profile extends Fragment {
             }
         }
     }
-
 
     //Hide the soft keyboard method
     public void hideKeyboard(View view)
@@ -304,6 +310,15 @@ public class Tab1Profile extends Fragment {
             mDatabase.child("users").child(user.getUid()).child("longitude").setValue(longitude);
             mDatabase.child("users").child(user.getUid()).child("latitude").setValue(latitude);
         }
+    }
+    public String getDate()
+    {
+        //get current date and send to database
+        Date today = Calendar.getInstance().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        String currentDate = sdf.format(today);
+
+        return currentDate;
     }
 
 
