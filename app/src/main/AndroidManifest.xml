@@ -56,6 +56,9 @@
 
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"></activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBDTEbW2VmaJVkmUcU_UGUrJTCT02_gXZI" />
     </application>
 
 </manifest>

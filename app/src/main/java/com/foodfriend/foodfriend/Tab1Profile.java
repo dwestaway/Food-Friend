@@ -32,6 +32,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.foodfriend.foodfriend.AccountActivity.LoginActivity;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,14 +51,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import static android.app.Activity.RESULT_OK;
+
 public class Tab1Profile extends Fragment {
 
-    private Button btnChangePassword, confirmPassword, search;
+    private Button search, placePicker;
     private TextView name;
     private ImageView profileImg;
 
-    private EditText newPassword, foodPOI;
-    private ProgressBar progressBar;
     private FirebaseAuth auth;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
@@ -65,8 +69,11 @@ public class Tab1Profile extends Fragment {
     private GPSLocation gps;
     private Location location;
 
+    //EditText that autocompletes
     private AutoCompleteTextView autoComplete;
     private ArrayAdapter<String> foodAdapter;
+
+    private final static int PLACE_PICKER_REQUEST = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,6 +106,7 @@ public class Tab1Profile extends Fragment {
         name = (TextView) getView().findViewById(R.id.userName);
         search = (Button) getView().findViewById(R.id.searchButton);
         profileImg = (ImageView) getView().findViewById(R.id.profileImage);
+        placePicker = getView().findViewById(R.id.placeButton);
 
 
         //get current user
@@ -136,7 +144,8 @@ public class Tab1Profile extends Fragment {
 
 
         //Search button click
-        search.setOnClickListener(new View.OnClickListener() {
+        search.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view) {
 
@@ -175,6 +184,30 @@ public class Tab1Profile extends Fragment {
             }
         });
 
+        placePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+                Intent intent;
+
+                try {
+                    intent = builder.build(getActivity());
+                    startActivityForResult(intent, PLACE_PICKER_REQUEST);
+                }
+                catch (GooglePlayServicesRepairableException e)
+                {
+                    e.printStackTrace();
+                }
+                catch (GooglePlayServicesNotAvailableException e)
+                {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+
 
         //Load data from database
         ref.addValueEventListener(new ValueEventListener() {
@@ -208,11 +241,38 @@ public class Tab1Profile extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getActivity(), "Database Error", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "Database Error", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if(requestCode == PLACE_PICKER_REQUEST)
+        {
+            if(resultCode == RESULT_OK)
+            {
+                Place place = PlacePicker.getPlace(getActivity(), data);
+
+                String placeName = String.format("%s", place.getName());
+
+                for(int i : place.getPlaceTypes())
+                {
+                    if(i == place.TYPE_FOOD || i == place.TYPE_RESTAURANT)
+                    {
+                        autoComplete.setText(placeName);
+                    }
+                    else
+                    {
+                        Toast.makeText(getActivity(), "You can not eat at " + placeName + ". Please choose another place", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+        }
+    }
+
 
     //Hide the soft keyboard method
     public void hideKeyboard(View view)
