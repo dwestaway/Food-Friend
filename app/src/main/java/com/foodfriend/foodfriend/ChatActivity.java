@@ -3,6 +3,7 @@ package com.foodfriend.foodfriend;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.nfc.Tag;
@@ -11,15 +12,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
+import android.support.v7.widget.Toolbar;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.foodfriend.foodfriend.AccountActivity.LoginActivity;
@@ -56,25 +61,17 @@ public class ChatActivity extends AppCompatActivity {
 
     public String sentTo;
     public String sentToName;
-    public String imageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-
-        //setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-
-
-
-        //getSupportActionBar().setIcon(R.drawable.profileimage);
 
         //Recieve recipient of message
         Bundle extras = getIntent().getExtras();
@@ -84,8 +81,6 @@ public class ChatActivity extends AppCompatActivity {
             sentTo = extras.getString("sentTo");
 
             sentToName = extras.getString("sentToName");
-
-            //imageUrl = extras.getString("image");
 
             setTitle(sentToName);
         }
@@ -130,9 +125,41 @@ public class ChatActivity extends AppCompatActivity {
                 if(firebaseAuth.getCurrentUser() == null)
                 {
                     startActivity(new Intent(ChatActivity.this, LoginActivity.class));
+
+                    auth.signOut();
                 }
             }
         };
+    }
+
+    //Set the toolbar overflow icon menu text colour to black
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        //return super.onPrepareOptionsMenu(menu);
+        try {
+            for (int i = 0; i < menu.size(); i++) {
+                MenuItem mi = menu.getItem(i);
+                //mi.setIcon(R.drawable.ic_action_new);
+                String title = mi.getTitle().toString();
+                Spannable spannable = new SpannableString(title);
+                spannable.setSpan(new ForegroundColorSpan(Color.BLACK), 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                mi.setTitle(spannable);
+
+            }
+        } catch (Exception ex) {
+
+        }
+        return true;
+    }
+
+    //Inflate the options menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_chat,menu);
+
+
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     public boolean onOptionsItemSelected(MenuItem item)
@@ -141,6 +168,17 @@ public class ChatActivity extends AppCompatActivity {
 
         if(id == android.R.id.home) {
             this.finish();
+        }
+        if(id == R.id.reportUser)
+        {
+            Toast.makeText(this, "Report " + sentToName, Toast.LENGTH_SHORT).show();
+        }
+        if(id == R.id.sign_out)
+        {
+            auth.signOut();
+            //finish();
+
+            Toast.makeText(getApplicationContext(), "User signed out", Toast.LENGTH_SHORT).show();
         }
 
         return super.onOptionsItemSelected(item);

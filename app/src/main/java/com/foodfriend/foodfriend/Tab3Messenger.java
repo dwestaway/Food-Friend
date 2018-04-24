@@ -114,7 +114,7 @@ public class Tab3Messenger extends Fragment {
                     //This is the name of the chat between 2 people, it is named using both users ID
                     String chatRoom = ds.getKey();
 
-                    //Split the chat room name into the 2 seperate userid's
+                    //Split the chat room name into the 2 seperate userid's (chat room name is 2 28 character keys)
                     String[] chatRoomIDs = splitByNumber(chatRoom, 29);
 
                     //if the current user ID is one of the id's in the chat room name
@@ -198,13 +198,17 @@ public class Tab3Messenger extends Fragment {
     }
 
     //Split string method, uses String and character number to split at
-    private String[] splitByNumber(String s, int chunkSize){
-        int chunkCount = (s.length() / chunkSize) + (s.length() % chunkSize == 0 ? 0 : 1);
-        String[] returnVal = new String[chunkCount];
-        for(int i=0;i<chunkCount;i++){
-            returnVal[i] = s.substring(i*chunkSize, Math.min((i+1)*chunkSize-1, s.length()));
+    public String[] splitByNumber(String splitWord, int splitNum)
+    {
+        int count = (splitWord.length() / splitNum) + (splitWord.length() % splitNum == 0 ? 0 : 1);
+
+        String[] splitStrings = new String[count];
+
+        for(int i = 0; i < count; i++)
+        {
+            splitStrings[i] = splitWord.substring(i * splitNum, Math.min((i+1) * splitNum -1, splitWord.length()));
         }
-        return returnVal;
+        return splitStrings;
     }
 
 
