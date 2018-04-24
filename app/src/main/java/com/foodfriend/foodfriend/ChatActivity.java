@@ -132,24 +132,7 @@ public class ChatActivity extends AppCompatActivity {
         };
     }
 
-    //Set the toolbar overflow icon menu text colour to black
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        //return super.onPrepareOptionsMenu(menu);
-        try {
-            for (int i = 0; i < menu.size(); i++) {
-                MenuItem mi = menu.getItem(i);
-                //mi.setIcon(R.drawable.ic_action_new);
-                String title = mi.getTitle().toString();
-                Spannable spannable = new SpannableString(title);
-                spannable.setSpan(new ForegroundColorSpan(Color.BLACK), 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                mi.setTitle(spannable);
 
-            }
-        } catch (Exception ex) {
-
-        }
-        return true;
-    }
 
     //Inflate the options menu
     @Override
@@ -173,13 +156,7 @@ public class ChatActivity extends AppCompatActivity {
         {
             Toast.makeText(this, "Report " + sentToName, Toast.LENGTH_SHORT).show();
         }
-        if(id == R.id.sign_out)
-        {
-            auth.signOut();
-            //finish();
 
-            Toast.makeText(getApplicationContext(), "User signed out", Toast.LENGTH_SHORT).show();
-        }
 
         return super.onOptionsItemSelected(item);
     }

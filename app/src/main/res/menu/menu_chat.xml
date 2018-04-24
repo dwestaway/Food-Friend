@@ -5,8 +5,6 @@
 
     <item
         android:id="@+id/reportUser"
-        android:title="Report User" />
-    <item
-        android:id="@+id/sign_out"
-        android:title="Sign Out" />
+        android:title="Report User"
+        app:showAsAction="always"/>
 </menu>
