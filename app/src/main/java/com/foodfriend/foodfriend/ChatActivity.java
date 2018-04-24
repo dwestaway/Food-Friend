@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.nfc.Tag;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +53,7 @@ public class ChatActivity extends AppCompatActivity {
     //Firebase
     private DatabaseReference mDatabase;
     private DatabaseReference databaseUsers;
+    private DatabaseReference databaseReports;
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseUser currentUser;
@@ -154,7 +157,42 @@ public class ChatActivity extends AppCompatActivity {
         }
         if(id == R.id.reportUser)
         {
-            Toast.makeText(this, "Report " + sentToName, Toast.LENGTH_SHORT).show();
+
+            //Dialog builder
+            AlertDialog.Builder builder = new AlertDialog.Builder(ChatActivity.this);
+            View view = getLayoutInflater().inflate(R.layout.dialog_report, null);
+
+            //Get dialog views
+            final EditText reason = view.findViewById(R.id.reportReason);
+            Button confirmButton = view.findViewById(R.id.confirmButton);
+
+            confirmButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    //database reference of reports
+                    mDatabase = FirebaseDatabase.getInstance().getReference().child("reports");
+
+                    String reportReason = reason.getText().toString();
+
+                    //send name and reason to database
+                    mDatabase.child(sentTo).child("name").setValue(sentToName);
+                    mDatabase.child(sentTo).child("reason").setValue(reportReason);
+
+                    Toast.makeText(getApplicationContext(), sentToName + " has been reported.", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(ChatActivity.this, TabbedActivity.class);
+
+                    startActivity(intent);
+                }
+            });
+
+            //Create dialog
+            builder.setView(view);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+
         }
 
 
