@@ -41,6 +41,8 @@
             android:inputType="textPassword"
             android:textColor="@color/colorDarkest" />
 
+
+
         <Button
             android:id="@+id/buttonLogin"
             android:layout_width="fill_parent"
@@ -49,6 +51,14 @@
             android:background="@drawable/buttonrounded"
             android:text="@string/title_activity_login"
             android:textColor="@android:color/black" />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/buttonGoogle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dip" />
+
+ />
 
         <Button
             android:id="@+id/buttonResetPass"

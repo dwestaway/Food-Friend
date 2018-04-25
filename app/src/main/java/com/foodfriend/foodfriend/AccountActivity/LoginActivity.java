@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -15,17 +16,34 @@ import android.widget.Toast;
 
 import com.foodfriend.foodfriend.R;
 import com.foodfriend.foodfriend.TabbedActivity;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText inputEmail, inputPassword;
-    private FirebaseAuth auth;
     private ProgressBar progressBar;
     private Button buttonSignup, buttonLogin, buttonReset;
+    private SignInButton buttonGoogle;
+
+    private FirebaseAuth auth;
+    private DatabaseReference mDatabase;
+
+    private GoogleSignInClient googleSignInClient = null;
+
 
 
     @Override
@@ -35,18 +53,25 @@ public class LoginActivity extends AppCompatActivity {
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         if (auth.getCurrentUser() != null) {
             startActivity(new Intent(LoginActivity.this, TabbedActivity.class));
             finish();
         }
 
-        inputEmail = (EditText) findViewById(R.id.email);
-        inputPassword = (EditText) findViewById(R.id.password);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        buttonSignup = (Button) findViewById(R.id.buttonSignUp);
-        buttonLogin = (Button) findViewById(R.id.buttonLogin);
-        buttonReset = (Button) findViewById(R.id.buttonResetPass);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken("258491184913-ma54t4jcemjuavsh0ukrf0qsp73s6jou.apps.googleusercontent.com").requestEmail().build();
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        //Get views
+        inputEmail = findViewById(R.id.email);
+        inputPassword = findViewById(R.id.password);
+        progressBar =  findViewById(R.id.progressBar);
+        buttonSignup = findViewById(R.id.buttonSignUp);
+        buttonLogin = findViewById(R.id.buttonLogin);
+        buttonReset = findViewById(R.id.buttonResetPass);
+        buttonGoogle = findViewById(R.id.buttonGoogle);
 
 
         buttonSignup.setOnClickListener(new View.OnClickListener() {
@@ -106,5 +131,95 @@ public class LoginActivity extends AppCompatActivity {
                         });
             }
         });
+
+        buttonGoogle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent signInIntent = googleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent, 1);
+            }
+        });
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == 1) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                final GoogleSignInAccount account = task.getResult(ApiException.class);
+                //firebaseAuthWithGoogle(account);
+
+                //final String name = account.getDisplayName();
+                //final String uid = account.getIdToken();
+
+                AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+
+                auth.signInWithCredential(credential)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    //Log.d(TAG, "signInWithCredential:success");
+
+                                    FirebaseUser user = auth.getCurrentUser();
+
+                                    String name = account.getDisplayName();
+                                    String uid = user.getUid();
+
+                                    //send all user info to server and go to profile activity
+                                    
+                                    //String profileImage = account.getPhotoUrl();
+
+
+                                    //set name to users id in database
+                                    mDatabase.child("users").child(uid).child("name").setValue(name);
+                                    mDatabase.child("users").child(uid).child("profileImage").setValue("");
+
+                                    //set users values in database
+                                    mDatabase.child("users").child(uid).child("longitude").setValue("");
+                                    mDatabase.child("users").child(uid).child("latitude").setValue("");
+                                    mDatabase.child("users").child(uid).child("time").setValue("");
+                                    mDatabase.child("users").child(uid).child("foodPOI").setValue("");
+                                    mDatabase.child("users").child(uid).child("date").setValue("");
+
+                                    Intent intent = new Intent(LoginActivity.this, TabbedActivity.class);
+                                    startActivity(intent);
+                                    finish();
+
+                                }
+
+                            }
+                        });
+
+
+
+                //Toast.makeText(LoginActivity.this, account.getDisplayName() + account.getPhotoUrl() + " " + account.getId(), Toast.LENGTH_LONG).show();
+
+
+
+
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately
+                //Log.w(TAG, "Google sign in failed", e);
+                // ...
+            }
+        }
+    }
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+
+        if (auth.getCurrentUser() != null) {
+            startActivity(new Intent(LoginActivity.this, TabbedActivity.class));
+            finish();
+        }
     }
 }
