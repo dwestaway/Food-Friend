@@ -143,23 +143,23 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    //Result of launching Google Sign In
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == 1) {
+
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 final GoogleSignInAccount account = task.getResult(ApiException.class);
-                //firebaseAuthWithGoogle(account);
 
-                //final String name = account.getDisplayName();
-                //final String uid = account.getIdToken();
-
+                //Get auth crediential from Google auth
                 AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
 
+                //Sign in with google credentials
                 auth.signInWithCredential(credential)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -170,25 +170,35 @@ public class LoginActivity extends AppCompatActivity {
 
                                     FirebaseUser user = auth.getCurrentUser();
 
+                                    //get google account display name and uid
                                     String name = account.getDisplayName();
                                     String uid = user.getUid();
 
-                                    //send all user info to server and go to profile activity
-                                    
-                                    //String profileImage = account.getPhotoUrl();
+                                    ///////////
+                                    //Get profile image and make default image show
+                                    //Change it so all values are not set to "" on sign in
 
+                                    String profileImage = account.getPhotoUrl().toString();
 
-                                    //set name to users id in database
+                                    //Check if user first time signing in
+                                    boolean newUser = task.getResult().getAdditionalUserInfo().isNewUser();
+
+                                    //If first time signing in, set default database values
+                                    if(newUser == true)
+                                    {
+                                        //set users values in database to blank
+                                        mDatabase.child("users").child(uid).child("longitude").setValue("");
+                                        mDatabase.child("users").child(uid).child("latitude").setValue("");
+                                        mDatabase.child("users").child(uid).child("time").setValue("");
+                                        mDatabase.child("users").child(uid).child("foodPOI").setValue("");
+                                        mDatabase.child("users").child(uid).child("date").setValue("");
+                                    }
+
+                                    //send name and image to database
                                     mDatabase.child("users").child(uid).child("name").setValue(name);
-                                    mDatabase.child("users").child(uid).child("profileImage").setValue("");
+                                    mDatabase.child("users").child(uid).child("profileImage").setValue(profileImage);
 
-                                    //set users values in database
-                                    mDatabase.child("users").child(uid).child("longitude").setValue("");
-                                    mDatabase.child("users").child(uid).child("latitude").setValue("");
-                                    mDatabase.child("users").child(uid).child("time").setValue("");
-                                    mDatabase.child("users").child(uid).child("foodPOI").setValue("");
-                                    mDatabase.child("users").child(uid).child("date").setValue("");
-
+                                    //Launch tabbed activity
                                     Intent intent = new Intent(LoginActivity.this, TabbedActivity.class);
                                     startActivity(intent);
                                     finish();
@@ -199,14 +209,12 @@ public class LoginActivity extends AppCompatActivity {
                         });
 
 
-
-                //Toast.makeText(LoginActivity.this, account.getDisplayName() + account.getPhotoUrl() + " " + account.getId(), Toast.LENGTH_LONG).show();
-
-
-
-
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
+                auth.signOut();
+
+                Toast.makeText(getApplicationContext(), "Google Sign in failed.", Toast.LENGTH_SHORT).show();
+
                 //Log.w(TAG, "Google sign in failed", e);
                 // ...
             }
