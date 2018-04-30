@@ -20,9 +20,8 @@
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="30dp"
-            android:src="@drawable/logosmall"
-            android:contentDescription=""
-            tools:ignore="ContentDescription" />
+            android:layout_marginTop="20dp"
+            android:src="@drawable/logosmall" />
 
         <EditText
             android:id="@+id/firstName"
@@ -61,7 +60,7 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/buttonrounded"
             android:text="@string/action_register"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:textStyle="bold" />
 
         <Button

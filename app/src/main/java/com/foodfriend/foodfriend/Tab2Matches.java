@@ -7,6 +7,7 @@ import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -75,6 +76,9 @@ public class Tab2Matches extends Fragment {
         //get current user logged in user id
         final String currentUserID = user.getUid();
 
+        //Snackbar.make(getActivity().findViewById(android.R.id.content), "Click match to start chat", Snackbar.LENGTH_LONG);
+        Toast.makeText(getActivity(), "Click match to start chat", Toast.LENGTH_SHORT).show();
+
         //Load data from database
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -103,26 +107,19 @@ public class Tab2Matches extends Fragment {
                     String uid = ds.getKey();
 
 
-                    //if user id is equal to current user id, do not add that user data (so user does not match with themselves)
-                    if(uid.equals(currentUserID))
+                    //if user id is not equal to current user id, do not add that user data (so user does not match with themselves)
+                    if(!uid.equals(currentUserID))
                     {
-                        //nothing here
-                    }
-                    else
-                    {
-                        //add userids (keys)
+                        //add userids (keys) to an arraylist
                         userids.add(uid);
 
                         //If long and lat are not null
                         if(currentUserLong != 0 && currentUserLat != 0) {
+
                             //get users long and lat
                             double longitude = Double.parseDouble(String.valueOf(ds.child("longitude").getValue()));
                             double latitude = Double.parseDouble(String.valueOf(ds.child("latitude").getValue()));
 
-                            Log.v(TAG, "Current user location " + longitude + " " + latitude);
-
-
-                            //double latitude = (double) ds.child("latitude").getValue();
 
                             //Location of current user
                             Location startPoint = new Location("locationA");
@@ -134,9 +131,8 @@ public class Tab2Matches extends Fragment {
                             endPoint.setLatitude(latitude);
                             endPoint.setLongitude(longitude);
 
+                            //distance between current user and matches
                             double distance = startPoint.distanceTo(endPoint);
-
-                            Log.v(TAG, "Distance " + distance);
 
                             //if the user is less than 16000 meters (10 miles) from the current user
                             if(distance < 16000)
@@ -144,6 +140,7 @@ public class Tab2Matches extends Fragment {
                                 //get the date of from the users match data
                                 String date = (String) ds.child("date").getValue();
 
+                                //Check if users date matches current date, only display matches on same day (in final version of app)
 
                                 //Create a new Match with all the required users data
                                 arrayList.add(new Match(
@@ -154,9 +151,6 @@ public class Tab2Matches extends Fragment {
                                 ));
                             }
                         }
-
-
-
                     }
                 }
 
@@ -181,7 +175,6 @@ public class Tab2Matches extends Fragment {
     public void onStart() {
         super.onStart();
 
-        //auth.addAuthStateListener(authListener);
 
         //list item click listener
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -193,7 +186,6 @@ public class Tab2Matches extends Fragment {
                 //send the user who is being clicked to the chat activity, this is to start a chat with the match you click on
                 intent.putExtra("sentToName", arrayList.get(i).getName());
                 intent.putExtra("sentTo", userids.get(i));
-                //intent.putExtra("image", arrayList.get(i).getImage());
 
                 startActivity(intent);
 

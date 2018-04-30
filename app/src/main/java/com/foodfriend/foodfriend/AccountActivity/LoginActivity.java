@@ -95,12 +95,12 @@ public class LoginActivity extends AppCompatActivity {
                 final String password = inputPassword.getText().toString();
 
                 if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Please enter your email address.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (TextUtils.isEmpty(password)) {
-                    Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Please enter your password.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -173,11 +173,6 @@ public class LoginActivity extends AppCompatActivity {
                                     //get google account display name and uid
                                     String name = account.getDisplayName();
                                     String uid = user.getUid();
-
-                                    ///////////
-                                    //Get profile image and make default image show
-                                    //Change it so all values are not set to "" on sign in
-
                                     String profileImage = account.getPhotoUrl().toString();
 
                                     //Check if user first time signing in

@@ -161,7 +161,7 @@ public class Tab1Profile extends Fragment {
                 //send todays date to user data on server database
                 mDatabase.child("users").child(user.getUid()).child("date").setValue(date);
 
-                Toast.makeText(getActivity(), "Finding Matches", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "Finding Matches", Toast.LENGTH_SHORT).show();
 
                 TabbedActivity.mViewPager.setCurrentItem(1);
             }
