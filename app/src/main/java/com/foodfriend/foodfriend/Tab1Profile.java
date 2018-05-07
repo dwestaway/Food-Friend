@@ -11,6 +11,7 @@ import android.content.res.Resources;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -129,7 +130,7 @@ public class Tab1Profile extends Fragment {
         spinner.setAdapter(adapter);
 
 
-        //Search button click
+        //Find food friend button click
         search.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -144,11 +145,11 @@ public class Tab1Profile extends Fragment {
                 String time = spinner.getSelectedItem().toString();
 
                 if (TextUtils.isEmpty(poi)) {
-                    Toast.makeText(getActivity(), "Enter food place of interest", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please choose where you would like to eat", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (time.equals("Choose a Time")) {
-                    Toast.makeText(getActivity(), "Enter a time", Toast.LENGTH_SHORT).show();
+                if (time.equals("Choose a Time to Eat:")) {
+                    Toast.makeText(getActivity(), "Choose a time to eat", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -161,7 +162,8 @@ public class Tab1Profile extends Fragment {
                 //send todays date to user data on server database
                 mDatabase.child("users").child(user.getUid()).child("date").setValue(date);
 
-                //Toast.makeText(getActivity(), "Finding Matches", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "Click a match to start chat", Toast.LENGTH_SHORT).show();
+                Snackbar.make(getActivity().findViewById(android.R.id.content), "Tap a Matched User to Start a Chat", Snackbar.LENGTH_LONG).show();
 
                 TabbedActivity.mViewPager.setCurrentItem(1);
             }

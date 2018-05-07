@@ -54,9 +54,9 @@
     <Spinner
         android:id="@+id/spinner"
         android:spinnerMode="dialog"
-        android:background="@drawable/gradientbackground"
+        android:background="@drawable/spinnerbackground"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="37dp"
         android:layout_marginLeft="15sp"
         android:layout_marginRight="15sp"
         android:layout_below="@+id/placeButton"

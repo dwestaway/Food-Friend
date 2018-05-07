@@ -49,7 +49,7 @@
     <string name="action_settings">Account Settings</string>
 
     <string-array name="Times">
-        <item>Choose a Time</item>
+        <item>Choose a Time to Eat:</item>
         <item>Morning</item>
         <item>Mid-day</item>
         <item>Evening</item>

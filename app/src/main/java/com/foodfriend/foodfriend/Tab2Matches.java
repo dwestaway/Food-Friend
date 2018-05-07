@@ -76,8 +76,7 @@ public class Tab2Matches extends Fragment {
         //get current user logged in user id
         final String currentUserID = user.getUid();
 
-        //Snackbar.make(getActivity().findViewById(android.R.id.content), "Click match to start chat", Snackbar.LENGTH_LONG);
-        Toast.makeText(getActivity(), "Click match to start chat", Toast.LENGTH_SHORT).show();
+
 
         //Load data from database
         ref.addValueEventListener(new ValueEventListener() {
