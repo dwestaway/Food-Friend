@@ -77,12 +77,10 @@ public class Tab2Matches extends Fragment {
         final String currentUserID = user.getUid();
 
 
-
         //Load data from database
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
 
 
                 //initially clear the lists to avoid data being displayed multiple times and it updates live
@@ -96,24 +94,23 @@ public class Tab2Matches extends Fragment {
                 currentUserLong = (double) dataSnapshot.child(currentUserID).child("longitude").getValue();
                 currentUserLat = (double) dataSnapshot.child(currentUserID).child("latitude").getValue();
 
-
+                //get current date
+                String currentDate = getDate();
 
 
                 //for every child/userid in users
-                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
                     //get userid from each userdata
                     String uid = ds.getKey();
 
-
                     //if user id is not equal to current user id, do not add that user data (so user does not match with themselves)
-                    if(!uid.equals(currentUserID))
-                    {
+                    if (!uid.equals(currentUserID)) {
                         //add userids (keys) to an arraylist
                         userids.add(uid);
 
                         //If long and lat are not null
-                        if(currentUserLong != 0 && currentUserLat != 0) {
+                        if (currentUserLong != 0 && currentUserLat != 0) {
 
                             //get users long and lat
                             double longitude = Double.parseDouble(String.valueOf(ds.child("longitude").getValue()));
@@ -134,25 +131,25 @@ public class Tab2Matches extends Fragment {
                             double distance = startPoint.distanceTo(endPoint);
 
                             //if the user is less than 16000 meters (10 miles) from the current user
-                            if(distance < 16000)
-                            {
+                            if (distance < 16000) {
                                 //get the date of from the users match data
                                 String date = (String) ds.child("date").getValue();
 
-                                //Check if users date matches current date, only display matches on same day (in final version of app)
-
-                                //Create a new Match with all the required users data
-                                arrayList.add(new Match(
-                                        (String) ds.child("profileImage").getValue(),
-                                        (String) ds.child("name").getValue(),
-                                        (String) ds.child("foodPOI").getValue(),
-                                        (String) ds.child("time").getValue()
-                                ));
+                                //Check if users date matches current date, only display matches on same day (commented out for testing)
+                                //if(date == currentDate)
+                                //{
+                                    //Create a new Match with all the required users data
+                                    arrayList.add(new Match(
+                                            (String) ds.child("profileImage").getValue(),
+                                            (String) ds.child("name").getValue(),
+                                            (String) ds.child("foodPOI").getValue(),
+                                            (String) ds.child("time").getValue()
+                                    ));
+                                //}
                             }
                         }
                     }
                 }
-
                 //Create adapter that will be used to apply all the data to the list, this uses Match objects which hold the user data
                 CustomListAdapter adapter = new CustomListAdapter(getActivity().getApplicationContext(), R.layout.list_layout, arrayList);
                 //set the adapter to the list
@@ -174,7 +171,6 @@ public class Tab2Matches extends Fragment {
     public void onStart() {
         super.onStart();
 
-
         //list item click listener
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -192,5 +188,16 @@ public class Tab2Matches extends Fragment {
         });
 
     }
+
+    public String getDate()
+    {
+        //get current date and send to database
+        Date today = Calendar.getInstance().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        String currentDate = sdf.format(today);
+
+        return currentDate;
+    }
+
 
 }

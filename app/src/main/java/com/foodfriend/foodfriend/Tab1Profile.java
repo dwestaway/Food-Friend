@@ -102,7 +102,6 @@ public class Tab1Profile extends Fragment {
             startActivity(new Intent(getActivity(), LoginActivity.class));
         }
 
-
         //Request permissions for GPS/location
         ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 123);
 
@@ -136,7 +135,7 @@ public class Tab1Profile extends Fragment {
             @Override
             public void onClick(View view) {
 
-                //send users location to database
+                //send users GPS location to database
                 sendLocation();
 
                 //get users chosen place of interest
@@ -144,10 +143,12 @@ public class Tab1Profile extends Fragment {
                 //get users chosen time to eat
                 String time = spinner.getSelectedItem().toString();
 
+                //If food poi field is empty, alert the user
                 if (TextUtils.isEmpty(poi)) {
                     Toast.makeText(getActivity(), "Please choose where you would like to eat", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                //If a time is not chosen, alert the user
                 if (time.equals("Choose a Time to Eat:")) {
                     Toast.makeText(getActivity(), "Choose a time to eat", Toast.LENGTH_SHORT).show();
                     return;
@@ -162,9 +163,9 @@ public class Tab1Profile extends Fragment {
                 //send todays date to user data on server database
                 mDatabase.child("users").child(user.getUid()).child("date").setValue(date);
 
-                //Toast.makeText(getActivity(), "Click a match to start chat", Toast.LENGTH_SHORT).show();
                 Snackbar.make(getActivity().findViewById(android.R.id.content), "Tap a Matched User to Start a Chat", Snackbar.LENGTH_LONG).show();
 
+                //Change to matches tab
                 TabbedActivity.mViewPager.setCurrentItem(1);
             }
         });
@@ -195,7 +196,7 @@ public class Tab1Profile extends Fragment {
 
 
 
-        //Load data from database
+        //Load data from database from page load
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -224,7 +225,6 @@ public class Tab1Profile extends Fragment {
                 }
 
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 //Toast.makeText(getActivity(), "Database Error", Toast.LENGTH_SHORT).show();

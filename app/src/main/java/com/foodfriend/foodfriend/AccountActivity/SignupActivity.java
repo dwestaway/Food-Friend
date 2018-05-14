@@ -60,28 +60,23 @@ public class SignupActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Enter first name", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(getApplicationContext(), "Enter email address", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 if (TextUtils.isEmpty(password)) {
                     Toast.makeText(getApplicationContext(), "Enter password", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 if (password.length() < 6) {
                     Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 characters", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 if (email.length() < 5) {
                     Toast.makeText(getApplicationContext(), "Please enter a real email", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                progressBar.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE); //Make progress bar visible
                 //create user
                 auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
@@ -89,9 +84,8 @@ public class SignupActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 Toast.makeText(SignupActivity.this, "Account Created", Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.GONE);
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
+
+                                //If sign in is not successful, display message to user, else change screen and set users default values in database
                                 if (!task.isSuccessful()) {
                                     Toast.makeText(SignupActivity.this, "Sign Up Failed" + task.getException(),
                                             Toast.LENGTH_SHORT).show();
@@ -110,9 +104,6 @@ public class SignupActivity extends AppCompatActivity {
                                     mDatabase.child("users").child(task.getResult().getUser().getUid()).child("foodPOI").setValue("");
                                     mDatabase.child("users").child(task.getResult().getUser().getUid()).child("date").setValue("");
                                     mDatabase.child("users").child(task.getResult().getUser().getUid()).child("profileImage").setValue("");
-
-                                    //put userid in list of all userid's
-                                    //mDatabase.child("userids").child(name).setValue(task.getResult().getUser().getUid());
 
                                     finish();
                                 }
