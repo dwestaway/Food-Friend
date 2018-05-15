@@ -70,7 +70,7 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-
+        //Show action bar back button
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -85,6 +85,7 @@ public class ChatActivity extends AppCompatActivity {
 
             sentToName = extras.getString("sentToName");
 
+            //set action bar title to recipient name
             setTitle(sentToName);
         }
 
@@ -111,8 +112,6 @@ public class ChatActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
 
-
-
         messageList = (RecyclerView) findViewById(R.id.messageRecieved);
 
         messageList.setHasFixedSize(true);
@@ -133,7 +132,24 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         };
+
+        auth.addAuthStateListener(authStateListener);
+
+        //use firebase's RecyclerAdapter, parameters: Message class, message layout, message view holder and database reference (reference to the correct chat room in database)
+        FirebaseRecyclerAdapter <Message,MessageViewHolder> firebaseRec = new FirebaseRecyclerAdapter<Message, MessageViewHolder>(Message.class, R.layout.message, MessageViewHolder.class, mDatabase) {
+            @Override
+            protected void populateViewHolder(MessageViewHolder viewHolder, Message model, int position) {
+
+
+                //populate the textviews with database data
+                viewHolder.setContent(model.getContent());
+                viewHolder.setUsername(model.getUsername());
+                viewHolder.setTime(model.getTime());
+            }
+        };
+        messageList.setAdapter(firebaseRec);
     }
+
 
 
 
@@ -142,7 +158,6 @@ public class ChatActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_chat,menu);
-
 
 
         return super.onCreateOptionsMenu(menu);
@@ -191,34 +206,11 @@ public class ChatActivity extends AppCompatActivity {
             builder.setView(view);
             AlertDialog dialog = builder.create();
             dialog.show();
-
-
         }
-
 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        auth.addAuthStateListener(authStateListener);
-
-        //use firebase's RecyclerAdapter, parameters: Message class, message layout, message view holder and database reference
-        FirebaseRecyclerAdapter <Message,MessageViewHolder> firebaseRec = new FirebaseRecyclerAdapter<Message, MessageViewHolder>(Message.class, R.layout.message, MessageViewHolder.class, mDatabase) {
-            @Override
-            protected void populateViewHolder(MessageViewHolder viewHolder, Message model, int position) {
-
-
-                //populate the textviews with database data
-                viewHolder.setContent(model.getContent());
-                viewHolder.setUsername(model.getUsername());
-                viewHolder.setTime(model.getTime());
-            }
-        };
-        messageList.setAdapter(firebaseRec);
-    }
 
     //Send button press
     public void buttonClicked(View view) {
@@ -237,13 +229,11 @@ public class ChatActivity extends AppCompatActivity {
         //if message text is not empty
         if(!TextUtils.isEmpty(message)) {
 
-
             final DatabaseReference ref = mDatabase.push();
 
             databaseUsers.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-
 
                     //send message to server
                     ref.child("content").setValue(message);
@@ -256,8 +246,6 @@ public class ChatActivity extends AppCompatActivity {
 
                     //send the time of message to server
                     ref.child("time").setValue(currentTime);
-
-
                 }
 
                 @Override
