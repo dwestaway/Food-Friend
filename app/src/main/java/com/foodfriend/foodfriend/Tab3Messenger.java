@@ -1,20 +1,16 @@
 package com.foodfriend.foodfriend;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.foodfriend.foodfriend.AccountActivity.LoginActivity;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -24,14 +20,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by Dan on 21/02/2018.
  */
+
 
 public class Tab3Messenger extends Fragment {
 
@@ -43,13 +36,10 @@ public class Tab3Messenger extends Fragment {
 
     ListView lv;
 
-    String uidSentTo = "";
-    String uidSentFrom = "";
     //set as default profile avatar (this will be set if user has not uploaded a profile picture or it fails to load
     String imageUrl = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
 
     String recipient = "";
-
 
     private FirebaseAuth auth;
     private DatabaseReference mDatabase;
@@ -68,6 +58,8 @@ public class Tab3Messenger extends Fragment {
 
         messageUIDs = new ArrayList<>();
         uniqueUIDs = new ArrayList<>();
+
+
 
         lv = view.findViewById(R.id.listMessages);
 
@@ -101,15 +93,6 @@ public class Tab3Messenger extends Fragment {
 
                 //for every chatroom in messages
                 for(DataSnapshot ds : dataSnapshot.child("messages").getChildren()){
-
-                    //get userid from each userdata
-                    //String uid = ds.getKey();
-
-                    //double longitude = (double) ds.child("longitude").getValue();
-                    //double latitude = (double) ds.child("latitude").getValue();
-
-                    //get the date of from the users match data
-                    String date = (String) ds.child("date").getValue();
 
                     //This is the name of the chat between 2 people, it is named using both users ID
                     String chatRoom = ds.getKey();
@@ -191,7 +174,6 @@ public class Tab3Messenger extends Fragment {
                 Toast.makeText(getActivity(), "Signed Out", Toast.LENGTH_SHORT).show();
             }
 
-
         });
 
         return view;
@@ -231,5 +213,6 @@ public class Tab3Messenger extends Fragment {
         });
 
     }
+
 
 }

@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:focusableInTouchMode="true"
+    android:id="@+id/tab1profile"
     tools:context="com.foodfriend.foodfriend.TabbedActivity">
     
     <RelativeLayout

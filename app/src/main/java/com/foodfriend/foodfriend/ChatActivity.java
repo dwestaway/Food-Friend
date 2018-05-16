@@ -1,23 +1,13 @@
 package com.foodfriend.foodfriend;
 
-import android.app.ActionBar;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.nfc.Tag;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,12 +16,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v7.widget.Toolbar;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.foodfriend.foodfriend.AccountActivity.LoginActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -39,8 +26,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -74,9 +59,13 @@ public class ChatActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        editMessage = findViewById(R.id.sendMessage);
+        messageList = findViewById(R.id.messageRecieved);
 
+        //Check if a user is logged in to avoid any errors
+        isUserLoggedIn();
 
-        //Recieve recipient of message
+        //Receive info from previous activity (recipient name and ID)
         Bundle extras = getIntent().getExtras();
 
         if(extras != null)
@@ -89,15 +78,12 @@ public class ChatActivity extends AppCompatActivity {
             setTitle(sentToName);
         }
 
-        editMessage = findViewById(R.id.sendMessage);
-
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String currentUserID = user.getUid();
 
-
         String chatName = "";
 
-        //Compare the strings alphabetically, this is to make sure they are in the same order, else it will depend on which user starts the chat
+        //Compare the strings alphabetically, this is to make sure they are always in the same order for finding the correct chat room messages in database
         if(currentUserID.compareTo(sentTo) > 0)
         {
             chatName = currentUserID + " " + sentTo;
@@ -106,32 +92,14 @@ public class ChatActivity extends AppCompatActivity {
         {
             chatName = sentTo + " " + currentUserID;
         }
-
         //get instance of the messages/chat rooms in the database
         mDatabase = FirebaseDatabase.getInstance().getReference().child("messages").child(chatName);
         auth = FirebaseAuth.getInstance();
 
-
-        messageList = (RecyclerView) findViewById(R.id.messageRecieved);
-
         messageList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true); //start displaying messages from the bottom
-
         messageList.setLayoutManager(linearLayoutManager); //set the layout manager for the message list
-
-        //check if current user is null
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser() == null)
-                {
-                    startActivity(new Intent(ChatActivity.this, LoginActivity.class));
-
-                    auth.signOut();
-                }
-            }
-        };
 
         auth.addAuthStateListener(authStateListener);
 
@@ -140,13 +108,13 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             protected void populateViewHolder(MessageViewHolder viewHolder, Message model, int position) {
 
-
                 //populate the textviews with database data
                 viewHolder.setContent(model.getContent());
                 viewHolder.setUsername(model.getUsername());
                 viewHolder.setTime(model.getTime());
             }
         };
+
         messageList.setAdapter(firebaseRec);
     }
 
@@ -284,6 +252,24 @@ public class ChatActivity extends AppCompatActivity {
             timeMessage.setText(time);
         }
 
+    }
+
+    void isUserLoggedIn()
+    {
+        //check if current user is null
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser() == null)
+                {
+                    startActivity(new Intent(ChatActivity.this, LoginActivity.class));
+
+                    auth.signOut();
+
+                    finish();
+                }
+            }
+        };
     }
 }
 
