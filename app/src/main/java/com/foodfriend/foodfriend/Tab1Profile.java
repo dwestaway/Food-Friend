@@ -303,6 +303,16 @@ public class Tab1Profile extends Fragment {
             mDatabase.child("users").child(user.getUid()).child("longitude").setValue(longitude);
             mDatabase.child("users").child(user.getUid()).child("latitude").setValue(latitude);
         }
+        else if(location == null)
+        {
+            Toast.makeText(getActivity(), "Please enable GPS", Toast.LENGTH_SHORT).show();
+
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+
+            auth.signOut();
+        }
+
+
     }
     public String getDate()
     {

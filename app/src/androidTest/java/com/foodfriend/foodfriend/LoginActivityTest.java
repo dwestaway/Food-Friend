@@ -36,7 +36,6 @@ public class LoginActivityTest {
     @Test
     public void viewsTest() throws Exception
     {
-
         onView(withId(R.id.logo)).check(matches(isDisplayed()));
         onView(withId(R.id.email)).check(matches(isDisplayed()));
         onView(withId(R.id.password)).check(matches(isDisplayed()));
@@ -51,7 +50,6 @@ public class LoginActivityTest {
         onView(withId(R.id.buttonLogin)).perform(click());
 
     }
-
     @After
     public void tearDown() throws Exception
     {

@@ -1,7 +1,11 @@
 package com.foodfriend.foodfriend.AccountActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -56,6 +60,11 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(new Intent(LoginActivity.this, TabbedActivity.class));
             finish();
         }
+
+        checkGPS();
+
+
+
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken("258491184913-ma54t4jcemjuavsh0ukrf0qsp73s6jou.apps.googleusercontent.com").requestEmail().build();
 
@@ -220,6 +229,20 @@ public class LoginActivity extends AppCompatActivity {
         if (auth.getCurrentUser() != null) {
             startActivity(new Intent(LoginActivity.this, TabbedActivity.class));
             finish();
+        }
+    }
+    void checkGPS()
+    {
+        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+
+        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+
+            Toast.makeText(LoginActivity.this, "Please enable GPS", Toast.LENGTH_LONG).show();
+        }
+        String locationProviders = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+        if (locationProviders == null || locationProviders.equals(""))
+        {
+            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
         }
     }
 }

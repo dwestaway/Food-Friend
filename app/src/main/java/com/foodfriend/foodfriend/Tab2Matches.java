@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.location.Location;
         import android.os.Bundle;
         import android.support.v4.app.Fragment;
-        import android.view.LayoutInflater;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +26,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by Dan on 21/02/2018.
@@ -51,7 +55,7 @@ public class Tab2Matches extends Fragment {
 
         lv = view.findViewById(R.id.listMatches);
 
-        FirebaseApp.initializeApp(getContext());
+        //FirebaseApp.initializeApp(getContext());
 
         auth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -59,10 +63,10 @@ public class Tab2Matches extends Fragment {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference().child("users");
 
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
         //get current user logged in user id
-        final String currentUserID = user.getUid();
+        final String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+
 
 
         //Load data from database
@@ -106,19 +110,21 @@ public class Tab2Matches extends Fragment {
 
 
                             //Location of current user
-                            Location startPoint = new Location("locationA");
+                            Location startPoint = new Location("startPoint");
                             startPoint.setLatitude(currentUserLat);
                             startPoint.setLongitude(currentUserLong);
 
                             //Location of potential match
-                            Location endPoint = new Location("locationB");
+                            Location endPoint = new Location("endPoint");
                             endPoint.setLatitude(latitude);
                             endPoint.setLongitude(longitude);
 
                             //distance between current user and matches
-                            double distance = startPoint.distanceTo(endPoint);
+                            float distance = startPoint.distanceTo(endPoint);
 
-                            //if the user is less than 16000 meters (10 miles) from the current user
+                            Log.v(TAG, "Distance: " + distance);
+
+                            //if the user is less than 16000 meters (10 miles) from the current user, issues may occur when using emulator because it sets GPS location to California
                             if (distance < 16000) {
                                 //get the date of from the users match data
                                 String date = (String) ds.child("date").getValue();
