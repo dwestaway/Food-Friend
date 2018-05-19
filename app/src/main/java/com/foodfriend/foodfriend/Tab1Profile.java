@@ -209,7 +209,7 @@ public class Tab1Profile extends Fragment {
                     //Load image into imageView, use placeholder image before user image is loaded
                     Picasso.with(getActivity()).load(imageUrl).placeholder(R.drawable.profileimage).into(profileImg);
                 }
-                else if (!TextUtils.isEmpty(imageUrl))
+                else if (TextUtils.isEmpty(imageUrl))
                 {
                     //Use placeholder image if user has no profile image
                     Picasso.with(getActivity()).load(R.drawable.profileimage).into(profileImg);

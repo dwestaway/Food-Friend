@@ -83,12 +83,14 @@ public class SignupActivity extends AppCompatActivity {
                                 progressBar.setVisibility(View.GONE);
 
                                 //If sign in is not successful, display message to user, else change screen and set users default values in database
-                                if (!task.isSuccessful()) {
-                                    Toast.makeText(SignupActivity.this, "Sign Up Failed" + task.getException(),
-                                            Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(SignupActivity.this, "Account Created" + task.getException(),
-                                            Toast.LENGTH_SHORT).show();
+                                if (!task.isSuccessful())
+                                {
+                                    Toast.makeText(SignupActivity.this, "Sign Up Failed" + task.getException(), Toast.LENGTH_LONG).show();
+                                }
+                                else
+                                {
+                                    Toast.makeText(SignupActivity.this, "Account Created", Toast.LENGTH_SHORT).show();
+
                                     startActivity(new Intent(SignupActivity.this, TabbedActivity.class));
 
                                     //set name to users id in database

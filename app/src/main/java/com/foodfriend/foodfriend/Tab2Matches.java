@@ -101,37 +101,44 @@ public class Tab2Matches extends Fragment {
                         //add userids (keys) to an arraylist
                         userids.add(uid);
 
-                        //If long and lat are not null
-                        if (currentUserLong != 0 && currentUserLat != 0) {
+                        String foodPOI = (String) ds.child("foodPOI").getValue();
 
-                            //get users long and lat
-                            double longitude = Double.parseDouble(String.valueOf(ds.child("longitude").getValue()));
-                            double latitude = Double.parseDouble(String.valueOf(ds.child("latitude").getValue()));
+                        //Log.v(TAG, "Foodpoi " + foodPOI);
+
+                        //Check if user has entered foodPOI, this is so users without foodPOI are not displayed on matches
+                        if(!foodPOI.isEmpty())
+                        {
+                            //If long and lat are not null
+                            if (currentUserLong != 0 && currentUserLat != 0) {
+
+                                //get users long and lat
+                                double longitude = Double.parseDouble(String.valueOf(ds.child("longitude").getValue()));
+                                double latitude = Double.parseDouble(String.valueOf(ds.child("latitude").getValue()));
 
 
-                            //Location of current user
-                            Location startPoint = new Location("startPoint");
-                            startPoint.setLatitude(currentUserLat);
-                            startPoint.setLongitude(currentUserLong);
+                                //Location of current user
+                                Location startPoint = new Location("startPoint");
+                                startPoint.setLatitude(currentUserLat);
+                                startPoint.setLongitude(currentUserLong);
 
-                            //Location of potential match
-                            Location endPoint = new Location("endPoint");
-                            endPoint.setLatitude(latitude);
-                            endPoint.setLongitude(longitude);
+                                //Location of potential match
+                                Location endPoint = new Location("endPoint");
+                                endPoint.setLatitude(latitude);
+                                endPoint.setLongitude(longitude);
 
-                            //distance between current user and matches
-                            float distance = startPoint.distanceTo(endPoint);
+                                //distance between current user and matches
+                                float distance = startPoint.distanceTo(endPoint);
 
-                            Log.v(TAG, "Distance: " + distance);
+                                Log.v(TAG, "Distance: " + distance);
 
-                            //if the user is less than 16000 meters (10 miles) from the current user, issues may occur when using emulator because it sets GPS location to California
-                            if (distance < 16000) {
-                                //get the date of from the users match data
-                                String date = (String) ds.child("date").getValue();
+                                //if the user is less than 16000 meters (10 miles) from the current user, issues may occur when using emulator because it sets GPS location to California
+                                if (distance < 16000) {
+                                    //get the date of from the users match data
+                                    String date = (String) ds.child("date").getValue();
 
-                                //Check if users date matches current date, only display matches on same day (commented out for testing)
-                                //if(date == currentDate)
-                                //{
+                                    //Check if users date matches current date, only display matches on same day (commented out for testing)
+                                    //if(date == currentDate)
+                                    //{
                                     //Create a new Match with all the required users data
                                     arrayList.add(new Match(
                                             (String) ds.child("profileImage").getValue(),
@@ -139,9 +146,12 @@ public class Tab2Matches extends Fragment {
                                             (String) ds.child("foodPOI").getValue(),
                                             (String) ds.child("time").getValue()
                                     ));
-                                //}
+                                    //}
+                                }
                             }
                         }
+
+
                     }
                 }
                 //Create adapter that will be used to apply all the data to the list, this uses Match objects which hold the user data
