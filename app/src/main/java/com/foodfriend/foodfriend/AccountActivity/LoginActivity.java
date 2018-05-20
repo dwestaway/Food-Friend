@@ -229,6 +229,7 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         }
     }
+
     void checkGPS()
     {
 

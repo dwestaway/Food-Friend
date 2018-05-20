@@ -82,8 +82,8 @@ public class Tab2Matches extends Fragment {
                 double currentUserLat = 0;
 
                 //get the current users location
-                currentUserLong = (double) dataSnapshot.child(currentUserID).child("longitude").getValue();
-                currentUserLat = (double) dataSnapshot.child(currentUserID).child("latitude").getValue();
+                currentUserLong = Double.parseDouble(String.valueOf(dataSnapshot.child(currentUserID).child("longitude").getValue()));
+                currentUserLat = Double.parseDouble(String.valueOf(dataSnapshot.child(currentUserID).child("latitude").getValue()));
 
                 //get current date
                 String currentDate = getDate();

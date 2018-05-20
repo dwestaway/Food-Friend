@@ -120,7 +120,7 @@ public class TabbedActivity extends AppCompatActivity {
 
             Toast.makeText(getApplicationContext(), "User signed out", Toast.LENGTH_SHORT).show();
 
-            startActivity(intent);
+            //startActivity(intent);
 
             finish();
         }
@@ -314,7 +314,7 @@ public class TabbedActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
 
-                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                 startActivity(intent);
 

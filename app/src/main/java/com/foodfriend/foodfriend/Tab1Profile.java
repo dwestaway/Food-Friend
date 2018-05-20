@@ -314,7 +314,7 @@ public class Tab1Profile extends Fragment {
         }
         else if(location == null)
         {
-            Toast.makeText(getActivity(), "Please enable GPS", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "GPS is not enabled or cannot be retrieved", Toast.LENGTH_LONG).show();
 
             //startActivity(new Intent(getActivity(), LoginActivity.class));
 

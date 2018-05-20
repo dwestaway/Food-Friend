@@ -171,7 +171,7 @@ public class Tab3Messenger extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getActivity(), "Signed Out", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "Signed Out", Toast.LENGTH_SHORT).show();
             }
 
         });
