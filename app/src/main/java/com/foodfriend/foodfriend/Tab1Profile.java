@@ -3,9 +3,12 @@ package com.foodfriend.foodfriend;
 /**
  * Created by Dan on 21/02/2018.
  */
+import android.*;
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -30,11 +33,8 @@ import android.widget.Toast;
 import com.foodfriend.foodfriend.AccountActivity.LoginActivity;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -48,9 +48,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.app.Activity.RESULT_OK;
-import static android.content.ContentValues.TAG;
-import static android.content.Context.LOCATION_SERVICE;
 
 public class Tab1Profile extends Fragment {
 
@@ -61,6 +60,7 @@ public class Tab1Profile extends Fragment {
     private FirebaseAuth auth;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
+
 
     private Spinner spinner;
     ArrayAdapter<CharSequence> adapter;
@@ -73,8 +73,8 @@ public class Tab1Profile extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
 
         return inflater.inflate(R.layout.fragment_tab1profile, container, false);
 
@@ -93,13 +93,14 @@ public class Tab1Profile extends Fragment {
         //Get the Firebase database
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+
         //If user is null, go back to login screen
         if (auth.getCurrentUser() == null) {
             startActivity(new Intent(getActivity(), LoginActivity.class));
         }
 
         //Request permissions for GPS/location
-        ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 123);
+        ActivityCompat.requestPermissions(getActivity(), new String[]{ACCESS_FINE_LOCATION}, 1);
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users");
@@ -114,7 +115,6 @@ public class Tab1Profile extends Fragment {
         //get current user
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        sendLocation();
 
         setupAutoComplete();
 
@@ -255,6 +255,26 @@ public class Tab1Profile extends Fragment {
         });
     }
 
+    //send users current location to the server
+    public void sendLocation()
+    {
+        //get GPS location
+        GPSLocation gps = new GPSLocation(getContext());
+        Location location = gps.getLocation();
+
+        if(location != null) {
+
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+
+
+            //send users location to database
+            mDatabase.child("users").child(user.getUid()).child("longitude").setValue(longitude);
+            mDatabase.child("users").child(user.getUid()).child("latitude").setValue(latitude);
+        }
+
+    }
+
     //result of user using place picker activity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -289,40 +309,7 @@ public class Tab1Profile extends Fragment {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    //send users current location to the server
-    public void sendLocation()
-    {
-        //get GPS location
-        GPSLocation gps = new GPSLocation(getContext());
-        Location location = gps.getLocation();
 
-        if(location != null) {
-
-            double latitude = location.getLatitude();
-            double longitude = location.getLongitude();
-
-            //if latitude is this number, this means the emulator is setting the GPS location to California, so it should be set to Plymouth for testing
-            if(latitude == 37.421998333333335)
-            {
-                latitude = 50.37658493;
-                longitude = -4.14313589;
-            }
-
-            //send users location to database
-            mDatabase.child("users").child(user.getUid()).child("longitude").setValue(longitude);
-            mDatabase.child("users").child(user.getUid()).child("latitude").setValue(latitude);
-        }
-        else if(location == null)
-        {
-            Toast.makeText(getActivity(), "GPS is not enabled or cannot be retrieved", Toast.LENGTH_LONG).show();
-
-            //startActivity(new Intent(getActivity(), LoginActivity.class));
-
-            //auth.signOut();
-        }
-
-
-    }
     public String getDate()
     {
         //get current date and send to database

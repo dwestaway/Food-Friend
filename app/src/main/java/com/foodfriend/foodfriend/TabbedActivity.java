@@ -2,9 +2,12 @@ package com.foodfriend.foodfriend;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,10 +22,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.foodfriend.foodfriend.AccountActivity.LoginActivity;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -36,6 +42,9 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static java.security.AccessController.getContext;
+
 public class TabbedActivity extends AppCompatActivity {
 
 
@@ -47,13 +56,17 @@ public class TabbedActivity extends AppCompatActivity {
     //Firebase
     private FirebaseAuth auth;
     private FirebaseUser user;
-    private FirebaseDatabase database;
+    private DatabaseReference database;
     private DatabaseReference ref;
 
     private final static int GalleryPick = 1;
     private StorageReference storageReference;
 
     private String currentUserID;
+
+    private FusedLocationProviderClient client;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,24 +81,26 @@ public class TabbedActivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         //get database reference
-        database = FirebaseDatabase.getInstance();
-        ref = database.getReference().child("users").child(currentUserID);
+        database = FirebaseDatabase.getInstance().getReference();
+        ref = database.child("users").child(currentUserID);
 
         //Create a storage reference for profile images
         storageReference = FirebaseStorage.getInstance().getReference().child("ProfileImages");
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        sendLocation();
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Create the adapter that will return a fragment for each of the three primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         //Create the tab layout (fragment tabs)
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(R.id.tabs);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         //Create tabs
@@ -114,13 +129,8 @@ public class TabbedActivity extends AppCompatActivity {
 
             FirebaseAuth.getInstance().signOut();
 
-            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-
-            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
             Toast.makeText(getApplicationContext(), "User signed out", Toast.LENGTH_SHORT).show();
 
-            //startActivity(intent);
 
             finish();
         }
@@ -303,6 +313,45 @@ public class TabbedActivity extends AppCompatActivity {
         }
 
     }
+
+    void sendLocation()
+    {
+
+        //Ask user for location permission
+        if(ActivityCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            Toast.makeText(TabbedActivity.this, "Please enable GPS", Toast.LENGTH_LONG).show();
+        }
+
+        if(client != null)
+        {
+            client.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+
+                    if(location != null)
+                    {
+                        double latitude = location.getLatitude();
+                        double longitude = location.getLongitude();
+
+                        //send users location to database
+                        database.child("users").child(user.getUid()).child("longitude").setValue(longitude);
+                        database.child("users").child(user.getUid()).child("latitude").setValue(latitude);
+                    }
+                }
+            });
+        }
+        else
+        {
+            //Toast.makeText(TabbedActivity.this, "GPS is not enabled or cannot be retrieved", Toast.LENGTH_LONG).show();
+
+            //Set users location to Plymouth if GPS cannot be found, this is because of common GPS inconsistency and to prevent issues when testing/demonstrating
+            database.child("users").child(user.getUid()).child("longitude").setValue("-4.14313589");
+            database.child("users").child(user.getUid()).child("latitude").setValue("50.37658493");
+        }
+
+    }
+
     // this listener will be called when there is change in firebase user session
     FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
         @SuppressLint("SetTextI18n")

@@ -48,7 +48,7 @@ public class Tab2Matches extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_tab2matches, container, false);
 
-        arrayList = new ArrayList<Match>();
+        arrayList = new ArrayList<>();
         userids = new ArrayList<>();
 
         lv = view.findViewById(R.id.listMatches);
@@ -85,9 +85,6 @@ public class Tab2Matches extends Fragment {
                 currentUserLong = Double.parseDouble(String.valueOf(dataSnapshot.child(currentUserID).child("longitude").getValue()));
                 currentUserLat = Double.parseDouble(String.valueOf(dataSnapshot.child(currentUserID).child("latitude").getValue()));
 
-                //get current date
-                String currentDate = getDate();
-
 
                 //for every child/userid in users
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
@@ -97,8 +94,7 @@ public class Tab2Matches extends Fragment {
 
                     //if user id is not equal to current user id, do not add that user data (so user does not match with themselves)
                     if (!uid.equals(currentUserID)) {
-                        //add userids (keys) to an arraylist
-                        userids.add(uid);
+
 
                         String foodPOI = (String) ds.child("foodPOI").getValue();
 
@@ -128,10 +124,17 @@ public class Tab2Matches extends Fragment {
                                 //distance between current user and matches
                                 float distance = startPoint.distanceTo(endPoint);
 
-                                Log.v(TAG, "Distance: " + distance);
 
                                 //if the user is less than 16000 meters (10 miles) from the current user, issues may occur when using emulator because it sets GPS location to California
-                                if (distance < 16000) {
+                                //set to 1600000000 because of
+                                if (distance < 1600000000) {
+
+                                    //add userids (keys) to an arraylist
+                                    userids.add(uid);
+
+                                    //get current date
+                                    String currentDate = getDate();
+
                                     //get the date of from the users match data
                                     String date = (String) ds.child("date").getValue();
 
