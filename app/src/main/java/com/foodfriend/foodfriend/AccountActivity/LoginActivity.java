@@ -171,8 +171,6 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    //Log.d(TAG, "signInWithCredential:success");
 
                                     FirebaseUser user = auth.getCurrentUser();
 
@@ -211,7 +209,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
             } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
+
                 auth.signOut();
 
                 Toast.makeText(getApplicationContext(), "Google Sign in failed.", Toast.LENGTH_SHORT).show();
@@ -233,12 +231,7 @@ public class LoginActivity extends AppCompatActivity {
     }
     void checkGPS()
     {
-        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
-        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
-
-            Toast.makeText(LoginActivity.this, "Please enable GPS", Toast.LENGTH_LONG).show();
-        }
         String locationProviders = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
         if (locationProviders == null || locationProviders.equals(""))
         {

@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -109,10 +110,19 @@ public class TabbedActivity extends AppCompatActivity {
         //If signout button is clicked
         if(item.getItemId() == R.id.sign_out)
         {
-            auth.signOut();
-            //finish();
+
+
+            FirebaseAuth.getInstance().signOut();
+
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+
+            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
             Toast.makeText(getApplicationContext(), "User signed out", Toast.LENGTH_SHORT).show();
+
+            startActivity(intent);
+
+            finish();
         }
         //If change profile image button is clicked
         if(item.getItemId() == R.id.changeImage)
@@ -304,12 +314,11 @@ public class TabbedActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
 
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                 startActivity(intent);
 
-                //auth.signOut();
-                //finish();
+                finish();
             }
 
         }

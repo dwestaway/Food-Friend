@@ -42,8 +42,6 @@ public class Tab2Matches extends Fragment {
     ListView lv;
 
 
-    private FirebaseAuth auth;
-    private DatabaseReference mDatabase;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,14 +55,12 @@ public class Tab2Matches extends Fragment {
 
         //FirebaseApp.initializeApp(getContext());
 
-        auth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        final FirebaseAuth auth = FirebaseAuth.getInstance();
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference().child("users");
 
-        //get current user logged in user id
-        final String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
 
 
 
@@ -73,6 +69,9 @@ public class Tab2Matches extends Fragment {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                //get current user logged in user id
+                String currentUserID = auth.getCurrentUser().getUid();
 
 
                 //initially clear the lists to avoid data being displayed multiple times and it updates live

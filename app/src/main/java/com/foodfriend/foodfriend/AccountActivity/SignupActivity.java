@@ -37,12 +37,12 @@ public class SignupActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        buttonBack = (Button) findViewById(R.id.buttonBack);
-        buttonSignUp = (Button) findViewById(R.id.signupButton);
-        inputName = (EditText) findViewById(R.id.firstName);
-        inputEmail = (EditText) findViewById(R.id.email);
-        inputPassword = (EditText) findViewById(R.id.password);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        buttonBack = findViewById(R.id.buttonBack);
+        buttonSignUp = findViewById(R.id.signupButton);
+        inputName = findViewById(R.id.firstName);
+        inputEmail = findViewById(R.id.email);
+        inputPassword = findViewById(R.id.password);
+        progressBar = findViewById(R.id.progressBar);
 
 
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
@@ -75,39 +75,38 @@ public class SignupActivity extends AppCompatActivity {
                 }
                 progressBar.setVisibility(View.VISIBLE); //Make progress bar visible
                 //create user
-                auth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                Toast.makeText(SignupActivity.this, "Account Created", Toast.LENGTH_SHORT).show();
-                                progressBar.setVisibility(View.GONE);
+                auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                //If sign in is not successful, display message to user, else change screen and set users default values in database
-                                if (!task.isSuccessful())
-                                {
-                                    Toast.makeText(SignupActivity.this, "Sign Up Failed" + task.getException(), Toast.LENGTH_LONG).show();
-                                }
-                                else
-                                {
-                                    Toast.makeText(SignupActivity.this, "Account Created", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
 
-                                    startActivity(new Intent(SignupActivity.this, TabbedActivity.class));
+                        //If sign in is not successful, display message to user, else change screen and set users default values in database
+                        if (!task.isSuccessful())
+                        {
+                            Toast.makeText(SignupActivity.this, "Sign Up Failed" + task.getException(), Toast.LENGTH_LONG).show();
+                        }
+                        else
+                        {
+                            Toast.makeText(SignupActivity.this, "Account Created", Toast.LENGTH_SHORT).show();
 
-                                    //set name to users id in database
-                                    mDatabase.child("users").child(task.getResult().getUser().getUid()).child("name").setValue(name);
+                            //set name to users id in database
+                            mDatabase.child("users").child(task.getResult().getUser().getUid()).child("name").setValue(name);
 
-                                    //set users values in database
-                                    mDatabase.child("users").child(task.getResult().getUser().getUid()).child("longitude").setValue("");
-                                    mDatabase.child("users").child(task.getResult().getUser().getUid()).child("latitude").setValue("");
-                                    mDatabase.child("users").child(task.getResult().getUser().getUid()).child("time").setValue("");
-                                    mDatabase.child("users").child(task.getResult().getUser().getUid()).child("foodPOI").setValue("");
-                                    mDatabase.child("users").child(task.getResult().getUser().getUid()).child("date").setValue("");
-                                    mDatabase.child("users").child(task.getResult().getUser().getUid()).child("profileImage").setValue("");
+                            //set users values in database
+                            mDatabase.child("users").child(task.getResult().getUser().getUid()).child("longitude").setValue("0");
+                            mDatabase.child("users").child(task.getResult().getUser().getUid()).child("latitude").setValue("0");
+                            mDatabase.child("users").child(task.getResult().getUser().getUid()).child("time").setValue("");
+                            mDatabase.child("users").child(task.getResult().getUser().getUid()).child("foodPOI").setValue("");
+                            mDatabase.child("users").child(task.getResult().getUser().getUid()).child("date").setValue("");
+                            mDatabase.child("users").child(task.getResult().getUser().getUid()).child("profileImage").setValue("");
 
-                                    finish();
-                                }
-                            }
-                        });
+                            startActivity(new Intent(SignupActivity.this, TabbedActivity.class));
+
+                            finish();
+                        }
+                    }
+                });
 
             }
         });
@@ -115,7 +114,10 @@ public class SignupActivity extends AppCompatActivity {
         buttonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                //finish();
+                Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+
+                startActivity(intent);
             }
         });
     }
