@@ -26,6 +26,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.foodfriend.foodfriend.AccountActivity.LoginActivity;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -66,7 +69,7 @@ public class TabbedActivity extends AppCompatActivity {
 
     private FusedLocationProviderClient client;
 
-
+    AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +89,14 @@ public class TabbedActivity extends AppCompatActivity {
 
         //Create a storage reference for profile images
         storageReference = FirebaseStorage.getInstance().getReference().child("ProfileImages");
+
+        //Initialize ads
+        MobileAds.initialize(this,"ca-app-pub-3235243213995142~8206055010");
+
+        //find view and add an advert to the adView
+        adView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
         sendLocation();
 
@@ -125,8 +136,6 @@ public class TabbedActivity extends AppCompatActivity {
         //If signout button is clicked
         if(item.getItemId() == R.id.sign_out)
         {
-
-
             FirebaseAuth.getInstance().signOut();
 
             Toast.makeText(getApplicationContext(), "User signed out", Toast.LENGTH_SHORT).show();
@@ -363,7 +372,7 @@ public class TabbedActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
 
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                 startActivity(intent);
 
