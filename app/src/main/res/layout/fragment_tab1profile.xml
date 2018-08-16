@@ -7,12 +7,15 @@
     android:focusableInTouchMode="true"
     android:id="@+id/tab1profile"
     tools:context="com.foodfriend.foodfriend.TabbedActivity">
-    
+
     <RelativeLayout
+        android:id="@+id/relativeLayout2"
         android:layout_width="match_parent"
         android:layout_height="240dp"
-        android:background="@drawable/gradientbackground"
-        android:id="@+id/relativeLayout2">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/gradientbackground">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileImage"
@@ -40,11 +43,11 @@
         android:id="@+id/foodChoice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/spinner"
-        android:layout_alignStart="@+id/spinner"
-        android:layout_below="@+id/relativeLayout2"
+        android:layout_below="@id/relativeLayout2"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="30dp"
         android:layout_marginRight="80dp"
+        android:layout_marginBottom="10dp"
         android:ems="8"
         android:hint="@string/enter_food_poi"
         android:inputType="textCapSentences"
@@ -52,18 +55,42 @@
         android:textColor="@color/black"
         android:textStyle="normal" />
 
+    <View
+        android:id="@+id/fakeView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"/>
+
     <Spinner
         android:id="@+id/spinner"
         android:spinnerMode="dialog"
-        android:background="@drawable/spinnerbackground"
-        android:layout_width="match_parent"
-        android:layout_height="37dp"
-        android:layout_marginLeft="15sp"
-        android:layout_marginRight="15sp"
-        android:layout_below="@+id/placeButton"
-        android:layout_marginTop="20dp"
-        android:layout_toEndOf="@+id/progressBar"
-        android:layout_toRightOf="@+id/progressBar" />
+        android:background="@drawable/buttonrounded"
+        android:layout_width="fill_parent"
+        android:layout_height="42dp"
+        android:layout_marginLeft="5sp"
+        android:layout_marginRight="10sp"
+        android:layout_centerVertical="true"
+        android:layout_below="@+id/foodChoice"
+        android:layout_alignLeft="@id/fakeView"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="15dp" />
+
+    <Button
+        android:id="@+id/dateButton"
+        android:layout_width="fill_parent"
+        android:layout_height="42dp"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="5sp"
+        android:layout_below="@+id/foodChoice"
+        android:layout_alignRight="@id/fakeView"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/buttonrounded"
+        android:text="@string/choose_day"
+        android:textSize="15dp"
+        android:typeface="normal"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"/>
 
     <Button
         android:id="@+id/searchButton"
@@ -72,7 +99,7 @@
         android:layout_below="@+id/spinner"
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/buttonrounded"
         android:text="Find a Food Friend"
@@ -83,9 +110,9 @@
         android:id="@+id/placeButton"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/foodChoice"
-        android:layout_alignEnd="@+id/spinner"
         android:layout_alignRight="@+id/spinner"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/relativeLayout2"
         android:background="@drawable/buttonrounded"
         android:text="MAP"
         android:textColor="@android:color/white"

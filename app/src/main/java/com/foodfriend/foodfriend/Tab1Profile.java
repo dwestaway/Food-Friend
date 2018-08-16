@@ -120,7 +120,7 @@ public class Tab1Profile extends Fragment {
 
         //create drop down menu
         spinner = (Spinner)getView().findViewById(R.id.spinner);
-        adapter = ArrayAdapter.createFromResource(getActivity(),R.array.Times,android.R.layout.simple_spinner_item);
+        adapter = ArrayAdapter.createFromResource(getActivity(),R.array.Times,R.layout.spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 

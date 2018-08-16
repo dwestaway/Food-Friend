@@ -47,9 +47,10 @@
     <string name="tab_text_2">Matches</string>
     <string name="tab_text_3">Messages</string>
     <string name="action_settings">Account Settings</string>
+    <string name="choose_day">What Day?</string>
 
     <string-array name="Times">
-        <item>Choose a Time to Eat:</item>
+        <item>What Time of Day?</item>
         <item>Morning</item>
         <item>Mid-day</item>
         <item>Evening</item>
