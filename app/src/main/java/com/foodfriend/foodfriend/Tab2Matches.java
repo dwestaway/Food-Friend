@@ -138,6 +138,12 @@ public class Tab2Matches extends Fragment {
                                     //get the date of from the users match data
                                     String date = (String) ds.child("date").getValue();
 
+                                    //get time of day
+                                    String time = (String) ds.child("time").getValue();
+
+                                    //put date and time into 1 string
+                                    String dateAndTime = (date + " \n" + time);
+
                                     //Check if users date matches current date, only display matches on same day (commented out for testing)
                                     //if(date == currentDate)
                                     //{
@@ -146,7 +152,7 @@ public class Tab2Matches extends Fragment {
                                             (String) ds.child("profileImage").getValue(),
                                             (String) ds.child("name").getValue(),
                                             (String) ds.child("foodPOI").getValue(),
-                                            (String) ds.child("time").getValue()
+                                            dateAndTime
                                     ));
                                     //}
                                 }

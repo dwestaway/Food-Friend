@@ -6,9 +6,12 @@ package com.foodfriend.foodfriend;
 import android.*;
 import android.Manifest;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -25,6 +28,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -53,13 +57,15 @@ import static android.app.Activity.RESULT_OK;
 
 public class Tab1Profile extends Fragment {
 
-    private Button search, placePicker;
+    private Button search, placePicker, dateButton;
     private TextView name;
     private ImageView profileImg;
 
     private FirebaseAuth auth;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
+
+    private DatePickerDialog.OnDateSetListener mDateSetListener;
 
 
     private Spinner spinner;
@@ -71,6 +77,7 @@ public class Tab1Profile extends Fragment {
 
     private final static int PLACE_PICKER_REQUEST = 1;
 
+    String dateChosen = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -82,6 +89,7 @@ public class Tab1Profile extends Fragment {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+
 
         super.onActivityCreated(savedInstanceState);
 
@@ -110,6 +118,7 @@ public class Tab1Profile extends Fragment {
         search = getView().findViewById(R.id.searchButton);
         profileImg = getView().findViewById(R.id.profileImage);
         placePicker = getView().findViewById(R.id.placeButton);
+        dateButton = getView().findViewById(R.id.dateButton);
 
 
         //get current user
@@ -140,13 +149,21 @@ public class Tab1Profile extends Fragment {
                 String time = spinner.getSelectedItem().toString();
 
                 //If food poi field is empty, alert the user
-                if (TextUtils.isEmpty(poi)) {
+                if (TextUtils.isEmpty(poi))
+                {
                     Toast.makeText(getActivity(), "Please choose where you would like to eat", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 //If a time is not chosen, alert the user
-                if (time.equals("Choose a Time to Eat:")) {
-                    Toast.makeText(getActivity(), "Choose a time to eat", Toast.LENGTH_SHORT).show();
+                if (time.equals("Choose a Time to Eat:"))
+                {
+                    Toast.makeText(getActivity(), "Please choose a time to eat", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                //If date is not chosen, alert user
+                if (dateChosen.equals(""))
+                {
+                    Toast.makeText(getActivity(), "Please choose a date", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -154,7 +171,8 @@ public class Tab1Profile extends Fragment {
                 mDatabase.child("users").child(user.getUid()).child("foodPOI").setValue(poi);
                 mDatabase.child("users").child(user.getUid()).child("time").setValue(time);
 
-                String date = getDate();
+                //String date = getDate();
+                String date = dateChosen;
 
                 //send todays date to user data on server database
                 mDatabase.child("users").child(user.getUid()).child("date").setValue(date);
@@ -189,6 +207,36 @@ public class Tab1Profile extends Fragment {
 
             }
         });
+
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Calendar cal = Calendar.getInstance();
+
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_MinWidth, mDateSetListener,year,month,day);
+
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+
+                month = month + 1;
+
+                dateChosen = day + "/" + month + "/" + year;
+
+                dateButton.setText(dateChosen);
+
+            }
+        };
 
 
 
