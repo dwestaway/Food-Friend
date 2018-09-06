@@ -54,9 +54,9 @@
             android:paddingLeft="10dp"
             android:text="Evening"
             android:lineSpacingExtra="2dp"
-            android:textColor="@color/colorDarkest"
+            android:textColor="@color/darkGrey"
             android:textSize="17dp"
-            android:textStyle="italic|bold"/>
+            android:textStyle="italic"/>
 
     </LinearLayout>
 

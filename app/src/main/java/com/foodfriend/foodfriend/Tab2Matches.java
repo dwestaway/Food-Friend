@@ -125,36 +125,43 @@ public class Tab2Matches extends Fragment {
                                 float distance = startPoint.distanceTo(endPoint);
 
 
-                                //if the user is less than 16000 meters (10 miles) from the current user, issues may occur when using emulator because it sets GPS location to California
-                                //set to 1600000000 because of
+                                //if the user is less than 32000 meters (20 miles) from the current user, issues may occur when using emulator because it sets GPS location to California
                                 if (distance < 1600000000) {
 
                                     //add userids (keys) to an arraylist
                                     userids.add(uid);
 
                                     //get current date
-                                    String currentDate = getDate();
+                                    //String currentDate = getDate();
 
                                     //get the date of from the users match data
                                     String date = (String) ds.child("date").getValue();
 
-                                    //get time of day
-                                    String time = (String) ds.child("time").getValue();
+                                    boolean dateFuture = false;
 
-                                    //put date and time into 1 string
-                                    String dateAndTime = (date + " \n" + time);
+                                    dateFuture = checkDateFuture(date);
 
-                                    //Check if users date matches current date, only display matches on same day (commented out for testing)
-                                    //if(date == currentDate)
-                                    //{
-                                    //Create a new Match with all the required users data
-                                    arrayList.add(new Match(
-                                            (String) ds.child("profileImage").getValue(),
-                                            (String) ds.child("name").getValue(),
-                                            (String) ds.child("foodPOI").getValue(),
-                                            dateAndTime
-                                    ));
-                                    //}
+                                    //if the date chosen by user is in the future or same day
+                                    if(dateFuture == true)
+                                    {
+                                        //get time of day
+                                        String time = (String) ds.child("time").getValue();
+
+                                        //put date and time into 1 string
+                                        String dateAndTime = (date + " \n" + time);
+
+                                        //Check if users date matches current date, only display matches on same day (commented out for testing)
+                                        //if(date == currentDate)
+                                        //{
+                                        //Create a new Match with all the required users data
+                                        arrayList.add(new Match(
+                                                (String) ds.child("profileImage").getValue(),
+                                                (String) ds.child("name").getValue(),
+                                                (String) ds.child("foodPOI").getValue(),
+                                                dateAndTime
+                                        ));
+                                    }
+
                                 }
                             }
                         }
@@ -211,5 +218,36 @@ public class Tab2Matches extends Fragment {
         return currentDate;
     }
 
+    //check if the date chosen by user is in the future or the same day as the current date, if not it should not be displayed in matches/friends
+    public boolean checkDateFuture(String date)
+    {
+
+        String currentDate = getDate();
+
+        String[] splitCurrentDate = currentDate.split("-");
+
+        String[] splitDate = date.split("/");
+
+        int currentDateYear = Integer.parseInt(splitCurrentDate[2]);
+        int currentDateMonth = Integer.parseInt(splitCurrentDate[1]);
+        int currentDateDay = Integer.parseInt(splitCurrentDate[0]);
+
+        int dateYear = Integer.parseInt(splitDate[2]);
+        int dateMonth = Integer.parseInt(splitDate[1]);
+        int dateDay = Integer.parseInt(splitDate[0]);
+
+        if(dateYear >= currentDateYear)
+        {
+            if(dateMonth >= currentDateMonth)
+            {
+                if(dateDay >= currentDateDay)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 
 }
