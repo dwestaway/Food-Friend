@@ -152,11 +152,13 @@ public class Tab2Matches extends Fragment {
                                         //put date and time into 1 string
                                         String dateAndTime = (dateConverted + ", " + time);
 
+                                        //Get users name from database and send to method
+                                        String firstName = removeSecondName((String) ds.child("name").getValue());
 
                                         //Create a new Match with all the required users data
                                         arrayList.add(new Match(
                                                 (String) ds.child("profileImage").getValue(),
-                                                (String) ds.child("name").getValue(),
+                                                firstName,
                                                 (String) ds.child("foodPOI").getValue(),
                                                 dateAndTime
                                         ));
@@ -373,6 +375,23 @@ public class Tab2Matches extends Fragment {
         String convertedDate = dayString + " " + monthString + " " + yearString;
 
         return convertedDate;
+    }
+
+    //Remove users second name, if no second name is present just return the original string
+    public String removeSecondName(String name)
+    {
+        String[] splitName = name.split(" ");
+
+        if(splitName.length > 1)
+        {
+            String firstName = splitName[0];
+
+            return firstName;
+        }
+        else
+        {
+            return name;
+        }
     }
 
 }
