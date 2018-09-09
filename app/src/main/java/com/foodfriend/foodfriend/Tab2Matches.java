@@ -236,9 +236,17 @@ public class Tab2Matches extends Fragment {
         int dateMonth = Integer.parseInt(splitDate[1]);
         int dateDay = Integer.parseInt(splitDate[0]);
 
-        if(dateYear >= currentDateYear)
+        if(dateYear > currentDateYear)
         {
-            if(dateMonth >= currentDateMonth)
+            return true;
+        }
+        else if(dateYear == currentDateYear)
+        {
+            if(dateMonth > currentDateMonth)
+            {
+                return true;
+            }
+            else if (dateMonth == currentDateMonth)
             {
                 if(dateDay >= currentDateDay)
                 {
