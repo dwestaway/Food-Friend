@@ -147,12 +147,12 @@ public class Tab2Matches extends Fragment {
                                         //get time of day
                                         String time = (String) ds.child("time").getValue();
 
-                                        //put date and time into 1 string
-                                        String dateAndTime = (date + " \n" + time);
+                                        String dateConverted = convertDate(date);
 
-                                        //Check if users date matches current date, only display matches on same day (commented out for testing)
-                                        //if(date == currentDate)
-                                        //{
+                                        //put date and time into 1 string
+                                        String dateAndTime = (dateConverted + ", " + time);
+
+
                                         //Create a new Match with all the required users data
                                         arrayList.add(new Match(
                                                 (String) ds.child("profileImage").getValue(),
@@ -219,7 +219,7 @@ public class Tab2Matches extends Fragment {
     }
 
     //check if the date chosen by user is in the future or the same day as the current date, if not it should not be displayed in matches/friends
-    public boolean checkDateFuture(String date)
+    public Boolean checkDateFuture(String date)
     {
 
         String currentDate = getDate();
@@ -248,6 +248,123 @@ public class Tab2Matches extends Fragment {
         }
 
         return false;
+    }
+    //Convert date to a more readable format (02/07/18 to 2nd July 18)
+    public String convertDate(String date)
+    {
+        String[] splitDate = date.split("/");
+
+        int dateMonth = Integer.parseInt(splitDate[1]);
+        int dateDay = Integer.parseInt(splitDate[0]);
+        int dateYear = Integer.parseInt(splitDate[2]);
+
+        dateYear = dateYear - 2000;
+
+        String yearString = Integer.toString(dateYear);
+
+        String monthString;
+
+        switch (dateMonth) {
+            case 1:  monthString = "January";
+                break;
+            case 2:  monthString = "February";
+                break;
+            case 3:  monthString = "March";
+                break;
+            case 4:  monthString = "April";
+                break;
+            case 5:  monthString = "May";
+                break;
+            case 6:  monthString = "June";
+                break;
+            case 7:  monthString = "July";
+                break;
+            case 8:  monthString = "August";
+                break;
+            case 9:  monthString = "September";
+                break;
+            case 10: monthString = "October";
+                break;
+            case 11: monthString = "November";
+                break;
+            case 12: monthString = "December";
+                break;
+            default: monthString = "Invalid month";
+                break;
+        }
+        String dayString;
+
+        switch (dateDay) {
+            case 1:  dayString = "1st";
+                break;
+            case 2:  dayString = "2nd";
+                break;
+            case 3:  dayString = "3rd";
+                break;
+            case 4:  dayString = "4th";
+                break;
+            case 5:  dayString = "5th";
+                break;
+            case 6:  dayString = "6th";
+                break;
+            case 7:  dayString = "7th";
+                break;
+            case 8:  dayString = "8th";
+                break;
+            case 9:  dayString = "9th";
+                break;
+            case 10: dayString = "10th";
+                break;
+            case 11: dayString = "11th";
+                break;
+            case 12: dayString = "12th";
+                break;
+            case 13:  dayString = "13th";
+                break;
+            case 14:  dayString = "14th";
+                break;
+            case 15:  dayString = "15th";
+                break;
+            case 16:  dayString = "16th";
+                break;
+            case 17:  dayString = "17th";
+                break;
+            case 18:  dayString = "18th";
+                break;
+            case 19:  dayString = "19th";
+                break;
+            case 20:  dayString = "20th";
+                break;
+            case 21:  dayString = "21st";
+                break;
+            case 22: dayString = "22nd";
+                break;
+            case 23: dayString = "23rd";
+                break;
+            case 24: dayString = "24th";
+                break;
+            case 25: dayString = "25th";
+                break;
+            case 26: dayString = "26th";
+                break;
+            case 27: dayString = "27th";
+                break;
+            case 28: dayString = "28th";
+                break;
+            case 29: dayString = "29th";
+                break;
+            case 30: dayString = "30th";
+                break;
+            case 31: dayString = "31th";
+                break;
+            default: dayString = "Invalid Day";
+                break;
+        }
+
+
+        String convertedDate = dayString + " " + monthString + " " + yearString;
+
+        return convertedDate;
     }
 
 }
