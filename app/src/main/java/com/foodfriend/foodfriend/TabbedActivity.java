@@ -157,6 +157,26 @@ public class TabbedActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Choose your image", Toast.LENGTH_SHORT).show();
 
         }
+        if(item.getItemId() == R.id.help)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(TabbedActivity.this);
+            View view = getLayoutInflater().inflate(R.layout.dialog_help, null);
+
+            Button confirmButton = view.findViewById(R.id.confirmButton);
+
+
+            //Create dialog
+            builder.setView(view);
+            final AlertDialog dialog = builder.create();
+            dialog.show();
+
+            confirmButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+        }
         //If change password button is clicked
         if(item.getItemId() == R.id.changePassword)
         {

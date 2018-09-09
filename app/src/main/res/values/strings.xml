@@ -44,7 +44,7 @@
     <string name="forgot_password_msg">Please enter your email address and we will send you password reset instructions.</string>
     <string name="title_activity_tabbed">TabbedActivity</string>
     <string name="tab_text_1">Profile</string>
-    <string name="tab_text_2">Matches</string>
+    <string name="tab_text_2">Food Friends</string>
     <string name="tab_text_3">Messages</string>
     <string name="action_settings">Account Settings</string>
     <string name="choose_day">What Day?</string>
