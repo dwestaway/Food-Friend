@@ -9,12 +9,14 @@ public class Match {
     private String name;
     private String poi;
     private String time;
+    private String date;
 
-    public Match(String image, String name, String poi, String time) {
+    public Match(String image, String name, String poi, String time, String date) {
         this.image = image;
         this.name = name;
         this.poi = poi;
         this.time = time;
+        this.date = date;
     }
 
     public String getImage() {
@@ -47,5 +49,13 @@ public class Match {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

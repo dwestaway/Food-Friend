@@ -73,7 +73,7 @@ public class CustomListAdapter extends ArrayAdapter<Match> {
 
         //set list item place of interest text from Match
         TextView time = (TextView) convertView.findViewById(R.id.textTime);
-        time.setText(match.getTime());
+        time.setText(match.getDate() + ", " + match.getTime());
 
 
         return convertView;

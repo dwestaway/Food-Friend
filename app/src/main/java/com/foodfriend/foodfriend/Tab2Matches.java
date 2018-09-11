@@ -25,6 +25,8 @@ import com.google.firebase.database.ValueEventListener;
         import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 
 import static android.content.ContentValues.TAG;
@@ -131,8 +133,6 @@ public class Tab2Matches extends Fragment {
                                     //add userids (keys) to an arraylist
                                     userids.add(uid);
 
-                                    //get current date
-                                    //String currentDate = getDate();
 
                                     //get the date of from the users match data
                                     String date = (String) ds.child("date").getValue();
@@ -147,11 +147,6 @@ public class Tab2Matches extends Fragment {
                                         //get time of day
                                         String time = (String) ds.child("time").getValue();
 
-                                        String dateConverted = convertDate(date);
-
-                                        //put date and time into 1 string
-                                        String dateAndTime = (dateConverted + ", " + time);
-
                                         //Get users name from database and send to method
                                         String firstName = removeSecondName((String) ds.child("name").getValue());
 
@@ -160,7 +155,8 @@ public class Tab2Matches extends Fragment {
                                                 (String) ds.child("profileImage").getValue(),
                                                 firstName,
                                                 (String) ds.child("foodPOI").getValue(),
-                                                dateAndTime
+                                                time,
+                                                date
                                         ));
                                     }
 
@@ -169,8 +165,57 @@ public class Tab2Matches extends Fragment {
                         }
 
 
+
                     }
                 }
+
+                boolean sorted = false;
+
+                //Keep sorting until sorted
+                while(sorted == false)
+                {
+                    sorted = true;
+
+                    //Loop through arrayList
+                    for(int i = 0; i < arrayList.size() - 1; i++)
+                    {
+                        boolean isAfter = false;
+
+                        //might need to check if i+1 is null here
+
+                        //Compare date in i and i+1 to see which comes first
+                        isAfter = compareDates(arrayList.get(i).getDate(),arrayList.get(i+1).getDate());
+
+
+                        //If date from i is after i+1; swap Matches
+                        if(isAfter == true)
+                        {
+                            Match tmp;
+
+                            //swap
+                            tmp = arrayList.get(i);
+                            arrayList.set(i, arrayList.get(i+1));
+                            arrayList.set(i+1, tmp);
+
+                            //If a swap is done, set sorted to false because sorting is still happening, when the whole arrayList is looped through and this is not called; the arrayList must be sorted
+                            sorted = false;
+
+                        }
+                    }
+                }
+
+                //Convert date format on all Matches
+                for(int i = 0; i < arrayList.size(); i++)
+                {
+                    String convertedDate = convertDate(arrayList.get(i).getDate());
+
+                    arrayList.get(i).setDate(convertedDate);
+                }
+
+
+
+
+
                 //Create adapter that will be used to apply all the data to the list, this uses Match objects which hold the user data
                 CustomListAdapter adapter = new CustomListAdapter(getActivity().getApplicationContext(), R.layout.list_layout, arrayList);
                 //set the adapter to the list
@@ -259,6 +304,47 @@ public class Tab2Matches extends Fragment {
 
         return false;
     }
+
+    //Compare dates to see which comes first
+    public boolean compareDates(String date1, String date2)
+    {
+
+
+        String[] splitDate1 = date1.split("/");
+
+        String[] splitDate2 = date2.split("/");
+
+        int date1Year = Integer.parseInt(splitDate1[2]);
+        int date1Month = Integer.parseInt(splitDate1[1]);
+        int date1Day = Integer.parseInt(splitDate1[0]);
+
+        int date2Year = Integer.parseInt(splitDate2[2]);
+        int date2Month = Integer.parseInt(splitDate2[1]);
+        int date2Day = Integer.parseInt(splitDate2[0]);
+
+        if(date1Year > date2Year)
+        {
+            return true;
+        }
+        else if(date1Year == date2Year)
+        {
+            if(date1Month > date2Month)
+            {
+                return true;
+            }
+            else if (date1Month == date2Month)
+            {
+                if(date1Day > date2Day)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
     //Convert date to a more readable format (02/07/18 to 2nd July 18)
     public String convertDate(String date)
     {
@@ -329,23 +415,23 @@ public class Tab2Matches extends Fragment {
                 break;
             case 12: dayString = "12th";
                 break;
-            case 13:  dayString = "13th";
+            case 13: dayString = "13th";
                 break;
-            case 14:  dayString = "14th";
+            case 14: dayString = "14th";
                 break;
-            case 15:  dayString = "15th";
+            case 15: dayString = "15th";
                 break;
-            case 16:  dayString = "16th";
+            case 16: dayString = "16th";
                 break;
-            case 17:  dayString = "17th";
+            case 17: dayString = "17th";
                 break;
-            case 18:  dayString = "18th";
+            case 18: dayString = "18th";
                 break;
-            case 19:  dayString = "19th";
+            case 19: dayString = "19th";
                 break;
-            case 20:  dayString = "20th";
+            case 20: dayString = "20th";
                 break;
-            case 21:  dayString = "21st";
+            case 21: dayString = "21st";
                 break;
             case 22: dayString = "22nd";
                 break;
@@ -393,5 +479,8 @@ public class Tab2Matches extends Fragment {
             return name;
         }
     }
+
+
+
 
 }
