@@ -110,6 +110,8 @@ public class Tab1Profile extends Fragment {
         //Request permissions for GPS/location
         ActivityCompat.requestPermissions(getActivity(), new String[]{ACCESS_FINE_LOCATION}, 1);
 
+        //sendLocation();
+
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users");
 
@@ -314,7 +316,6 @@ public class Tab1Profile extends Fragment {
 
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
-
 
             //send users location to database
             mDatabase.child("users").child(user.getUid()).child("longitude").setValue(longitude);

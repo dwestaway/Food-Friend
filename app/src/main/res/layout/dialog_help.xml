@@ -15,7 +15,7 @@
     <TextView
         android:layout_marginTop="15dp"
         android:id="@+id/guide1"
-        android:text="Fill out the profile screen to make your desired food location and time visible to other users. Press 'Find a Food Friend' to confirm."
+        android:text="Fill out the profile screen to make your desired food location and time visible to other users. Press 'Find a Food Friend' to confirm. Only users in your area will be displayed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp" />

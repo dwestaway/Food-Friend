@@ -97,10 +97,7 @@ public class Tab2Matches extends Fragment {
                     //if user id is not equal to current user id, do not add that user data (so user does not match with themselves)
                     if (!uid.equals(currentUserID)) {
 
-
                         String foodPOI = (String) ds.child("foodPOI").getValue();
-
-                        //Log.v(TAG, "Foodpoi " + foodPOI);
 
                         //Check if user has entered foodPOI, this is so users without foodPOI are not displayed on matches
                         if(!foodPOI.isEmpty())
