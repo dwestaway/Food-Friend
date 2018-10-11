@@ -349,40 +349,6 @@ public class TabbedActivity extends AppCompatActivity {
     void sendLocation()
     {
 
-        /*
-        //Ask user for location permission
-        if(ActivityCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        {
-            Toast.makeText(TabbedActivity.this, "Please enable GPS", Toast.LENGTH_LONG).show();
-        }
-
-        if(client != null)
-        {
-            client.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                @Override
-                public void onSuccess(Location location) {
-
-                    if(location != null)
-                    {
-                        double latitude = location.getLatitude();
-                        double longitude = location.getLongitude();
-
-                        //send users location to database
-                        database.child("users").child(user.getUid()).child("longitude").setValue(longitude);
-                        database.child("users").child(user.getUid()).child("latitude").setValue(latitude);
-                    }
-                }
-            });
-        }
-        else
-        {
-            //Toast.makeText(TabbedActivity.this, "GPS is not enabled or cannot be retrieved", Toast.LENGTH_LONG).show();
-
-            //Set users location to Plymouth if GPS cannot be found, this is because of common GPS inconsistency and to prevent issues when testing/demonstrating
-            database.child("users").child(user.getUid()).child("longitude").setValue("-4.14313589");
-            database.child("users").child(user.getUid()).child("latitude").setValue("50.37658493");
-        }
-        */
 
         //test this
         //get GPS location

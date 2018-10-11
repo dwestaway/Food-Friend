@@ -125,7 +125,7 @@ public class Tab2Matches extends Fragment {
 
 
                                 //if the user is less than 32000 meters (20 miles) from the current user, issues may occur when using emulator because it sets GPS location to California
-                                if (distance < 1600000000) {
+                                if (distance < 32000) {
 
                                     //add userids (keys) to an arraylist
                                     userids.add(uid);
@@ -136,6 +136,7 @@ public class Tab2Matches extends Fragment {
 
                                     boolean dateFuture = false;
 
+                                    //check if matched user date is in the past, pointless displaying users that want to meet on dates that have passed
                                     dateFuture = checkDateFuture(date);
 
                                     //if the date chosen by user is in the future or same day
@@ -168,6 +169,7 @@ public class Tab2Matches extends Fragment {
 
                 boolean sorted = false;
 
+                //This is to sort all users in the array by date
                 //Keep sorting until sorted
                 while(sorted == false)
                 {
@@ -193,6 +195,13 @@ public class Tab2Matches extends Fragment {
                             tmp = arrayList.get(i);
                             arrayList.set(i, arrayList.get(i+1));
                             arrayList.set(i+1, tmp);
+
+                            //also swap the userID's, if this is not done, user messages will be displayed in wrong chats because the user id does not correspond with the correct user
+                            String temp;
+
+                            temp = userids.get(i);
+                            userids.set(i, userids.get(i+1));
+                            userids.set(i+1, temp);
 
                             //If a swap is done, set sorted to false because sorting is still happening, when the whole arrayList is looped through and this is not called; the arrayList must be sorted
                             sorted = false;

@@ -18,6 +18,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,8 +38,11 @@ import android.widget.Toast;
 import com.foodfriend.foodfriend.AccountActivity.LoginActivity;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -52,6 +56,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.app.Activity.RESULT_OK;
 
@@ -74,6 +79,8 @@ public class Tab1Profile extends Fragment {
     //EditText that autocompletes
     private AutoCompleteTextView autoComplete;
     private ArrayAdapter<String> foodAdapter;
+
+    private FusedLocationProviderClient mFusedLocationClient;
 
     private final static int PLACE_PICKER_REQUEST = 1;
 
@@ -107,8 +114,7 @@ public class Tab1Profile extends Fragment {
             startActivity(new Intent(getActivity(), LoginActivity.class));
         }
 
-        //Request permissions for GPS/location
-        ActivityCompat.requestPermissions(getActivity(), new String[]{ACCESS_FINE_LOCATION}, 1);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         //sendLocation();
 
@@ -308,7 +314,7 @@ public class Tab1Profile extends Fragment {
     //send users current location to the server
     public void sendLocation()
     {
-        //get GPS location
+        /*
         GPSLocation gps = new GPSLocation(getContext());
         Location location = gps.getLocation();
 
@@ -321,6 +327,35 @@ public class Tab1Profile extends Fragment {
             mDatabase.child("users").child(user.getUid()).child("longitude").setValue(longitude);
             mDatabase.child("users").child(user.getUid()).child("latitude").setValue(latitude);
         }
+        */
+
+        //check for location permission, if false then ask user for it
+        if(ContextCompat.checkSelfPermission(getActivity(), ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            //Toast.makeText(TabbedActivity.this, "Please enable GPS", Toast.LENGTH_LONG).show();
+
+            ActivityCompat.requestPermissions(getActivity(), new String[]{ACCESS_COARSE_LOCATION}, 1);
+        }
+
+        //get location using gps/wifi
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            // Logic to handle location object
+
+                            double latitude = location.getLatitude();
+                            double longitude = location.getLongitude();
+
+                            //send users location to database
+                            mDatabase.child("users").child(user.getUid()).child("longitude").setValue(longitude);
+                            mDatabase.child("users").child(user.getUid()).child("latitude").setValue(latitude);
+                        }
+
+                    }
+                });
 
     }
 
