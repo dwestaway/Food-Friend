@@ -130,7 +130,7 @@ public class Tab1Profile extends Fragment {
         setupAutoComplete();
 
         //create drop down menu
-        spinner = (Spinner)getView().findViewById(R.id.spinner);
+        spinner = getView().findViewById(R.id.spinner);
         adapter = ArrayAdapter.createFromResource(getActivity(),R.array.Times,R.layout.spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -141,9 +141,6 @@ public class Tab1Profile extends Fragment {
         {
             @Override
             public void onClick(View view) {
-
-                //send users GPS location to database
-                sendLocation();
 
                 //get users chosen place of interest
                 String poi = autoComplete.getText().toString().trim();
@@ -168,6 +165,9 @@ public class Tab1Profile extends Fragment {
                     Toast.makeText(getActivity(), "Please choose a date", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                //send users GPS location to database
+                sendLocation();
 
                 //set database values: food place of interest and time
                 mDatabase.child("users").child(user.getUid()).child("foodPOI").setValue(poi);

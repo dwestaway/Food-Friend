@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -30,6 +31,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -45,6 +47,7 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static java.security.AccessController.getContext;
 
@@ -67,7 +70,7 @@ public class TabbedActivity extends AppCompatActivity {
 
     private String currentUserID;
 
-    private FusedLocationProviderClient client;
+    private FusedLocationProviderClient mFusedLocationClient;
 
     AdView adView;
 
@@ -83,6 +86,8 @@ public class TabbedActivity extends AppCompatActivity {
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
         //get database reference
         database = FirebaseDatabase.getInstance().getReference();
         ref = database.child("users").child(currentUserID);
@@ -97,8 +102,6 @@ public class TabbedActivity extends AppCompatActivity {
         adView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
-
-        sendLocation();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -117,7 +120,7 @@ public class TabbedActivity extends AppCompatActivity {
         //Create tabs
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-
+        sendLocation();
     }
 
     //Inflate the options menu
@@ -346,8 +349,9 @@ public class TabbedActivity extends AppCompatActivity {
     void sendLocation()
     {
 
+        /*
         //Ask user for location permission
-        if(ActivityCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        if(ActivityCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         {
             Toast.makeText(TabbedActivity.this, "Please enable GPS", Toast.LENGTH_LONG).show();
         }
@@ -378,6 +382,59 @@ public class TabbedActivity extends AppCompatActivity {
             database.child("users").child(user.getUid()).child("longitude").setValue("-4.14313589");
             database.child("users").child(user.getUid()).child("latitude").setValue("50.37658493");
         }
+        */
+
+        //test this
+        //get GPS location
+        /*GPSLocation gps = new GPSLocation(getApplication());
+        Location location = gps.getLocation();
+
+        if(location != null)
+        {
+
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+
+
+            database.child("users").child(user.getUid()).child("longitude").setValue(longitude);
+            database.child("users").child(user.getUid()).child("latitude").setValue(latitude);
+        }
+
+        */
+
+
+        //check for location permission, if false then ask user for it
+        if(ContextCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            //Toast.makeText(TabbedActivity.this, "Please enable GPS", Toast.LENGTH_LONG).show();
+
+            ActivityCompat.requestPermissions(this, new String[]{ACCESS_COARSE_LOCATION}, 1);
+        }
+
+            //get location using gps/wifi
+            mFusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            // Got last known location. In some rare situations this can be null.
+                            if (location != null) {
+                                // Logic to handle location object
+
+                                double latitude = location.getLatitude();
+                                double longitude = location.getLongitude();
+
+                                database.child("users").child(user.getUid()).child("longitude").setValue(longitude);
+                                database.child("users").child(user.getUid()).child("latitude").setValue(latitude);
+                            }
+                            else if(location == null)
+                            {
+                                Toast.makeText(TabbedActivity.this, "Location error, check GPS is enabled", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+
+
+
 
     }
 

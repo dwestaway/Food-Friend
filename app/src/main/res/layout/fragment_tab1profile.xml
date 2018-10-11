@@ -87,7 +87,7 @@
         android:layout_marginTop="15dp"
         android:background="@drawable/buttonrounded"
         android:text="@string/choose_day"
-        android:textSize="15dp"
+        android:textSize="14dp"
         android:typeface="normal"
         android:textColor="@android:color/white"
         android:textStyle="bold"/>
@@ -99,6 +99,7 @@
         android:layout_below="@+id/spinner"
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
+        android:textSize="14dp"
         android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/buttonrounded"
